@@ -21,9 +21,13 @@ public class BFS {
 
     /**
      * Return a longest path in g.  Algorithm is correct only if g is a tree.
+     *
      * @param g
      * @return
      */
+
+    /* Graph.Vertex in Graph.java is not public, cannot access from outside. If no modification
+     * the source file is not allowed, need to add Graph.java into this package. */
     static LinkedList<Graph.Vertex> diameter(Graph g) {
 
         return new LinkedList<>();
