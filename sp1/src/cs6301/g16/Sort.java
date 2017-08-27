@@ -11,6 +11,9 @@
  */
 
 package cs6301.g16;
+import cs6301.g00.Shuffle;
+
+import static cs6301.g00.Shuffle.shuffle;
 
 import java.util.Arrays;
 
@@ -144,11 +147,29 @@ public class Sort {
      * @param <T>
      */
     static<T extends Comparable<? super T>> void nSquareSort(T[] arr) {
-
+        for(int p = 1; p < arr.length; p++)
+        {
+            T tmp = arr[p];
+            int j;
+            for(j = p; j > 0 && tmp.compareTo(arr[j-1]) < 0; j--)
+            {
+                arr[j] = arr[j-1];//后移一位
+            }
+            arr[j] = tmp;//插入
+        }
     }
 
     public static void main(String[] args) {
-
+        Integer[] intg = new Integer[]{23,4,5,12,0};
+        shuffle(intg);
+        for (Integer i : intg) {
+            System.out.print(i + " ");
+        }
+        System.out.println("");
+        nSquareSort(intg);
+        for (Integer i : intg) {
+            System.out.print(i + " ");
+        }
     }
-
+//
 }
