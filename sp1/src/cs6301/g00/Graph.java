@@ -1,6 +1,7 @@
 /**
  * Class to represent a graph
  *  @author rbk
+ *  Version 1.1. Added "public" to Vertex and Edge classes
  *
  */
 
@@ -20,7 +21,7 @@ public class Graph implements Iterable<Graph.Vertex> {
      * Nested class to represent a vertex of a graph
      */
 
-    static class Vertex implements Iterable<Edge> {
+    public static class Vertex implements Iterable<Edge> {
 	int name; // name of the vertex
 	List<Edge> adj, revAdj; // adjacency list; use LinkedList or ArrayList
 
@@ -50,7 +51,7 @@ public class Graph implements Iterable<Graph.Vertex> {
      * Nested class that represents an edge of a Graph
      */
 
-    static class Edge {
+    public static class Edge {
 	Vertex from; // head vertex
 	Vertex to; // tail vertex
 	int weight;// weight of edge
