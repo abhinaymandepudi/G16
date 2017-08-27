@@ -11,21 +11,19 @@
  */
 
 package cs6301.g16;
+import cs6301.g00.Item;
 import cs6301.g00.Shuffle;
-
-import static cs6301.g00.Shuffle.shuffle;
-
-import java.util.Arrays;
+import cs6301.g00.Timer;
 
 public class Sort {
 
     /**
      * Sort generic array arr, using array tmp as buffer.
-     * @param arr
-     * @param tmp
-     * @param <T>
+     * @param arr   : The array to be sorted.
+     * @param tmp   : The buffer array with same length as arr.
+     * @param <T>   : The element type in the array.
      */
-    static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp) {
+    public static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp) {
         mergeSort(arr, tmp, 0, arr.length - 1);
     }
 
@@ -36,8 +34,9 @@ public class Sort {
      * @param tmp   : Buffer in merge.
      * @param left  : Start index of the part of array to be sorted.
      * @param right : End index of the part of array to be sorted.
+     * @param <T>   : The element type in the array.
      */
-    static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp, int left, int right) {
+    private static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp, int left, int right) {
         if (left >= right)
             return;
         int mid = left + (right - left) / 2;
@@ -47,19 +46,20 @@ public class Sort {
     }
 
     /**
-     * Merge two adjacent part of array.
+     * Merge two adjacent part of array of type T.
      * <ul>
      * <li>arr[left, mid]</li>
      * <li>arr[mid+1, right]</li>
      * </ul>
      * The two part should be sorted already
-     * @param arr
-     * @param tmp
-     * @param left
-     * @param mid
-     * @param right
+     * @param arr   : Array to be sorted.
+     * @param tmp   : Buffer in merge.
+     * @param left  : Start index of the part of array already sorted.
+     * @param mid   : The end point of the left part sorted array.
+     * @param right : End index of the part of array already sorted with start index of <code>mid + 1</code>.
+     * @param <T>   : The element type in the array.
      */
-    static<T extends Comparable<? super T>> void merge(T[] arr, T[] tmp, int left, int mid, int right) {
+    private static<T extends Comparable<? super T>> void merge(T[] arr, T[] tmp, int left, int mid, int right) {
 
         System.arraycopy(arr, left, tmp, left, right - left + 1);
 
@@ -82,10 +82,10 @@ public class Sort {
 
     /**
      * Sort int array arr, using array tmp as buffer.
-     * @param arr
-     * @param tmp
+     * @param arr   : The array to be sorted.
+     * @param tmp   : The buffer array with same length as arr.
      */
-    static void mergeSort(int[] arr, int[] tmp) {
+    public static void mergeSort(int[] arr, int[] tmp) {
         mergeSort(arr, tmp, 0, arr.length - 1);
     }
 
@@ -97,7 +97,7 @@ public class Sort {
      * @param left  : Start index of the part of array to be sorted.
      * @param right : End index of the part of array to be sorted.
      */
-    static void mergeSort(int[] arr, int[] tmp, int left, int right) {
+    private static void mergeSort(int[] arr, int[] tmp, int left, int right) {
         if (left >= right)
             return;
         int mid = left + (right - left) / 2;
@@ -107,19 +107,19 @@ public class Sort {
     }
 
     /**
-     * Merge two adjacent part of array.
+     * Merge two adjacent part of int array.
      * <ul>
      * <li>arr[left, mid]</li>
      * <li>arr[mid+1, right]</li>
      * </ul>
      * The two part should be sorted already
-     * @param arr
-     * @param tmp
-     * @param left
-     * @param mid
-     * @param right
+     * @param arr   : Array to be sorted.
+     * @param tmp   : Buffer in merge.
+     * @param left  : Start index of the part of array already sorted.
+     * @param mid   : The end point of the left part sorted array.
+     * @param right : End index of the part of array already sorted with start index of <code>mid + 1</code>.
      */
-    static void merge(int[] arr, int[] tmp, int left, int mid, int right) {
+    private static void merge(int[] arr, int[] tmp, int left, int mid, int right) {
 
         System.arraycopy(arr, left, tmp, left, right - left + 1);
 
@@ -138,38 +138,90 @@ public class Sort {
                 j++;
             }
         }
-        return;
     }
 
     /**
      * Insertion/Bubble sort generic array arr in place.
-     * @param arr
-     * @param <T>
+     * @param arr   : The array to be sorted.
+     * @param <T>   : The element type in the array.
      */
-    static<T extends Comparable<? super T>> void nSquareSort(T[] arr) {
-        for(int p = 1; p < arr.length; p++)
-        {
+    public static <T extends Comparable<? super T>> void nSquareSort(T[] arr) {
+        for (int p = 1; p < arr.length; p++) {
             T tmp = arr[p];
             int j;
-            for(j = p; j > 0 && tmp.compareTo(arr[j-1]) < 0; j--)
-            {
-                arr[j] = arr[j-1];//后移一位
+            for (j = p; j > 0 && tmp.compareTo(arr[j - 1]) < 0; j--) {
+                arr[j] = arr[j - 1]; //Move all bigger element right.
             }
-            arr[j] = tmp;//插入
+            arr[j] = tmp; // Insert the value.
         }
     }
 
+    /**
+     * Check whether the array is sorted.
+     * @param arr   : Array to be check.
+     * @param <T>   : Array type.
+     * @return      : True if array is sorted and false otherwise.
+     */
+    private static <T extends Comparable<? super T>> boolean isSorted(T[] arr) {
+        for (int i = 0; i < arr.length - 2; i++)
+            if (arr[i].compareTo(arr[i+1]) > 0)
+                return false;
+        return true;
+    }
+
+    /**
+     * Test main function.
+     * @param args: A string array containing the command line arguments.
+     *            [0] := sorting function used, 1->generic mergeSort, 2->int mergeSort, 3->nSqureSort
+     *            [1] := size of array in million.
+     */
     public static void main(String[] args) {
-        Integer[] intg = new Integer[]{23,4,5,12,0};
-        shuffle(intg);
-        for (Integer i : intg) {
-            System.out.print(i + " ");
+
+        int sortType, size;
+        if (args.length > 1) {
+            sortType = Integer.parseInt(args[0]);
+            size = Integer.parseInt(args[1]) * 1_000_000;
+        } else {
+            sortType = 3;
+            size = 40;
         }
-        System.out.println("");
-        nSquareSort(intg);
-        for (Integer i : intg) {
-            System.out.print(i + " ");
+
+        System.out.println("Array Size: " + size);
+
+        if (sortType == 1) {
+            // Generic merge sort.
+            Item[] tmp = new Item[size];
+            Item[] arr = new Item[size];
+            for (int i = 0; i < size; i++)
+                arr[i] = new Item(i);
+            Shuffle.shuffle(arr);
+            Timer timer = new Timer();
+            mergeSort(arr, tmp);
+            System.out.println(timer.end());
+            assert isSorted(arr);
+        } else if (sortType == 2) {
+            // Int merge sort.
+            int[] arr = new int[size];
+            int[] tmp = new int[size];
+            Integer[] tmpArr = new Integer[size];
+            for (int i = 0; i < size; i++)
+                tmpArr[i] = i;
+            Shuffle.shuffle(tmpArr);
+            for (int i = 0; i < size; i++)
+                arr[i] = tmpArr[i];
+            Timer timer = new Timer();
+            mergeSort(arr, tmp);
+            System.out.println(timer.end());
+        } else {
+            // Generic n square sort.
+            Integer[] arr = new Integer[size];
+            for (int i = 0; i < size; i++)
+                arr[i] = i;
+            Shuffle.shuffle(arr);
+            Timer timer = new Timer();
+            nSquareSort(arr);
+            System.out.println(timer.end());
+            assert isSorted(arr);
         }
     }
-//
 }
