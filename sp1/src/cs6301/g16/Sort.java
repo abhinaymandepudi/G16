@@ -12,6 +12,8 @@
 
 package cs6301.g16;
 
+import java.util.Arrays;
+
 public class Sort {
 
     /**
@@ -21,7 +23,58 @@ public class Sort {
      * @param <T>
      */
     static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp) {
+        mergeSort(arr, tmp, 0, arr.length - 1);
+    }
 
+    /**
+     * Helper function for <code>static<T extends Comparable<? super T>> void mergeSort(T[] arr,T[] tmp) </code>.
+     * Specify the part of array to be sorted at current call.
+     * @param arr   : Array to be sorted.
+     * @param tmp   : Buffer in merge.
+     * @param left  : Start index of the part of array to be sorted.
+     * @param right : End index of the part of array to be sorted.
+     */
+    static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp, int left, int right) {
+        if (left >= right)
+            return;
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, tmp, left, mid);
+        mergeSort(arr, tmp, mid + 1, right);
+        merge(arr, tmp, left, mid, right);
+    }
+
+    /**
+     * Merge two adjacent part of array.
+     * <ul>
+     * <li>arr[left, mid]</li>
+     * <li>arr[mid+1, right]</li>
+     * </ul>
+     * The two part should be sorted already
+     * @param arr
+     * @param tmp
+     * @param left
+     * @param mid
+     * @param right
+     */
+    static<T extends Comparable<? super T>> void merge(T[] arr, T[] tmp, int left, int mid, int right) {
+
+        System.arraycopy(arr, left, tmp, left, right - left + 1);
+
+        for (int i = left, j = mid + 1, k = left; k <= right; k++) {
+            if (i > mid) {
+                arr[k] = tmp[j];
+                j++;
+            } else if (j > right) {
+                arr[k] = tmp[i];
+                i++;
+            } else if (tmp[i].compareTo(tmp[j]) < 0) {
+                arr[k] = tmp[i];
+                i++;
+            } else {
+                arr[k] = tmp[j];
+                j++;
+            }
+        }
     }
 
     /**
@@ -30,7 +83,59 @@ public class Sort {
      * @param tmp
      */
     static void mergeSort(int[] arr, int[] tmp) {
+        mergeSort(arr, tmp, 0, arr.length - 1);
+    }
 
+    /**
+     * Helper function for <code>static void mergeSort(int[] arr, int[] tmp) </code>.
+     * Specify the part of array to be sorted at current call.
+     * @param arr   : Array to be sorted.
+     * @param tmp   : Buffer in merge.
+     * @param left  : Start index of the part of array to be sorted.
+     * @param right : End index of the part of array to be sorted.
+     */
+    static void mergeSort(int[] arr, int[] tmp, int left, int right) {
+        if (left >= right)
+            return;
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, tmp, left, mid);
+        mergeSort(arr, tmp, mid + 1, right);
+        merge(arr, tmp, left, mid, right);
+    }
+
+    /**
+     * Merge two adjacent part of array.
+     * <ul>
+     * <li>arr[left, mid]</li>
+     * <li>arr[mid+1, right]</li>
+     * </ul>
+     * The two part should be sorted already
+     * @param arr
+     * @param tmp
+     * @param left
+     * @param mid
+     * @param right
+     */
+    static void merge(int[] arr, int[] tmp, int left, int mid, int right) {
+
+        System.arraycopy(arr, left, tmp, left, right - left + 1);
+
+        for (int i = left, j = mid + 1, k = left; k <= right; k++) {
+            if (i > mid) {
+                arr[k] = tmp[j];
+                j++;
+            } else if (j > right) {
+                arr[k] = tmp[i];
+                i++;
+            } else if (tmp[i] < tmp[j]) {
+                arr[k] = tmp[i];
+                i++;
+            } else {
+                arr[k] = tmp[j];
+                j++;
+            }
+        }
+        return;
     }
 
     /**
