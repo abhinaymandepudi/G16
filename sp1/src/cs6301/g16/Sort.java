@@ -147,12 +147,38 @@ public class Sort {
      */
     public static <T extends Comparable<? super T>> void nSquareSort(T[] arr) {
         for (int p = 1; p < arr.length; p++) {
+            if (p % 1000 == 0)
+                System.out.print(p + " ");
             T tmp = arr[p];
             int j;
             for (j = p; j > 0 && tmp.compareTo(arr[j - 1]) < 0; j--) {
                 arr[j] = arr[j - 1]; //Move all bigger element right.
             }
             arr[j] = tmp; // Insert the value.
+        }
+    }
+
+    /**
+     * Bubble sort implementation.
+     * @param arr   : The array to be sorted.
+     * @param <T>   : The element type in the array.
+     */
+    public static <T extends Comparable<? super T>> void bubble(T[] arr) {
+        int max;
+        T tmp;
+        for (int i = 0; i < arr.length; i++) {
+            if (i % 1000 == 0)
+                System.out.print(i + " ");
+            max = -1;
+            for (int j = 0; j < arr.length - i; j++) {
+                if (max == -1)
+                    max = j;
+                else if (arr[max].compareTo(arr[j]) < 0)
+                    max = j;
+            }
+            tmp = arr[max];
+            arr[max] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = tmp;
         }
     }
 
@@ -219,7 +245,7 @@ public class Sort {
                 arr[i] = i;
             Shuffle.shuffle(arr);
             Timer timer = new Timer();
-            nSquareSort(arr);
+            bubble(arr);
             System.out.println(timer.end());
             assert isSorted(arr);
         }
