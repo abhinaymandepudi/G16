@@ -3,9 +3,8 @@ Short Project 1
 
 Deliverable structure is as follow:
 
-
     cs6301
-    ├── README.md       # Current File.
+    ├── README.md
     ├── g16
     │   ├── BFS.java    # Solution for problem 2.
     │   └── Sort.java   # Solution for problem 1.
