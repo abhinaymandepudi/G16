@@ -148,8 +148,6 @@ public class Sort {
      */
     public static <T extends Comparable<? super T>> void nSquareSort(T[] arr) {
         for (int p = 1; p < arr.length; p++) {
-            if (p % 1000 == 0)
-                System.out.print(p + " ");
             T tmp = arr[p];
             int j;
             for (j = p; j > 0 && tmp.compareTo(arr[j - 1]) < 0; j--) {
@@ -168,8 +166,6 @@ public class Sort {
         int max;
         T tmp;
         for (int i = 0; i < arr.length; i++) {
-            if (i % 1000 == 0)
-                System.out.print(i + " ");
             max = -1;
             for (int j = 0; j < arr.length - i; j++) {
                 if (max == -1)
