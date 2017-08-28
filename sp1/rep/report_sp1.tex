@@ -1,0 +1,61 @@
+\documentclass[10pt]{article}
+
+\usepackage[l2tabu, orthodox]{nag}
+\usepackage{tabu}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{float}
+
+% As a rule of thumb it should be loaded at the end of the preamble, after all
+% the other packages. A few exceptions exist, such as the cleveref package that
+% is also mentioned in this post. Hence, cleveref should be loaded after
+% hyperref.
+\usepackage{hyperref}
+
+% This package introduces the \cref command. When using this command to make
+% cross-references, instead of \ref or \eqref, a word is placed in front of the
+% reference according to the type of reference: fig. for figures, eq. for
+% equations
+\usepackage{cleveref}
+
+\title{\vspace*{-1em}Report: Short Project 1}
+\author{Binhan Wang\footnote{bxw161330@utdallas.edu}, Hanlin He\footnote{hxh160630@utdallas.edu},
+Zheng Gao\footnote{zxg170430@utdallas.edu}}
+
+\begin{document}
+\maketitle
+
+\section{Merge Sort}
+
+Running time of generic merge sort, int merge sort and nSquareSort on array
+with size from 1 million to 16 million is listed in \cref{r1}, all running time
+are in milliseconds.
+
+\begin{table}[H]
+    \centering
+    \caption{Running Time Comparison}\label{r1}
+    \begin{tabular}{c|ccc}
+        Array Size & Generic Merge Sort & Int Merge Sort & N-Square Sort \\\hline\hline
+        1M & 1 & 2 & 3 \\
+        2M & 1 & 2 & 3 \\
+        3M & 1 & 2 & 3 \\
+        4M & 1 & 2 & 3 \\
+        5M & 1 & 2 & 3 \\
+        6M & 1 & 2 & 3 \\
+        7M & 1 & 2 & 3 \\
+        8M & 1 & 2 & 3 \\
+        9M & 1 & 2 & 3 \\
+        10M & 1 & 2 & 3 \\
+        11M & 1 & 2 & 3 \\
+        12M & 1 & 2 & 3 \\
+        13M & 1 & 2 & 3 \\
+        14M & 1 & 2 & 3 \\
+        15M & 1 & 2 & 3 \\
+        16M & 1 & 2 & 3 \\
+    \end{tabular}
+\end{table}
+
+
+\end{document}
