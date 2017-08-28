@@ -7,7 +7,7 @@
  * at maximum distance from u.
  *
  * @author Binhan Wang / Hanlin He / Zheng Gao
- * @version 0.1
+ * @version 1.0
  * @since 2017-08-25
  */
 
@@ -33,27 +33,29 @@ public class BFS {
     /**
      * Helper function: Return a longest path from the vertex - startPoint.
      *
-     * @param startPoint
+     * @param startPoint : Specific vertex to start BFS.
      * @return A list containing the vertexes in the longest path.
      */
-    static LinkedList<Graph.Vertex> longestPath(Graph.Vertex startPoint) {
+    private static LinkedList<Graph.Vertex> longestPath(Graph.Vertex startPoint) {
         LinkedList<Graph.Vertex> longestPath = new LinkedList<>();
 
         // Set to store visited Vertex
-        Set<Graph.Vertex> visitedSet = new HashSet<Graph.Vertex>();
+        Set<Graph.Vertex> visitedSet = new HashSet<>();
         // Queue of vertexes about to visit
-        Queue<Graph.Vertex> aboutToVisitQueue = new LinkedList<Graph.Vertex>();
+        Queue<Graph.Vertex> aboutToVisitQueue = new LinkedList<>();
         // Map from a vertex to its preceding vertex, used to find the path
-        Map<Graph.Vertex,Graph.Vertex> precedingMap = new HashMap<Graph.Vertex,Graph.Vertex>();
-        precedingMap.put(startPoint,null);
+        Map<Graph.Vertex, Graph.Vertex> precedingMap = new HashMap<>();
+        precedingMap.put(startPoint, null);
 
-        // Start BFS
+        // Start BFS, add startPoint to queue.
         aboutToVisitQueue.add(startPoint);
 
         Graph.Vertex lastVertex = null;
-        while(aboutToVisitQueue.size()>0) {
+        while (aboutToVisitQueue.size() > 0) {
+            // Take (p, v) from queue.
             Graph.Vertex s = aboutToVisitQueue.poll();
             for (Graph.Edge e : s) {
+                // For each edge s->v, if v is not marked, put v in queue, and put (v, s) to map.
                 Graph.Vertex v = e.otherEnd(s);
                 if (!visitedSet.contains(v)) {
                     aboutToVisitQueue.add(v);
@@ -65,7 +67,7 @@ public class BFS {
         }
 
         // generate longest path from map.
-        while(lastVertex!=null) {
+        while (lastVertex != null) {
             longestPath.addFirst(lastVertex);
             lastVertex = precedingMap.get(lastVertex);
         }
@@ -76,7 +78,7 @@ public class BFS {
     /**
      * Return a longest path in g.  Algorithm is correct only if g is a tree.
      *
-     * @param g
+     * @param g : The graph to be processed.
      * @return A list containing the vertexes in the longest path.
      */
 
@@ -88,7 +90,7 @@ public class BFS {
         LinkedList<Graph.Vertex> d1 = longestPath(g.iterator().next());
 
         // the last Vertex in the longest path  a leaf in the tree
-        Graph.Vertex leaf = d1.get(d1.size()-1);
+        Graph.Vertex leaf = d1.get(d1.size() - 1);
 
         // find the longest path start from a leaf, it should be a diameter of the tree
         return longestPath(leaf);
@@ -97,13 +99,18 @@ public class BFS {
     
     public static void main(String[] args) throws FileNotFoundException {
 
-        /*
-        Test Tree:
-        8 7 1 2 1 1 3 1 1 4 1 2 5 1 2 6 1 4 7 1 7 8 1
+        /* Test Tree:
+        8 7
+        1 2 1
+        1 3 1
+        1 4 1
+        2 5 1
+        2 6 1
+        4 7 1
+        7 8 1
          */
 
-        /*
-        Test Tree:
+        /* Test Tree:
         22 21
         8   4   1
         4   21  1
@@ -130,24 +137,21 @@ public class BFS {
         Diameter: [14, 13, 11, 10, 22, 3, 21, 2, 9, 16, 17]
          */
 
-		Scanner in;
-		if (args.length > 0) {
-			File inputFile = new File(args[0]);
-			in = new Scanner(inputFile);
-		} else {
-			in = new Scanner(System.in);
-		}
-		Graph g = Graph.readGraph(in);
+        Scanner in;
+        if (args.length > 0) {
+            File inputFile = new File(args[0]);
+            in = new Scanner(inputFile);
+        } else {
+            in = new Scanner(System.in);
+        }
+        Graph g = Graph.readGraph(in);
 
-		for (Graph.Vertex u : g) {
-			System.out.print(u);
-			String graph = u.toString();
-            for (Graph.Edge e : u) {
-                Graph.Vertex v = e.otherEnd(u);
+        for (Graph.Vertex u : g) {
+            System.out.print(u + ": ");
+            for (Graph.Edge e : u)
                 System.out.print(e + " ");
-            }
-			System.out.println();
-		}
+            System.out.println();
+        }
 
 		LinkedList<Graph.Vertex> d = diameter(g);
         System.out.println("A diameter in the tree is:");
