@@ -6,7 +6,7 @@
  * sort. Write a report with a table and/or chart showing the times for different sizes.
  *
  * @author Binhan Wang / Hanlin He / Zheng Gao
- * @version 0.1
+ * @version 1.0
  * @since 2017-08-25
  */
 
@@ -18,10 +18,10 @@ import cs6301.g00.Timer;
 public class Sort {
 
     /**
-     * Sort generic array arr, using array tmp as buffer.
-     * @param arr   : The array to be sorted.
-     * @param tmp   : The buffer array with same length as arr.
-     * @param <T>   : The element type in the array.
+     * Rearranges the array of type T in ascending order with merge sort, using the natural order.
+     * @param arr : The array to be sorted.
+     * @param tmp : The buffer array with same length as arr, it should be allocated before function call.
+     * @param <T> : The element type in the array.
      */
     public static<T extends Comparable<? super T>> void mergeSort(T[] arr, T[] tmp) {
         mergeSort(arr, tmp, 0, arr.length - 1);
@@ -29,7 +29,7 @@ public class Sort {
 
     /**
      * Helper function for <code>static<T extends Comparable<? super T>> void mergeSort(T[] arr,T[] tmp) </code>.
-     * Specify the part of array to be sorted at current call.
+     * Specify the part of array to be sorted at current call, and the same segment of array tmp is used as buffer.
      * @param arr   : Array to be sorted.
      * @param tmp   : Buffer in merge.
      * @param left  : Start index of the part of array to be sorted.
@@ -61,6 +61,7 @@ public class Sort {
      */
     private static<T extends Comparable<? super T>> void merge(T[] arr, T[] tmp, int left, int mid, int right) {
 
+        // Copy the two parts to corresponding location in buffer array tmp.
         System.arraycopy(arr, left, tmp, left, right - left + 1);
 
         for (int i = left, j = mid + 1, k = left; k <= right; k++) {
@@ -81,7 +82,7 @@ public class Sort {
     }
 
     /**
-     * Sort int array arr, using array tmp as buffer.
+     * Rearranges the array of type int in ascending order with merge sort, using the natural order.
      * @param arr   : The array to be sorted.
      * @param tmp   : The buffer array with same length as arr.
      */
@@ -91,7 +92,7 @@ public class Sort {
 
     /**
      * Helper function for <code>static void mergeSort(int[] arr, int[] tmp) </code>.
-     * Specify the part of array to be sorted at current call.
+     * Specify the part of array to be sorted at current call, and the same segment of array tmp is used as buffer.
      * @param arr   : Array to be sorted.
      * @param tmp   : Buffer in merge.
      * @param left  : Start index of the part of array to be sorted.
@@ -198,7 +199,7 @@ public class Sort {
     /**
      * Test main function.
      * @param args: A string array containing the command line arguments.
-     *            [0] := sorting function used, 1->generic mergeSort, 2->int mergeSort, 3->nSqureSort
+     *            [0] := sorting function used, 1->generic mergeSort, 2->int mergeSort, 3->nSquareSort
      *            [1] := size of array in million.
      */
     public static void main(String[] args) {
@@ -208,11 +209,10 @@ public class Sort {
             sortType = Integer.parseInt(args[0]);
             size = Integer.parseInt(args[1]) * 1_000_000;
         } else {
-            sortType = 3;
-            size = 40;
+            // default value
+            sortType = 1;
+            size = 1_000_000;
         }
-
-        System.out.println("Array Size: " + size);
 
         if (sortType == 1) {
             // Generic merge sort.
