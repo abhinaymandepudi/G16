@@ -66,7 +66,7 @@ public class BFS {
             lastVertex = s;
         }
 
-        // generate longest path from map.
+        // generate longest path backward using preceding map
         while (lastVertex != null) {
             longestPath.addFirst(lastVertex);
             lastVertex = precedingMap.get(lastVertex);
@@ -86,13 +86,17 @@ public class BFS {
      * the source file is not allowed, need to add Graph.java into this package. */
     public static LinkedList<Graph.Vertex> diameter(Graph g) {
 
+        // handle corner case: when the graph has no vertex
+        if(!g.iterator().hasNext())
+            return new LinkedList<>();
+
         // start from one of the vertex in the tree and find a longest path
         LinkedList<Graph.Vertex> d1 = longestPath(g.iterator().next());
 
-        // the last Vertex in the longest path  a leaf in the tree
+        // the last Vertex in the longest path should be a leaf in the tree
         Graph.Vertex leaf = d1.get(d1.size() - 1);
 
-        // find the longest path start from a leaf, it should be a diameter of the tree
+        // longest path start from a leaf should be a diameter of the tree
         return longestPath(leaf);
 
     }
