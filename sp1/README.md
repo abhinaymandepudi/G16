@@ -1,6 +1,16 @@
 Short Project 1
 ================
 
+Group Members
+-------------
+
+- Binhan Wang (bxw161330@utdallas.edu)
+- Hanlin He (hxh160630@utdallas.edu)
+- Zheng Gao (zxg170430@utdallas.edu)
+
+Project Structure
+-----------------
+
 Deliverable structure is as follow:
 
     cs6301
