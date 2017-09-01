@@ -47,9 +47,9 @@ public class BFS {
         // Start BFS, add startPoint to queue.
         aboutToVisitQueue.add(startPoint);
 
-        while (aboutToVisitQueue.size() > 0) {
+        while (!aboutToVisitQueue.isEmpty()) {
             // Take a vertex from queue.
-            Graph.Vertex s = aboutToVisitQueue.poll();
+            Graph.Vertex s = aboutToVisitQueue.remove();
             for (Graph.Edge e : s) {
                 // For each edge s->v, if v is not visited, put v in queue, and put (v, s) to map.
                 Graph.Vertex v = e.otherEnd(s);
