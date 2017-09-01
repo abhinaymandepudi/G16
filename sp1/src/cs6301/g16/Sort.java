@@ -5,8 +5,8 @@
  * running times on arrays sizes from 1M-16M, and with an O(n^2) time algorithm, such as Insertion
  * sort. Write a report with a table and/or chart showing the times for different sizes.
  *
- * @author Binhan Wang / Hanlin He / Zheng Gao
- * @version 1.0
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.1
  * @since 2017-08-25
  */
 
