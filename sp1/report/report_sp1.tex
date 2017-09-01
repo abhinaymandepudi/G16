@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+documentclass[10pt]{article}
 
 \usepackage[l2tabu, orthodox]{nag}
 \usepackage{tabu}
@@ -7,6 +7,20 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{float}
+
+% For plot
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{colortbl}
+\pgfplotstableset{% global config, for example in the preamble
+  every head row/.style={before row=\toprule,after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+  fixed,precision=2,
+}
+
+\usepackage{subcaption}
 
 % As a rule of thumb it should be loaded at the end of the preamble, after all
 % the other packages. A few exceptions exist, such as the cleveref package that
@@ -20,7 +34,7 @@
 % equations
 \usepackage{cleveref}
 
-\title{\vspace*{-1em}Report: Short Project 1}
+\title{\vspace*{-2em}Report: Short Project 1}
 \author{Binhan Wang\footnote{bxw161330@utdallas.edu}, Hanlin He\footnote{hxh160630@utdallas.edu},
 Zheng Gao\footnote{zxg170430@utdallas.edu}}
 
@@ -30,31 +44,56 @@ Zheng Gao\footnote{zxg170430@utdallas.edu}}
 \section{Merge Sort}
 
 Running time of generic merge sort, int merge sort and nSquareSort on array
-with size from 1 million to 16 million is listed in \cref{r1}, all running time
+with size from 1 million to 16 million is listed in \cref{t1} and plotted in \cref{p1a} and \cref{p1b}, all running time
 are in milliseconds.
 
+All executions were performed on department virtual machine \texttt{dc10} to \texttt{dc25}.
 \begin{table}[H]
-    \centering
-    \caption{Running Time Comparison}\label{r1}
-    \begin{tabular}{c|ccc}
-        Array Size & Generic Merge Sort & Int Merge Sort & N-Square Sort \\\hline\hline
-        1M & 332 & 152 & 1303924\\
-        2M & 779 & 315 & 5596480 \\
-        3M & 1189 & 501 & 11571927 \\
-        4M & 1631 & 659 & 22787616 \\
-        5M & 2117 & 836 & 33913957 \\
-        6M & 2614 & 1022 & 49299890 \\
-        7M & 3070 & 1202 & 62519820 \\
-        8M & 3447 & 1369 & 80586296 \\
-        9M & 4145 & 1550 & 106351047 \\
-        10M & 4560 & 1763 & 138835814 \\
-        11M & 5268 & 1941 & 151956006 \\
-        12M & 5606 & 2122 & 205003230 \\
-        13M & 6168 & 2311 & 236216225 \\
-        14M & 6735 & 2483 & 242334996 \\
-        15M & 7406 & 2656 & $\infty$ \\
-        16M & 7848 & 2909 & $\infty$ \\
-    \end{tabular}
+\centering
+\caption{Running Time Comparison}\label{t1}
+\pgfplotstabletypeset[
+  columns/size/.style={column name={Array Size}},
+  columns/generic/.style={column name={Generic Merge Sort}},
+  columns/int/.style={column name={Int Merge Sort}},
+  columns/nsquare/.style={column name={N-Square Sort}},
+]{time.txt}
 \end{table}
+
+
+
+\begin{figure}[H]
+\centering
+\caption{Plot of Three Sort Functions}
+\begin{subfigure}[b]{\textwidth}
+\caption{Plot of Two Merge Sort}\label{p1a}
+\centering
+\begin{tikzpicture}[scale=1.1]
+\begin{axis}[
+    xlabel={Array Size (M)},
+    ylabel={Time (ms)},
+    legend pos=south east,
+    legend entries={Generic,Int},
+    ]
+  \addplot table [x=size,y=generic] {time.txt};
+  \addplot table [x=size,y=int] {time.txt};
+\end{axis}
+\end{tikzpicture}
+\end{subfigure}
+~\\
+\begin{subfigure}[b]{\textwidth}
+\centering
+\caption{Plot of N Square Sort}\label{p1b}
+\begin{tikzpicture}[scale=1.1]
+\begin{axis}[
+    xlabel={Array Size (M)},
+    ylabel={Time (ms)},
+    legend pos=south east,
+    legend entries={N Square},
+    ]
+  \addplot table [x=size,y=nsquare] {time.txt};
+\end{axis}
+\end{tikzpicture}
+\end{subfigure}
+\end{figure}
 
 \end{document}
