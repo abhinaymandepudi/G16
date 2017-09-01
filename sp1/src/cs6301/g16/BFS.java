@@ -6,8 +6,8 @@
  * distance from the root. Run BFS again, with u as the root. Output diameter: path from u to a node
  * at maximum distance from u.
  *
- * @author Binhan Wang / Hanlin He / Zheng Gao
- * @version 1.0
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.1
  * @since 2017-08-25
  */
 
