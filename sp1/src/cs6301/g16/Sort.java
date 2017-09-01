@@ -241,7 +241,7 @@ public class Sort {
                 arr[i] = i;
             Shuffle.shuffle(arr);
             Timer timer = new Timer();
-            bubble(arr);
+            nSquareSort(arr);
             System.out.println(timer.end());
             assert isSorted(arr);
         }
