@@ -7,8 +7,8 @@ Deliverable structure is as follow:
     ├── README.md
     ├── g16
     │   ├── BFS.java            # BFS used in problem 2.
-    │   ├── Sort.java           # Solution for problem 1.
-    │   └── TreeDiameter.java   # Solution for problem 2.
+    │   ├── Sort.java           # Solution for problem 1. (Signatures for Problem 1 included)
+    │   └── TreeDiameter.java   # Solution for problem 2. (Signature for Problem 2 included)
     ├── report_sp1.pdf          # Report file.
     └── test.sh                 # Sorting running script.
 
@@ -71,7 +71,7 @@ Test Running
 
 - Problem 2
 
-  To execute, run command `java cs6301.g16.BFS [graph_config]`. If not graph
+  To execute, run command `java cs6301.g16.TreeDiameter [graph_config]`. If no graph
   configuration is specified, the program would read from standard input.
 
   A sample graph configuration is as follow:
