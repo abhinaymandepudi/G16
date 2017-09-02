@@ -63,7 +63,7 @@ Solve as many problems as you wish.  Maximum score: 50
    Write the Merge sort algorithm that works on linked lists.  This will be a
    member function of a linked list class, so that it can work with the
    internal details of the class.  The function should use only
-   ![](http://latex.codecogs.com/svg.latex?\mathcal{O}\(n\log{n}\)) extra space
+   ![](http://latex.codecogs.com/svg.latex?\mathcal{O}\(\log{n}\)) extra space
    (mainly for recursion), and not make copies of elements unnecessarily.  You
    can start from the SinglyLinkedList class provided or create your own.
 
