@@ -7,7 +7,7 @@ package cs6301.g00;
 public class Item implements Comparable<Item> {
     private int element;
 
-    Item(int x) { element = x; }
+    public Item(int x) { element = x; }
 
     public int getItem() { return element; }
 
