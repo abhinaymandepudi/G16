@@ -14,9 +14,6 @@
  */
 package cs6301.g16;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 public class ReversibleSinglyLinkedList<T> extends SinglyLinkedList<T> {
 
     /**
@@ -85,7 +82,16 @@ public class ReversibleSinglyLinkedList<T> extends SinglyLinkedList<T> {
      * Iteratively reverse print current linked list.
      */
     private void reversePrintListIterative() {
-        //TO-DO
+        StringBuilder stringBuilder = new StringBuilder();
+        this.forEach(item -> stringBuilder.insert(0, item + " "));
+        System.out.println(stringBuilder.toString());
+
+        /* Concanation way.
+        StringBuilder s = new StringBuilder();
+        for (T item: this)
+            s.insert(0, item + " ");
+        System.out.println(s);
+        */
     }
 
     /**
@@ -97,7 +103,7 @@ public class ReversibleSinglyLinkedList<T> extends SinglyLinkedList<T> {
         if (recursive)
             this.reversePrintListRecursive(this.header.next);
         else
-            this.reverseIterative();
+            this.reversePrintListIterative();
     }
 
     public static void main(String[] args) {
@@ -118,5 +124,6 @@ public class ReversibleSinglyLinkedList<T> extends SinglyLinkedList<T> {
         System.out.println("\nAfter recursive reversion again.");
         lst.printList();
         lst.reversePrintList(true);
+        lst.reversePrintList(false);
     }
 }
