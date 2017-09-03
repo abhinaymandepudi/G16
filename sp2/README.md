@@ -15,10 +15,10 @@ Deliverable structure is as follow:
 
     cs6301
     ├── README.md
-    ├── g16
-    │   ├── example.java
-    │   └── example2.java
-    └── report_sp2.pdf
+    └── g16
+        ├── ReversibleSinglyLinkedList.java
+        ├── SinglyLinkedList.java
+        └── SortedSetList.java
 
 Compile
 -------
@@ -26,7 +26,11 @@ Compile
 To compile, run the following commands:
 
 ```bash
-javac cs6301/g16/xxx.java
+# Problem 1
+javac cs6301/g16/SortedSetList.java
+
+# Problem 4
+javac cs6301/g16/ReversibleSinglyLinkedList.java
 ```
 
 The file from package `cs6301.g00` should be accessible.
