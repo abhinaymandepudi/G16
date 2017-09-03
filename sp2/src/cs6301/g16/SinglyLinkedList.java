@@ -4,7 +4,7 @@
  * Subsequently, if items are added to the list, code would do the wrong thing.
  */
 
-package cs6301.g00;
+package cs6301.g16;
 
 import java.util.Iterator;
 import java.util.Scanner;
