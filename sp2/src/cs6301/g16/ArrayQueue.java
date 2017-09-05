@@ -70,7 +70,7 @@ public class ArrayQueue<T> {
     /**
      * Compute array's total space.
      */
-    private int size(){    //the array size
+    private int queSize(){    //the array size
         return array.length;
     }
 
@@ -151,23 +151,23 @@ public class ArrayQueue<T> {
         queue.poll();
         for(int i=5;i<=17;i++)
             queue.offer(i);
-        for(int i=0; i<queue.size();i++)
+        for(int i=0; i<queue.queSize();i++)
             System.out.print(queue.get(i)+" ");
         System.out.println();
-        System.out.println("Original size: "+queue.size());
+        System.out.println("Original size: "+queue.queSize());
         System.out.println("-------------- Test Double Size --------------");
         queue.offer(18);
-        for(int i=0; i<queue.size();i++)
+        for(int i=0; i<queue.queSize();i++)
             System.out.print(queue.get(i)+" ");
         System.out.println();
-        System.out.println("New size: "+queue.size());
+        System.out.println("New size: "+queue.queSize());
         System.out.println("-------------- Test Halve Size ---------------");
         for(int i=0;i<8;i++)
             queue.poll();
-        for(int i=0; i<queue.size();i++)
+        for(int i=0; i<queue.queSize();i++)
             System.out.print(queue.get(i)+" ");
         System.out.println();
-        System.out.println("New size: "+queue.size());
+        System.out.println("New size: "+queue.queSize());
     }
 
 }
