@@ -64,9 +64,9 @@ public class NumTest {
     @Test
     public void compareTo() throws Exception {
 
-        Num a = new Num("123456789");
+        Num a = new Num((long)123456789);
         Num b = new Num("43142341235323425658679");
-        Num c = new Num("-123456789");
+        Num c = new Num((long)-123456789);
         Num d = new Num("-43142341235323425658679");
 
         assertEquals(0, a.compareTo(a));

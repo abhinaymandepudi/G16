@@ -34,6 +34,13 @@ public class Num  implements Comparable<Num> {
 
     public Num(long x) {
 
+        sign = (x>=0);
+        x = Math.abs(x);
+        while(x!=0) {
+            numList.add((int) (x%base));
+            x = x/base;
+        }
+
     }
 
     public Num(Num x) {
