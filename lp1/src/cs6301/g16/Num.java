@@ -141,7 +141,34 @@ public class Num  implements Comparable<Num> {
     // Utility functions
     // compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise
     public int compareTo(Num other) {
-	return 0;
+        assert base == other.base;
+
+        int modCompareResult = -2;
+        if(numList.size() == other.numList.size()) {
+            Iterator<Integer> it1 = numList.iterator();
+            Iterator<Integer> it2 = other.numList.iterator();
+            while(it1.hasNext() || it2.hasNext()) {
+
+            }
+        }
+        else if(numList.size() > other.numList.size())
+            modCompareResult = 1;
+        else // numList.size()<other.numList.size()
+            modCompareResult = -1;
+
+        boolean sameSign = (sign==other.sign);
+        switch (modCompareResult)
+        {
+            case 0:
+                return sameSign?0:(sign?1:-1);
+            case 1:
+                return sameSign?(sign?1:-1):(sign?-1:1);
+            case -1:
+                return sameSign?(sign?-1:1):(sign?1:-1);
+            default:
+                assert false; // error
+                return 0;
+        }
     }
     
     // Output using the format "base: elements of list ..."
