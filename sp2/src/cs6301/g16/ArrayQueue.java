@@ -21,7 +21,6 @@ public class ArrayQueue<T> {
      * @param <T> : The element type in the array.
      * @param array : Array to be stored.
      * @param minSize : The queue's minimum size.
-     *
      * @param fullBoundary : The boundary need to double size.
      * @param emptyBoundary : The boundary need to halves size.
      * @param corrocc : Current ocupied of array.
@@ -32,12 +31,26 @@ public class ArrayQueue<T> {
     private static final int minSize = 16;
     private static final double fullBoundary = 0.9;
     private static final double emptyBoundary = 0.25;
-    @SuppressWarnings("unchecked")
-    private T[] array = (T[]) new Object[minSize];
+    private T[] array;
     private int front=0;
     private int rear=0;
 
+    /**
+     * Define array's initial size
+     * @param inisize : The array's initial size set by user.
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayQueue(int inisize){
+        array =  (T[]) new Object[inisize];
+    }
 
+    /**
+     * Set array's default size = minSize
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayQueue(){
+        array =  (T[]) new Object[minSize];
+    }
     /**
      * Resize the array when reach full or empty boundary, and make sure array size should over 16 at all times.
      * Double size when occupied over fullBoundary, halves size when occupied less than emptyBoundary.
@@ -136,7 +149,10 @@ public class ArrayQueue<T> {
      * Main function to test.
      */
     public static void main(String[] args){
-        ArrayQueue<Integer> queue = new ArrayQueue<Integer>();
+        ArrayQueue<Integer> queue2 = new ArrayQueue<Integer>();
+        System.out.println("Default initial size: "+queue2.queSize());
+        ArrayQueue<Integer> queue = new ArrayQueue<Integer>(17);
+        System.out.println("Initial size for test: "+queue.queSize());
         System.out.println("-------------- Test offer/poll/peek/isEmpty --------------");
         System.out.println(queue.offer(-1));
         System.out.println(queue.peek());
@@ -148,17 +164,18 @@ public class ArrayQueue<T> {
         queue.offer(2);
         queue.offer(3);
         queue.offer(4);
+        queue.offer(5);
         queue.poll();
         queue.poll();
         queue.poll();
-        for(int i=5;i<=17;i++)
+        for(int i=6;i<=18;i++)
             queue.offer(i);
         for(int i=0; i<queue.queSize();i++)
             System.out.print(queue.get(i)+" ");
         System.out.println();
         System.out.println("Original size: "+queue.queSize());
         System.out.println("-------------- Test Double Size --------------");
-        queue.offer(18);
+        queue.offer(19);
         for(int i=0; i<queue.queSize();i++)
             System.out.print(queue.get(i)+" ");
         System.out.println();
