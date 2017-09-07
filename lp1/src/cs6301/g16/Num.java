@@ -15,6 +15,8 @@ public class Num  implements Comparable<Num> {
     private List<Integer> numList = new LinkedList<>();
 
     /* Start of Level 1 */
+    public Num() {}
+
     public Num(String s) {
 
         for (int i = s.length() - 1; i >= 1; i--) {
