@@ -4,16 +4,31 @@
 // Change following line to your group number
 package cs6301.g16;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Num  implements Comparable<Num> {
 
-    static int defaultBase = 10;  // This can be changed to what you want it to be.
-    int base = defaultBase;  // Change as needed
+    private static int defaultBase = 10;  // This can be changed to what you want it to be.
+    private int base = defaultBase;  // Change as needed
+    private boolean sign = true;
+    private List<Integer> numList = new LinkedList<>();
 
     /* Start of Level 1 */
-    Num(String s) {
+    public Num(String s) {
+
+        for (int i = s.length() - 1; i >= 1; i--) {
+            numList.add(s.charAt(i) - '0');
+        }
+        if (s.charAt(0) == '-')
+            sign = false;
+        if (s.charAt(0) >= '0' && s.charAt(0) <= '9')
+            numList.add(s.charAt(0) - '0');
+
     }
 
-    Num(long x) {
+    public Num(long x) {
+
     }
 
     static Num add(Num a, Num b) {
