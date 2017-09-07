@@ -4,6 +4,7 @@
 // Change following line to your group number
 package cs6301.g16;
 
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -35,12 +36,45 @@ public class Num  implements Comparable<Num> {
 
     }
 
+    public Num(Num x) {
+        base = x.base;
+        numList = (List<Integer>) ((LinkedList<Integer>)x.numList).clone();
+    }
+
+    static int zeroNext(Iterator<Integer> it) {
+        if(it.hasNext())
+            return it.next();
+        else
+            return 0;
+    }
+
     static Num add(Num a, Num b) {
-        return null;
+        assert a.base != b.base;
+        int base = a.base;
+        Num result = new Num();
+        result.base = a.base;
+        if(a.sign == b.sign) {
+            result.sign = a.sign;
+            int carry = 0;
+            Iterator<Integer> it1 = a.numList.iterator();
+            Iterator<Integer> it2 = b.numList.iterator();
+            while(it1.hasNext() || it2.hasNext()) {
+                int sum = zeroNext(it1)+zeroNext(it2)+carry;
+                result.numList.add(sum/defaultBase);
+                carry = sum%defaultBase;
+            }
+        }
+        else
+        {
+            // todo - need to implement for different sign addition
+        }
+        return result;
     }
 
     static Num subtract(Num a, Num b) {
-	return null;
+        Num c = new Num(b);
+        c.sign = !b.sign;
+        return add(a,b);
     }
 
     public static Num standardSingleDigitProduct(Num a, int n) {
