@@ -63,11 +63,23 @@ public class NumTest {
 
     @Test
     public void compareTo() throws Exception {
+
         Num a = new Num("123456789");
         Num b = new Num("43142341235323425658679");
+        Num c = new Num("-123456789");
+        Num d = new Num("-43142341235323425658679");
+
+        assertEquals(0, a.compareTo(a));
+        assertEquals(0, b.compareTo(b));
+        assertEquals(0, c.compareTo(c));
+        assertEquals(0, d.compareTo(d));
+
         assertEquals(-1, a.compareTo(b));
         assertEquals(1, b.compareTo(a));
-        assertEquals(0, a.compareTo(a));
+        assertEquals(1, a.compareTo(c));
+        assertEquals(1, a.compareTo(d));
+        assertEquals(1, c.compareTo(d));
+        assertEquals(-1, d.compareTo(c));
     }
 
 }

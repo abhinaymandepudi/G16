@@ -41,7 +41,7 @@ public class Num  implements Comparable<Num> {
         numList = (List<Integer>) ((LinkedList<Integer>)x.numList).clone();
     }
 
-    static int zeroNext(Iterator<Integer> it) {
+    static Integer zeroNext(Iterator<Integer> it) {
         if(it.hasNext())
             return it.next();
         else
@@ -146,8 +146,11 @@ public class Num  implements Comparable<Num> {
         if(numList.size() == other.numList.size()) {
             Iterator<Integer> it1 = numList.iterator();
             Iterator<Integer> it2 = other.numList.iterator();
+            modCompareResult = 0;
             while(it1.hasNext() || it2.hasNext()) {
-
+                int elementCompareResult = zeroNext(it1).compareTo(zeroNext(it2));
+                if (elementCompareResult!=0) // override compare result from lower digit
+                    modCompareResult = elementCompareResult;
             }
         }
         else if(numList.size() > other.numList.size())
