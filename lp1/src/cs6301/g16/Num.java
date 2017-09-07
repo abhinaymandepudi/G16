@@ -49,7 +49,8 @@ public class Num  implements Comparable<Num> {
     }
 
     static Num add(Num a, Num b) {
-        assert a.base != b.base;
+        assert a.base == b.base;
+
         int base = a.base;
         Num result = new Num();
         result.base = a.base;
@@ -58,13 +59,11 @@ public class Num  implements Comparable<Num> {
             int carry = 0;
             Iterator<Integer> it1 = a.numList.iterator();
             Iterator<Integer> it2 = b.numList.iterator();
-            while(it1.hasNext() || it2.hasNext()) {
+            while(it1.hasNext() || it2.hasNext() || carry > 0) {
                 int sum = zeroNext(it1)+zeroNext(it2)+carry;
-                result.numList.add(sum % defaultBase);
-                carry = sum / defaultBase;
+                result.numList.add(sum % base);
+                carry = sum / base;
             }
-            if (carry > 0)
-                result.numList.add(carry);
         }
         else
         {
