@@ -6,7 +6,31 @@ import static org.junit.Assert.*;
 
 public class NumTest {
     @Test
+    public void standardProduct() throws Exception {
+        Num a = new Num("823456789");
+        Num b = new Num("43142341235323425658679");
+        System.out.println(Num.standardProduct(a, b).numList);
+    }
+
+    @Test
+    public void standardSingleDigitProduct() throws Exception {
+        Num a = new Num("123456789");
+        Integer[] expecteda = {1,0,1,1,1,1,1,1,1,1};
+        Integer[] reta = new Integer[expecteda.length];
+        assertArrayEquals(expecteda, Num.standardSingleDigitProduct(a, 9).numList.toArray(reta));
+
+        Num b = new Num("43142341235323425658679");
+        Integer[] expectedb = {5,9,3,3,9,2,8,2,1,7,1,6,6,7,1,6,0,7,1,1,7,5,1,2};
+        Integer[] retb = new Integer[expectedb.length];
+        assertArrayEquals(expectedb, Num.standardSingleDigitProduct(b, 5).numList.toArray(retb));
+    }
+
+    @Test
     public void add() throws Exception {
+        Num a = new Num("123456789");
+        Num b = new Num("43142341235323425658679");
+
+        System.out.println(Num.add(a,b));
     }
 
     @Test
@@ -39,10 +63,6 @@ public class NumTest {
 
     @Test
     public void compareTo() throws Exception {
-    }
-
-    @Test
-    public void toString() throws Exception {
     }
 
 }

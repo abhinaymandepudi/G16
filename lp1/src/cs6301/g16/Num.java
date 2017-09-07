@@ -60,9 +60,11 @@ public class Num  implements Comparable<Num> {
             Iterator<Integer> it2 = b.numList.iterator();
             while(it1.hasNext() || it2.hasNext()) {
                 int sum = zeroNext(it1)+zeroNext(it2)+carry;
-                result.numList.add(sum/defaultBase);
-                carry = sum%defaultBase;
+                result.numList.add(sum % defaultBase);
+                carry = sum / defaultBase;
             }
+            if (carry > 0)
+                result.numList.add(carry);
         }
         else
         {
@@ -101,6 +103,7 @@ public class Num  implements Comparable<Num> {
             singleDigitProduct = standardSingleDigitProduct(b, n);
             singleDigitProduct.numList.addAll(0, shift);
             ret = Num.add(ret, singleDigitProduct);
+            shift.add(0);
         }
         return ret;
     }
