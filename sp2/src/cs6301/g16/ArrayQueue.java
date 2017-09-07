@@ -19,8 +19,9 @@ public class ArrayQueue<T> {
     /**
      * Implement array-based, bounded-sized queues, and its offer, poll, peek, isEmpty, resize operations.
      * @param <T> : The element type in the array.
-     * @param arr : Array to be stored.
+     * @param array : Array to be stored.
      * @param minSize : The queue's minimum size.
+     *
      * @param fullBoundary : The boundary need to double size.
      * @param emptyBoundary : The boundary need to halves size.
      * @param corrocc : Current ocupied of array.
@@ -31,16 +32,24 @@ public class ArrayQueue<T> {
     private static final int minSize = 16;
     private static final double fullBoundary = 0.9;
     private static final double emptyBoundary = 0.25;
+    @SuppressWarnings("unchecked")
     private T[] array = (T[]) new Object[minSize];
-    private int currocc=0;
     private int front=0;
     private int rear=0;
+
 
     /**
      * Resize the array when reach full or empty boundary, and make sure array size should over 16 at all times.
      * Double size when occupied over fullBoundary, halves size when occupied less than emptyBoundary.
      */
-    private  void resize(){
+    @SuppressWarnings("unchecked")
+    public  void resize(){
+        int currocc = 0;
+        if(rear>front)
+            currocc = rear-front;
+        else if(rear<front){
+            currocc = array.length-front+rear;
+        }
         if(currocc > array.length * fullBoundary){   //resize when over fullBoundary occupied
             T[] items = (T[])new Object[array.length*2];
 
@@ -52,7 +61,7 @@ public class ArrayQueue<T> {
             front = 0;
             rear = currocc;
         }
-        if(array.length>16 && currocc < array.length * emptyBoundary){   //resize when less than emptyBoundary occupied
+        if(array.length>16 && currocc < array.length * emptyBoundary && currocc>0){   //resize when less than emptyBoundary occupied
             T[] items;
             if(array.length/2 >= minSize){
                 items = (T[])new Object[array.length/2];
@@ -70,7 +79,7 @@ public class ArrayQueue<T> {
     /**
      * Compute array's total space.
      */
-    private int queSize(){    //the array size
+    public int queSize(){    //the array size
         return array.length;
     }
 
@@ -78,11 +87,9 @@ public class ArrayQueue<T> {
      * Add element to array. When front reach the end of array, it will change to 0 and add from the beginning of array,like a circle.
      * @param element : Object should be added to array.
      */
-    private boolean offer(T element){
-
-        rear = (front+currocc)%array.length;
-        array[rear++] =element;
-        currocc++;
+    public boolean offer(T element){
+        array[rear]=element;
+        rear=(rear+1)%array.length;
         resize();
         return true;
     }
@@ -90,8 +97,8 @@ public class ArrayQueue<T> {
     /**
      * Delete element from array. If array become empty after poll element, let next element store from the beginning of array.
      */
-    private T poll(){
-        if(currocc == 0){   // Poll empty.
+    public T poll(){
+        if(front==rear){   // Poll empty.
             front=0;
             rear=0;
             return null;
@@ -99,11 +106,6 @@ public class ArrayQueue<T> {
         T item= array[front];
         array[front]= null;
         front = (front+1)%array.length;
-        currocc--;
-        if(currocc == 0){   // Poll last element.
-            front=0;
-            rear=0;
-        }
         resize();
         return item;
     }
@@ -111,14 +113,14 @@ public class ArrayQueue<T> {
     /**
      * Get the object on the queue's front.
      */
-    private T peek(){
+    public T peek(){
         return array[front];
     }
 
     /**
      * Determine the array is empty or not.
      */
-    private  boolean isEmpty(){
+    public  boolean isEmpty(){
         return (front==rear);
     }
 
@@ -126,7 +128,7 @@ public class ArrayQueue<T> {
      * Get the element on array[index]
      * @param index : The element's position need to get.
      */
-    private T get(int index){
+    public T get(int index){
         return array[index];
     }
 
