@@ -4,6 +4,8 @@
 // Change following line to your group number
 package cs6301.g16;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class Num  implements Comparable<Num> {
     private static int defaultBase = 10;  // This can be changed to what you want it to be.
     private int base = defaultBase;  // Change as needed
     private boolean sign = true;
-    private List<Integer> numList = new LinkedList<>();
+    public List<Integer> numList = new LinkedList<>();
 
     /* Start of Level 1 */
     public Num() {}
@@ -34,13 +36,40 @@ public class Num  implements Comparable<Num> {
     }
 
     static Num add(Num a, Num b) {
-	return null;
+        return null;
     }
 
     static Num subtract(Num a, Num b) {
 	return null;
     }
 
+    public static Num standardSingleDigitProduct(Num a, int n) {
+        Num ret = new Num();
+        ret.sign = a.sign;
+        ret.base = a.base;
+        int carry = 0;
+        for (Integer x : a.numList) {
+            int product = x * n + carry;
+            carry = product / ret.base;
+            ret.numList.add(product % ret.base);
+        }
+        if (carry != 0)
+            ret.numList.add(carry);
+        return ret;
+    }
+
+    public static Num standardProduct(Num a, Num b) {
+        Num ret = new Num("0");
+        List<Integer> shift = new ArrayList<>(a.numList.size());
+        Num singleDigitProduct;
+
+        for (Integer n: a.numList) {
+            singleDigitProduct = standardSingleDigitProduct(b, n);
+            singleDigitProduct.numList.addAll(0, shift);
+            ret = Num.add(ret, singleDigitProduct);
+        }
+        return ret;
+    }
     // Implement Karatsuba algorithm for excellence credit
     static Num product(Num a, Num b) {
 	return null;
@@ -86,7 +115,7 @@ public class Num  implements Comparable<Num> {
     
     // Return number to a string in base 10
     public String toString() {
-	return null;
+        return this.numList.toString();
     }
 
     public int base() { return base; }
