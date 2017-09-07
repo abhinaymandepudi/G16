@@ -27,10 +27,10 @@ public class NumTest {
 
     @Test
     public void add() throws Exception {
-        Num a = new Num("123456789");
-        Num b = new Num("43142341235323425658679");
-
-        System.out.println(Num.add(a,b));
+        assertEquals(0,Num.add(new Num("1"),new Num("-100")).compareTo(new Num("-99")));
+        assertEquals(0,Num.add(new Num("100"),new Num("-100")).compareTo(new Num("0")));
+        
+        assertEquals(0,Num.subtract(new Num("100"),new Num("-100")).compareTo(new Num("200")));
     }
 
     @Test

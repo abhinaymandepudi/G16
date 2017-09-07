@@ -38,6 +38,7 @@ public class Num  implements Comparable<Num> {
 
     public Num(Num x) {
         base = x.base;
+        sign = x.sign;
         numList = (List<Integer>) ((LinkedList<Integer>)x.numList).clone();
     }
 
@@ -55,6 +56,7 @@ public class Num  implements Comparable<Num> {
         Num result = new Num();
         result.base = a.base;
         if(a.sign == b.sign) {
+            // same sign addition
             result.sign = a.sign;
             int carry = 0;
             Iterator<Integer> it1 = a.numList.iterator();
@@ -67,15 +69,59 @@ public class Num  implements Comparable<Num> {
         }
         else
         {
-            // todo - need to implement for different sign addition
+            // different sign addition
+            int modCompareResult = a.modCompareTo(b);
+            switch (modCompareResult)
+            {
+                case 0:
+                {
+                    result.numList.add(0);
+                    break;
+                }
+                case 1:
+                case -1:
+                {
+                    Num bigAbsNum = modCompareResult==1?a:b; // num with bigger abs
+                    Num smallAbsNum = modCompareResult==-1?a:b; // num with smaller abs
+                    result.sign = bigAbsNum.sign;
+
+                    int borrow = 0;
+                    Iterator<Integer> it1 = bigAbsNum.numList.iterator();
+                    Iterator<Integer> it2 = smallAbsNum.numList.iterator();
+
+                    int numOfLeadingZero = 0;
+
+                    while(it1.hasNext() || it2.hasNext()) {
+                        int sub = zeroNext(it1)-zeroNext(it2)-borrow;
+                        borrow = sub<0?1:0;
+                        if(sub<0) {
+                            sub += base;
+                            borrow = 1;
+                        }
+                        result.numList.add(sub);
+                        if(sub == 0)
+                            numOfLeadingZero++;
+                        else
+                            numOfLeadingZero = 0;
+                    }
+
+                    // remove leading zero - if the result is zero, we should keep one zero in the numList
+                    for(int i=0;i<numOfLeadingZero&&result.numList.size()>1;i++)
+                        result.numList.remove(result.numList.size()-1);
+
+                    break;
+                }
+                default:
+                    assert false; //error
+            }
         }
         return result;
     }
 
     static Num subtract(Num a, Num b) {
         Num c = new Num(b);
-        c.sign = !b.sign;
-        return add(a,b);
+        c.sign = !c.sign;
+        return add(a,c);
     }
 
     public static Num standardSingleDigitProduct(Num a, int n) {
@@ -138,10 +184,7 @@ public class Num  implements Comparable<Num> {
 
 
     // Utility functions
-    // compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise
-    public int compareTo(Num other) {
-        assert base == other.base;
-
+    public int modCompareTo(Num other) {
         int modCompareResult = -2;
         if(numList.size() == other.numList.size()) {
             Iterator<Integer> it1 = numList.iterator();
@@ -155,11 +198,23 @@ public class Num  implements Comparable<Num> {
         }
         else if(numList.size() > other.numList.size())
             modCompareResult = 1;
-        else // numList.size()<other.numList.size()
+        else // numList.size() < other.numList.size()
             modCompareResult = -1;
+        return modCompareResult;
+    }
+
+    // compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise
+    public int compareTo(Num other) {
+        // todo - improve the logic to perform sign test first.
+        assert base == other.base;
 
         boolean sameSign = (sign==other.sign);
-        switch (modCompareResult)
+
+        // handle zero
+        if(numList.size()==1 && other.numList.size()==1 && numList.get(0)==0 && other.numList.get(0)==0)
+            return 0;
+
+        switch (modCompareTo(other))
         {
             case 0:
                 return sameSign?0:(sign?1:-1);
