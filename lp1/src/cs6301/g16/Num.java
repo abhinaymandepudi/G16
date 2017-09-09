@@ -4,11 +4,8 @@
 // Change following line to your group number
 package cs6301.g16;
 
+import java.util.*;
 import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Num  implements Comparable<Num> {
 
@@ -160,8 +157,28 @@ public class Num  implements Comparable<Num> {
         return ret;
     }
     // Implement Karatsuba algorithm for excellence credit
-    static Num product(Num a, Num b) {
-	return null;
+    public static Num KaratsubaProduct(Num a, Num b) {
+        if (a.numList.size() <= 1 && b.numList.size() <= 1)
+            return standardProduct(a, b);
+        int m = Integer.max(a.numList.size(), b.numList.size());
+        int m2 = m / 2;
+        Num ha = new Num(), la = new Num(), hb = new Num(), lb = new Num();
+        split(a, ha, la, m2);
+        split(b, hb, lb, m2);
+        Num z0 = KaratsubaProduct(la, lb);
+        Num z1 = KaratsubaProduct(add(ha, la), add(hb, lb));
+        Num z2 = KaratsubaProduct(ha, hb);
+
+        for (int i = 0; i < m2 * 2; i++) {
+            z2.numList.add(0,0);
+        }
+
+        return ha;
+    }
+
+    static void split(Num x, Num hx, Num lx, int m) {
+        hx.numList.addAll(x.numList.subList(m, x.numList.size()));
+        lx.numList.addAll(x.numList.subList(0, m));
     }
 
     // Use divide and conquer

@@ -39,6 +39,8 @@ public class NumTest {
 
     @Test
     public void product() throws Exception {
+        Num a = new Num("1234567891011");
+        Num b = new Num("43142341235323425658679");
     }
 
     @Test
