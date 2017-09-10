@@ -104,7 +104,7 @@ Test Running
     [size:default 16]`.
 
     The program initial the queue size to be 17, first add and poll a single
-    element to test offer/poll/peek/isEmpty operations. Then repeat add or 
+    element to test offer/poll/peek/isEmpty operations.Then repeat add or 
     poll elements to show the storage of array. Finally, the result shows array
     elements after double size or halve size through offer and poll operations.
 
