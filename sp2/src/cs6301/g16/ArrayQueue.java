@@ -41,7 +41,7 @@ public class ArrayQueue<T> {
      */
     @SuppressWarnings("unchecked")
     public ArrayQueue(int inisize){
-        if(inisize>=16)
+        if(inisize>=minSize)
             array =  (T[]) new Object[inisize];
         else
             array =  (T[]) new Object[minSize];
