@@ -8,6 +8,15 @@ Group Members
 - Hanlin He (hxh160630@utdallas.edu)
 - Zheng Gao (zxg170430@utdallas.edu)
 
+Professor's Feedback
+--------------------
+
+Good documentation.
+
+HashMap is inefficient compared to solving the problem with an array.
+contains() operation in lists is inefficient. In edge cases, return an empty
+list, not null. Diameter code quality needs to be improved.
+
 Project Structure
 -----------------
 
