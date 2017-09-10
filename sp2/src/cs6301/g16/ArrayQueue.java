@@ -41,7 +41,10 @@ public class ArrayQueue<T> {
      */
     @SuppressWarnings("unchecked")
     public ArrayQueue(int inisize){
-        array =  (T[]) new Object[inisize];
+        if(inisize>=16)
+            array =  (T[]) new Object[inisize];
+        else
+            array =  (T[]) new Object[minSize];
     }
 
     /**
@@ -154,11 +157,11 @@ public class ArrayQueue<T> {
         ArrayQueue<Integer> queue = new ArrayQueue<Integer>(17);
         System.out.println("Initial size for test: "+queue.queSize());
         System.out.println("-------------- Test offer/poll/peek/isEmpty --------------");
-        System.out.println(queue.offer(-1));
-        System.out.println(queue.peek());
-        System.out.println(queue.poll());
-        System.out.println(queue.poll());
-        System.out.println(queue.isEmpty());
+        System.out.println("Offer element:"+queue.offer(-1));
+        System.out.println("Get peek element:"+queue.peek());
+        System.out.println("Poll element:"+queue.poll());
+        System.out.println("Poll null queue:"+queue.poll());
+        System.out.println("isEmpty():"+queue.isEmpty());
         System.out.println("-------------- Initial Queue --------------");
         queue.offer(1);
         queue.offer(2);
