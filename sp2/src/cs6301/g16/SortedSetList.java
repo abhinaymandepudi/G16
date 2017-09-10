@@ -47,7 +47,8 @@ public class SortedSetList {
     }
 
     /**
-     * Return elements from both l1 and l2, in sorted order.
+     * Return elements from both l1 and l2, in sorted order. This implementation do not modify
+     * the original two linked list, in stead, it add each element to the new list.
      *
      * @param l1      First sorted set list.
      * @param l2      Second sorted set list

@@ -24,6 +24,9 @@ public class ReversibleSinglyLinkedList<T> extends SinglyLinkedList<T> {
         Entry<T> pre = null;
         Entry<T> cur = header.next;
         Entry<T> tmp;
+        // Invariant: cur = head of remained part
+        //            pre = head of currently reversed part
+        // Each time point the cur.next to pre, and move both pointer forward.
         while(cur != null) {
             tmp = cur.next;
             cur.next = pre;
