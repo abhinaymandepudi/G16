@@ -71,6 +71,48 @@ Test Running
     Difference(List1, List2): [2, 4, 8, 10, 14, 16]
     Difference(List2, List1): [3, 9, 15, 24, 27, 30, 33, 36, 39]
     ```
+    
+- Problem 2
+
+    Execute the command `java cs6301.g16.SortableList`.
+
+    The program would generate two Sorted Set List from range from 0 to `size`
+    with steps 2 and 3, and compute print the intersect/union/difference in
+    both direction. Apparently, result of _intersect_ and _union_ should be
+    reflexive, and _difference_ would have different result.
+
+    Example:
+
+    ```
+    > java cs6301.g16.SortedSetList
+    Test case 1 (0 element):
+    0: 
+    0: 
+    ==================
+    Test case 2 (1 element):
+    1: 9 
+    1: 9 
+    ==================
+    Test case 3 (2 elements):
+    2: 9 1 
+    2: 1 9 
+    ==================
+    Test case 4 (3 elements):
+    3: 9 1 3 
+    3: 1 3 9 
+    ==================
+    Test case 5:
+    9: 100 1 2 5 3 4 6 6 10 
+    9: 1 2 3 4 5 6 6 10 100 
+    ==================
+    Test case 6 (Same values):
+    4: 100 100 100 100 
+    4: 100 100 100 100 
+    ==================
+    Test case 7 (Random test):
+    32: 47 33 88 96 4 36 47 86 10 73 2 40 53 0 32 2 51 32 79 2 0 36 23 62 9 59 81 85 64 61 42 76 
+    32: 0 0 2 2 2 4 9 10 23 32 32 33 36 36 40 42 47 47 51 53 59 61 62 64 73 76 79 81 85 86 88 96 
+    ```
 
 - Problem 4
 
