@@ -41,7 +41,7 @@ javac cs6301/g16/ReversibleSinglyLinkedList.java
 # Problem 5
 javac cs6301/g16/ArrayQueue.java
 
-# Problem 6
+# Problem 9
 javac cs6301/g16/SparsePolynomial.java
 ```
 
