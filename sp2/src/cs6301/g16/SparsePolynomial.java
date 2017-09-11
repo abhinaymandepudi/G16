@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 2-2</h1>
+ * <h1>Fall 2017 Short Project 2-9</h1>
  * <p>
  * Implement arithmetic with sparse polynomials, implementing the
  * following operations: addition, multiplication, evaluation.
