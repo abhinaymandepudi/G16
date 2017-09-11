@@ -27,34 +27,38 @@ public class SortableList<T extends Comparable<? super T>> extends SinglyLinkedL
 		size += otherList.size;
 
 		// merge 2 sorted array
-		Entry<T> preNode = null;
-		tail = header.next;
-		Entry<T> otherPointer = otherList.header.next;
-		while (otherPointer != null) {
-			if (tail == null && preNode != null) {
-				// When running out of current list,
-				// attach the rest of other list to the end of current list
-				preNode.next = otherPointer;
-				tail = otherList.tail;
-				break;
-			}
-
-			if (tail.element.compareTo(otherPointer.element) > 0) {
-				if (preNode == null) {
-					// the first node is from otherList
-					header.next = otherPointer;
-				}
-				else
-					preNode.next = otherPointer;
-				preNode = otherPointer;
-				otherPointer = otherPointer.next;
-				preNode.next = tail;
-			}
-			else {
-				preNode = tail;
-				tail=tail.next;
-			}
+		Entry<T> curTail = header; // current progress of the merge
+        Entry<T> tc = header.next; // processing pointer for this list
+		Entry<T> oc = otherList.header.next; // processing pointer for other list
+		while (tc!=null && oc!=null) {
+            switch (tc.element.compareTo(oc.element)) {
+                case 0:
+                case -1: {
+                    // this value <= other value
+                    curTail.next = tc;
+                    tc = tc.next;
+                    break;
+                }
+                case 1: {
+                    // this value > other value
+                    curTail.next = oc;
+                    oc = oc.next;
+                    break;
+                }
+                default:
+                    System.out.println("Unexpected compare result");
+            }
+            curTail=curTail.next;
 		}
+		if(oc!=null){
+		    // attach the rest of other list, and change tail
+		    curTail.next = oc;
+		    tail = otherList.tail;
+        }
+        else {
+		    // attach the rest of this list, tail is unchanged
+		    curTail.next = tc;
+        }
 	}
 
     /**
@@ -104,7 +108,7 @@ public class SortableList<T extends Comparable<? super T>> extends SinglyLinkedL
      * Helper function for testing
      * @param min the min value of random number
      * @param max the max value of random number
-     * @return
+     * @return a random value between min and max
      */
 	private static Integer randomNumber(int min,int max) {
         Integer randomNum = min + (int)(Math.random() * max);
@@ -128,7 +132,7 @@ public class SortableList<T extends Comparable<? super T>> extends SinglyLinkedL
         }
 
         System.out.println("==================");
-        System.out.println("Test case 2  (1 element):");
+        System.out.println("Test case 2 (1 element):");
         {
             SortableList<Integer> lst = new SortableList<>();
 
