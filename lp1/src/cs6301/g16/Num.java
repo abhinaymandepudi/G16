@@ -167,7 +167,7 @@ public class Num  implements Comparable<Num> {
     }
 
     public static Num KaratsubaProduct(Num a, Num b) {
-        if (a.numList.size() <= 1 && b.numList.size() <= 1)
+        if (a.numList.size() <= 1 || b.numList.size() <= 1)
             return standardProduct(a, b);
         int m = Integer.max(a.numList.size(), b.numList.size());
         int m2 = m / 2;
@@ -185,7 +185,7 @@ public class Num  implements Comparable<Num> {
         for (int i = 0; i < m2 * 2; i++)
             z2.numList.add(0, 0);
 
-        return add(add(z2, z3), z0);
+        return add(add(z2, z3), z0).trim();
     }
 
     static Num product(Num a, Num b) {
@@ -198,8 +198,17 @@ public class Num  implements Comparable<Num> {
             lx.numList.addAll(x.numList);
         } else {
             hx.numList.addAll(x.numList.subList(m, x.numList.size()));
+            hx.trim();
             lx.numList.addAll(x.numList.subList(0, m));
+            lx.trim();
         }
+    }
+
+    Num trim() {
+        if (this.numList.size() > 1)
+            for (int i = this.numList.size() - 1; this.numList.get(i) == 0 && i > 0; i--)
+                this.numList.remove(i);
+        return this;
     }
 
     // Use divide and conquer

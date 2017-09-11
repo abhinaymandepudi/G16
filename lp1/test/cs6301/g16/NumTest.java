@@ -2,6 +2,8 @@ package cs6301.g16;
 
 import org.junit.Test;
 
+import java.util.Timer;
+
 import static org.junit.Assert.*;
 
 public class NumTest {
@@ -23,8 +25,9 @@ public class NumTest {
 
     @Test
     public void karatsubaProduct() throws Exception {
-//        assertEquals(0, Num.Karatsuba(piNum, primeNum).compareTo(Num.standardProduct(piNum, primeNum)));
-        System.out.println(Num.Karatsuba(new Num(1), new Num(12345)));
+        assertEquals(0, Num.Karatsuba(piNum, primeNum).compareTo(Num.standardProduct(piNum, primeNum)));
+//        assertArrayEquals(Num.Karatsuba(primeNum, new Num("999672729978799149856801")).numList.toArray(), Num.standardProduct(primeNum, new Num("999672729978799149856801")).numList.toArray());
+//        System.out.println(Num.Karatsuba(new Num("10000000001231"), new Num(99)));
 //        assertEquals(0, Num.Karatsuba(primeNumMinus, piNum).compareTo(Num.standardProduct(primeNumMinus, piNum)));
     }
 
@@ -74,8 +77,22 @@ public class NumTest {
 
     @Test
     public void product() throws Exception {
-        Num a = new Num("1234567891011");
-        Num b = new Num("43142341235323425658679");
+        long start, end, k, s;
+        Num a = new Num(pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi);
+        Num b = new Num(pi+pi+pi+pi+pi+pi+pi+pi+pi+pi);
+        start = System.currentTimeMillis();
+        Num kr = Num.Karatsuba(a, b);
+        end = System.currentTimeMillis();
+        k = end - start;
+
+        start = System.currentTimeMillis();
+        Num sr = Num.standardProduct(a, b);
+        end = System.currentTimeMillis();
+        s = end - start;
+
+        System.out.println(k +" " + s);
+        assertEquals(0, kr.compareTo(sr));
+        assertTrue(s < k);
     }
 
     @Test
