@@ -1,6 +1,8 @@
 Short Project 1
 ================
 
+The problems set [click here](./sp1-sorting-2017f.md).
+
 Group Members
 -------------
 

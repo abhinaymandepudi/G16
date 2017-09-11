@@ -1,6 +1,8 @@
 Short Project 2
 ================
 
+The problems set [click here](./sp2-lists-2017f.md).
+
 Group Members
 -------------
 
