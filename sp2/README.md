@@ -20,7 +20,8 @@ Deliverable structure is as follow:
         ├── ReversibleSinglyLinkedList.java # Solution for Problem 4
         ├── SinglyLinkedList.java           # Sample code with some modification.
         ├── SortableList.java               # Solution for Problem 2
-        └── SortedSetList.java              # Solution for Problem 1
+        ├── SortedSetList.java              # Solution for Problem 1
+        └── SparsePolynomial.java           # Solution for Problem 9
 
 Compile
 -------
@@ -39,6 +40,9 @@ javac cs6301/g16/ReversibleSinglyLinkedList.java
 
 # Problem 5
 javac cs6301/g16/ArrayQueue.java
+
+# Problem 6
+javac cs6301/g16/SparsePolynomial.java
 ```
 
 There is no dependency with file from package `cs6301.g00`.
@@ -169,4 +173,33 @@ Test Running
     -------------- Test Halve Size ---------------
     12 13 14 15 16 17 18 19 null null null null null null null null null 
     New size: 17
+    ```
+
+- Problem 9
+
+    Execute the command `java cs6301.g16.SparsePolynomial`.
+
+    Implement arithmetic with sparse polynomials, implementing the
+    following operations: addition, multiplication, evaluation.
+    Terms of the polynomial should be stored in a linked list, ordered by
+    the exponent field.  Implement multiplication without using HashMaps.
+
+    Example:
+
+    ``` 
+    Polynomial 1:
+    4.0x^(7.0)-3.0x^(8.0)
+    Polynomial 2:
+    100.0x^(-1.0)-10.0x^(0.5)+1.0x^(1.0)
+    =======================
+    Evaluation:
+    4.0x^(7.0)-3.0x^(8.0)
+    x=4 => y=-262144.0
+    =======================
+    Addition Poly1+Poly2:
+    100.0x^(-1.0)-10.0x^(0.5)+1.0x^(1.0)+4.0x^(7.0)-3.0x^(8.0)
+    =======================
+    Multiplication Poly1*Poly2:
+    400.0x^(6.0)-300.0x^(7.0)-40.0x^(7.5)+4.0x^(8.0)+30.0x^(8.5)-3.0x^(9.0)
+    
     ```
