@@ -97,6 +97,9 @@ public class NumTest {
 
     @Test
     public void power() throws Exception {
+        Num a = new Num("100");
+        long b = 30;
+        System.out.println(Num.power(a,b));
     }
 
     @Test

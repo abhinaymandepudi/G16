@@ -213,7 +213,17 @@ public class Num  implements Comparable<Num> {
 
     // Use divide and conquer
     static Num power(Num a, long n) {
-	return null;
+        if(n==0){
+            return new Num("1");
+        }
+        if(n==1){
+            return a;
+        }
+        if(n%2==0){    // n is even
+            return standardProduct(power(a,n/2),power(a,n/2));
+        }else
+            return standardProduct(power(a,n/2),standardProduct(power(a,n/2),a));
+
     }
     /* End of Level 1 */
 
@@ -227,7 +237,7 @@ public class Num  implements Comparable<Num> {
     }
 
     // Use divide and conquer
-    static Num power(Num a, Num n) {
+    public static Num power(Num a, Num n) {
 	return null;
     }
 
