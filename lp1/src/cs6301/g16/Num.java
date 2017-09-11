@@ -129,6 +129,8 @@ public class Num  implements Comparable<Num> {
     }
 
     public static Num standardSingleDigitProduct(Num a, int n) {
+        if (n == 0)
+            return new Num(0);
         Num ret = new Num();
         ret.sign = a.sign;
         ret.base = a.base;
@@ -154,9 +156,16 @@ public class Num  implements Comparable<Num> {
             ret = Num.add(ret, singleDigitProduct);
             shift.add(0);
         }
+        ret.sign = (a.sign == b.sign);
         return ret;
     }
-    // Implement Karatsuba algorithm for excellence credit
+
+    public static Num Karatsuba(Num a, Num b) {
+        Num ret = KaratsubaProduct(a, b);
+        ret.sign = a.sign == b.sign;
+        return ret;
+    }
+
     public static Num KaratsubaProduct(Num a, Num b) {
         if (a.numList.size() <= 1 && b.numList.size() <= 1)
             return standardProduct(a, b);
@@ -169,16 +178,28 @@ public class Num  implements Comparable<Num> {
         Num z1 = KaratsubaProduct(add(ha, la), add(hb, lb));
         Num z2 = KaratsubaProduct(ha, hb);
 
-        for (int i = 0; i < m2 * 2; i++) {
-            z2.numList.add(0,0);
-        }
+        Num z3 = subtract(subtract(z1, z2), z0);
+        for (int i = 0; i < m2; i++)
+            z3.numList.add(0, 0);
 
-        return ha;
+        for (int i = 0; i < m2 * 2; i++)
+            z2.numList.add(0, 0);
+
+        return add(add(z2, z3), z0);
+    }
+
+    static Num product(Num a, Num b) {
+        return null;
     }
 
     static void split(Num x, Num hx, Num lx, int m) {
-        hx.numList.addAll(x.numList.subList(m, x.numList.size()));
-        lx.numList.addAll(x.numList.subList(0, m));
+        if (m >= x.numList.size()) {
+            hx.numList.add(0);
+            lx.numList.addAll(x.numList);
+        } else {
+            hx.numList.addAll(x.numList.subList(m, x.numList.size()));
+            lx.numList.addAll(x.numList.subList(0, m));
+        }
     }
 
     // Use divide and conquer
