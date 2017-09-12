@@ -7,35 +7,96 @@ package cs6301.g16;
 import java.util.*;
 import java.util.Iterator;
 
-public class Num  implements Comparable<Num> {
+public class Num implements Comparable<Num> {
 
     private static int defaultBase = 10;  // This can be changed to what you want it to be.
+
     private int base = defaultBase;  // Change as needed
-    private boolean sign = true;
-    public List<Integer> numList = new LinkedList<>();
+
+    /**
+     * The sign of the Num. -1 for negative, 0 for zero, 1 for positive number.
+     * Use int rather than boolean could eliminate duplicate representation of zero.
+     * Final keyword requires the sign be initialize in constructor.
+     */
+    private final int sign;
+    public List<Long> numList = new LinkedList<>();
+
+    public static final Num ZERO = new Num(new LinkedList<Long>(Arrays.asList((long) 0)), 0);
 
     /* Start of Level 1 */
-    public Num() {}
+//    public Num() {}
 
+    /**
+     * Construct Num from String. The String representation consists of an optional minus or plus
+     * sign followed by a sequence of one or more digits in the default radix 10.
+     * @param s String representation of Num.
+     */
     public Num(String s) {
+        int sign = 1, cursor = 0;
+        final int len = s.length();
 
-        for (int i = s.length() - 1; i >= 1; i--) {
-            numList.add(s.charAt(i) - '0');
+        // Leading sign, if exists, must appear at beginning.
+        int plusIndex = s.lastIndexOf('+');
+        int minusIndex = s.lastIndexOf('-');
+        if (plusIndex > 0 || minusIndex > 0)
+            throw new NumberFormatException("Sign character in the middle.");
+
+        // If leading sign exist, set cursor to 1.
+        if (plusIndex >= 0 || minusIndex >= 0) {
+            cursor = 1;
+
+            // "-" at front, otherwise keep default value 1.
+            if (minusIndex == 0) {
+                sign = -1;
+            }
         }
-        if (s.charAt(0) == '-')
-            sign = false;
-        if (s.charAt(0) >= '0' && s.charAt(0) <= '9')
-            numList.add(s.charAt(0) - '0');
 
+        // Skip leading zeros and compute number of digits in magnitude
+        while (cursor < len && s.charAt(cursor) == '0') {
+            cursor++;
+        }
+
+        if (cursor == len) {
+            this.sign = 0;
+            numList = ZERO.numList;
+            return;
+        }
+
+        this.sign = sign;
+
+        for (int i = cursor; i <= s.length() - 1; i++) {
+            numList.add(0, (long) (s.charAt(i) - '0'));
+        }
+    }
+
+    /**
+     * Internal constructor used to create Num with same numList and specific sign, such as abs()
+     * or constant ZERO.
+     * Note that, the numList inside Num should be immutable in general. Operations on the
+     * numList inside Num often leads to new Num with newly allocated numList (for example
+     * add/substract/product). Thus, copying the reference to the numList would be sufficient.
+     * @param list List allocated already.
+     * @param sign New sign to the number.
+     */
+    private Num(List<Long> list, int sign) {
+        this.sign = (list.size() == 0 ? 0 : sign);
+        this.numList = list;
     }
 
     public Num(long x) {
 
-        sign = (x>=0);
+        if (x == 0)
+            this.sign = 0;
+        else if (x > 0)
+            this.sign = 1;
+        else
+            this.sign = -1;
+
         x = Math.abs(x);
-        while(x!=0) {
-            numList.add((int) (x%base));
-            x = x/base;
+
+        while(x != 0) {
+            numList.add((x % base));
+            x = x / base;
         }
 
     }
@@ -43,150 +104,174 @@ public class Num  implements Comparable<Num> {
     public Num(Num x) {
         base = x.base;
         sign = x.sign;
-        numList = (List<Integer>) ((LinkedList<Integer>)x.numList).clone();
+        numList = (List<Long>) ((LinkedList<Long>)x.numList).clone();
     }
 
-    static Integer zeroNext(Iterator<Integer> it) {
+    static Long zeroNext(Iterator<Long> it) {
         if(it.hasNext())
             return it.next();
         else
-            return 0;
+            return (long) 0;
     }
 
     static Num add(Num a, Num b) {
         assert a.base == b.base;
 
-        int base = a.base;
-        Num result = new Num();
-        result.base = a.base;
         if(a.sign == b.sign) {
-            // same sign addition
-            result.sign = a.sign;
-            int carry = 0;
-            Iterator<Integer> it1 = a.numList.iterator();
-            Iterator<Integer> it2 = b.numList.iterator();
-            while(it1.hasNext() || it2.hasNext() || carry > 0) {
-                int sum = zeroNext(it1)+zeroNext(it2)+carry;
-                result.numList.add(sum % base);
-                carry = sum / base;
-            }
+            return new Num(add(a.numList, b.numList, a.base), a.sign);
         }
-        else
-        {
-            // different sign addition
-            int modCompareResult = a.modCompareTo(b);
-            switch (modCompareResult)
-            {
-                case 0:
-                {
-                    result.numList.add(0);
-                    break;
-                }
-                case 1:
-                case -1:
-                {
-                    Num bigAbsNum = modCompareResult==1?a:b; // num with bigger abs
-                    Num smallAbsNum = modCompareResult==-1?a:b; // num with smaller abs
-                    result.sign = bigAbsNum.sign;
 
-                    int borrow = 0;
-                    Iterator<Integer> it1 = bigAbsNum.numList.iterator();
-                    Iterator<Integer> it2 = smallAbsNum.numList.iterator();
+        int cmp = a.modCompareTo(b);
+        if (cmp == 0)
+            return ZERO;
 
-                    int numOfLeadingZero = 0;
+        List<Long> result = cmp > 0 ? subtract(a.numList, b.numList, a.base)
+                : subtract(b.numList, a.numList, a.base);
 
-                    while(it1.hasNext() || it2.hasNext()) {
-                        int sub = zeroNext(it1)-zeroNext(it2)-borrow;
-                        borrow = sub<0?1:0;
-                        if(sub<0) {
-                            sub += base;
-                            borrow = 1;
-                        }
-                        result.numList.add(sub);
-                        if(sub == 0)
-                            numOfLeadingZero++;
-                        else
-                            numOfLeadingZero = 0;
-                    }
+        return new Num(result, cmp == a.sign ? 1 : -1);
+    }
 
-                    // remove leading zero - if the result is zero, we should keep one zero in the numList
-                    for(int i=0;i<numOfLeadingZero&&result.numList.size()>1;i++)
-                        result.numList.remove(result.numList.size()-1);
+    /**
+     * Internal implementation of two numList add with specific base. Return a newly allocated
+     * LinkedList of the result.
+     */
+    private static List<Long> add(List<Long> a, List<Long> b, long base) {
 
-                    break;
-                }
-                default:
-                    assert false; //error
-            }
+        Iterator<Long> it1 = a.iterator();
+        Iterator<Long> it2 = b.iterator();
+
+        long carry = 0;
+
+        List<Long> result = new LinkedList<>();
+
+        while(it1.hasNext() || it2.hasNext() || carry > 0) {
+            long sum = zeroNext(it1)+zeroNext(it2)+carry;
+            result.add(sum % base);
+            carry = sum / base;
         }
+
         return result;
     }
 
-    static Num subtract(Num a, Num b) {
-        Num c = new Num(b);
-        c.sign = !c.sign;
-        return add(a,c);
+    /**
+     * Internal implementation of two numList substract with specific base. Return a newly
+     * allocated LinkedList of the result. Note that first numList a must be larger than b.
+     */
+    private static List<Long> subtract(List<Long> a, List<Long> b, long base) {
+        int numOfLeadingZero = 0;
+
+        Iterator<Long> it1 = a.iterator();
+        Iterator<Long> it2 = b.iterator();
+
+        int borrow = 0;
+
+        List<Long> result = new LinkedList<>();
+
+        while (it1.hasNext() || it2.hasNext()) {
+            long sub = zeroNext(it1) - zeroNext(it2) - borrow;
+            borrow = sub < 0 ? 1 : 0;
+            if (sub < 0) {
+                sub += base;
+                borrow = 1;
+            }
+            result.add(sub);
+            if (sub == 0)
+                numOfLeadingZero++;
+            else
+                numOfLeadingZero = 0;
+        }
+
+        // remove leading zero - if the result is zero, we should keep one zero in the numList
+//        for (int i = 0; i < numOfLeadingZero && result.size() > 1; i++)
+//            result.remove(result.size() - 1);
+
+        return result.subList(0, result.size() - numOfLeadingZero);
     }
 
-    public static Num standardSingleDigitProduct(Num a, int n) {
+    public static Num subtract(Num a, Num b) {
+        if (b.sign == 0)
+            return a;
+        if (a.sign == 0)
+            return b.negate();
+        if (a.sign != b.sign)
+            return new Num(add(a.numList, b.numList, a.base), a.sign);
+
+        int cmp = a.modCompareTo(b);
+        if (cmp == 0)
+            return ZERO;
+
+        List<Long> result = cmp > 0 ? subtract(a.numList, b.numList, a.base)
+                : subtract(b.numList, a.numList, a.base);
+
+        return new Num(result, cmp == a.sign ? 1 : -1);
+    }
+
+    /**
+     * Returns a Num whose value is {@code (-this)}.
+     *
+     * @return {@code -this}
+     */
+    public Num negate() {
+        return new Num(this.numList, -this.sign);
+    }
+
+    public static Num standardSingleDigitProduct(Num a, long n) {
         if (n == 0)
-            return new Num(0);
-        Num ret = new Num();
-        ret.sign = a.sign;
-        ret.base = a.base;
-        int carry = 0;
-        for (Integer x : a.numList) {
-            int product = x * n + carry;
-            carry = product / ret.base;
-            ret.numList.add(product % ret.base);
+            return ZERO;
+        List<Long> result = new LinkedList<>();
+        long carry = 0;
+        long product;
+        for (Long x : a.numList) {
+            product = x * n + carry;
+            carry = product / a.base;
+            result.add(product % a.base);
         }
         if (carry != 0)
-            ret.numList.add(carry);
-        return ret;
+            result.add(carry);
+        return new Num(result, a.sign == Long.signum(n) ? 1 : -1);
     }
 
     public static Num standardProduct(Num a, Num b) {
         Num ret = new Num("0");
-        List<Integer> shift = new ArrayList<>(a.numList.size());
+        List<Long> shift = new LinkedList<>();
         Num singleDigitProduct;
 
-        for (Integer n: a.numList) {
+        for (Long n: a.numList) {
             singleDigitProduct = standardSingleDigitProduct(b, n);
             singleDigitProduct.numList.addAll(0, shift);
             ret = Num.add(ret, singleDigitProduct);
-            shift.add(0);
+            shift.add((long) 0);
         }
-        ret.sign = (a.sign == b.sign);
-        return ret;
+        return a.sign == b.sign ? ret : ret.negate();
     }
-
-    public static Num Karatsuba(Num a, Num b) {
-        Num ret = KaratsubaProduct(a, b);
-        ret.sign = a.sign == b.sign;
-        return ret;
-    }
-
-    public static Num KaratsubaProduct(Num a, Num b) {
-        if (a.numList.size() <= 1 || b.numList.size() <= 1)
-            return standardProduct(a, b);
-        int m = Integer.max(a.numList.size(), b.numList.size());
-        int m2 = m / 2;
-        Num ha = new Num(), la = new Num(), hb = new Num(), lb = new Num();
-        split(a, ha, la, m2);
-        split(b, hb, lb, m2);
-        Num z0 = KaratsubaProduct(la, lb);
-        Num z1 = KaratsubaProduct(add(ha, la), add(hb, lb));
-        Num z2 = KaratsubaProduct(ha, hb);
-
-        Num z3 = subtract(subtract(z1, z2), z0);
-        for (int i = 0; i < m2; i++)
-            z3.numList.add(0, 0);
-
-        for (int i = 0; i < m2 * 2; i++)
-            z2.numList.add(0, 0);
-
-        return add(add(z2, z3), z0).trim();
-    }
+//
+//    public static Num Karatsuba(Num a, Num b) {
+//        Num ret = KaratsubaProduct(a, b);
+//        ret.sign = a.sign == b.sign;
+//        return ret;
+//    }
+//
+//    public static Num KaratsubaProduct(Num a, Num b) {
+//        if (a.numList.size() <= 1 || b.numList.size() <= 1)
+//            return standardProduct(a, b);
+//        int m = Integer.max(a.numList.size(), b.numList.size());
+//        int m2 = m / 2;
+//        Num ha = new Num(), la = new Num(), hb = new Num(), lb = new Num();
+//        split(a, ha, la, m2);
+//        split(b, hb, lb, m2);
+//        Num z0 = KaratsubaProduct(la, lb);
+//        Num z1 = KaratsubaProduct(add(ha, la), add(hb, lb));
+//        Num z2 = KaratsubaProduct(ha, hb);
+//
+//        Num z3 = subtract(subtract(z1, z2), z0);
+//        for (int i = 0; i < m2; i++)
+//            z3.numList.add(0, (long) 0);
+//
+//        for (int i = 0; i < m2 * 2; i++)
+//            z2.numList.add(0, (long) 0);
+//
+//        return add(add(z2, z3), z0).trim();
+//    }
 
     static Num product(Num a, Num b) {
         return null;
@@ -194,7 +279,7 @@ public class Num  implements Comparable<Num> {
 
     static void split(Num x, Num hx, Num lx, int m) {
         if (m >= x.numList.size()) {
-            hx.numList.add(0);
+            hx.numList.add((long) 0);
             lx.numList.addAll(x.numList);
         } else {
             hx.numList.addAll(x.numList.subList(m, x.numList.size()));
@@ -211,7 +296,7 @@ public class Num  implements Comparable<Num> {
         return this;
     }
 
-    // Use divide and conquer
+//     Use divide and conquer
     static Num power(Num a, long n) {
         if(n==0){
             return new Num("1");
@@ -247,49 +332,43 @@ public class Num  implements Comparable<Num> {
     /* End of Level 2 */
 
 
-    // Utility functions
-    public int modCompareTo(Num other) {
-        int modCompareResult = -2;
-        if(numList.size() == other.numList.size()) {
-            Iterator<Integer> it1 = numList.iterator();
-            Iterator<Integer> it2 = other.numList.iterator();
-            modCompareResult = 0;
-            while(it1.hasNext() || it2.hasNext()) {
-                int elementCompareResult = zeroNext(it1).compareTo(zeroNext(it2));
-                if (elementCompareResult!=0) // override compare result from lower digit
-                    modCompareResult = elementCompareResult;
-            }
+    /**
+     * Compare the numList with other Num, ignoring sign.
+     * @param other The other numList to be compared to.
+     * @return -1, 0 or 1 as this numList is less than, equal to or greater than the other numList.
+     */
+    private int modCompareTo(Num other) {
+        if (this.numList.size() > other.numList.size())
+            return 1;
+        if (this.numList.size() < other.numList.size())
+            return -1;
+
+        Iterator<Long> it1 = this.numList.iterator();
+        Iterator<Long> it2 = other.numList.iterator();
+        int result;
+        while(it1.hasNext()) {
+            result =  zeroNext(it1).compareTo(zeroNext(it2));
+            if (result != 0)
+                return result;
         }
-        else if(numList.size() > other.numList.size())
-            modCompareResult = 1;
-        else // numList.size() < other.numList.size()
-            modCompareResult = -1;
-        return modCompareResult;
+        return 0;
     }
 
     // compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise
     public int compareTo(Num other) {
-        // todo - improve the logic to perform sign test first.
         assert base == other.base;
 
-        boolean sameSign = (sign==other.sign);
-
-        // handle zero
-        if(numList.size()==1 && other.numList.size()==1 && numList.get(0)==0 && other.numList.get(0)==0)
-            return 0;
-
-        switch (modCompareTo(other))
-        {
-            case 0:
-                return sameSign?0:(sign?1:-1);
-            case 1:
-                return sameSign?(sign?1:-1):(sign?-1:1);
-            case -1:
-                return sameSign?(sign?-1:1):(sign?1:-1);
-            default:
-                assert false; // error
-                return 0;
+        if (this.sign == other.sign) {
+            switch (this.sign) {
+                case 1:
+                    return modCompareTo(other);
+                case -1:
+                    return other.modCompareTo(this);
+                default:
+                    return 0;
+            }
         }
+        return this.sign > other.sign ? 1 : -1;
     }
     
     // Output using the format "base: elements of list ..."
