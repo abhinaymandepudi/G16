@@ -11,9 +11,9 @@ import java.util.List;
 
 public class Num implements Comparable<Num> {
 
-    private static int defaultBase = 10;  // This can be changed to what you want it to be.
+    private static int defaultBase = 10;
 
-    private int base = defaultBase;  // Change as needed
+    private int base = defaultBase;
 
     /**
      * The sign of the Num. -1 for negative, 0 for zero, 1 for positive number. Use int rather than
@@ -21,6 +21,11 @@ public class Num implements Comparable<Num> {
      * initialize in constructor.
      */
     private final int sign;
+
+    /**
+     * The number is store in LinkedList with most significant digit at the end of the LinkedList,
+     * and the least significant digit at the beginning.
+     */
     public List<Long> numList = new LinkedList<>();
 
     public static final Num ZERO = new Num(new LinkedList<Long>(Arrays.asList((long) 0)), 0);
@@ -86,22 +91,25 @@ public class Num implements Comparable<Num> {
         this.numList = list;
     }
 
+    /**
+     * Construct Num from long integer.
+     *
+     * @param x Long representation of Num.
+     */
     public Num(long x) {
-
-        if (x == 0)
+        if (x == 0) {
             this.sign = 0;
-        else if (x > 0)
-            this.sign = 1;
-        else
-            this.sign = -1;
+            this.numList = ZERO.numList;
+            return;
+        }
+
+        this.sign = x > 0 ? 1 : -1;
 
         x = Math.abs(x);
-
         while (x != 0) {
             numList.add((x % base));
             x = x / base;
         }
-
     }
 
     public Num(Num x) {
