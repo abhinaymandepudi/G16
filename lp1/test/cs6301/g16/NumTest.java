@@ -34,8 +34,9 @@ public class NumTest {
 //
     @Test
     public void standardProduct() throws Exception {
-        System.out.println(Num.standardProduct(primeNum, new Num("12345")));
-//        assertEquals(0, new Num("999672729978799149856801").compareTo(Num.standardProduct(primeNum, primeNum)));
+//        System.out.println(Num.standardProduct(new Num("111111"), new Num("999")));
+//        System.out.println(Num.standardProduct(primeNum, primeNum));
+        assertEquals(0, new Num("999672729978799149856801").compareTo(Num.standardProduct(primeNum, primeNum)));
 
         // Test reflexivity.
 //        assertEquals(0, Num.standardProduct(primeNumMinus, piNum).compareTo(Num.standardProduct(piNum, primeNumMinus)));
@@ -48,6 +49,8 @@ public class NumTest {
                 .standardSingleDigitProduct(a, 9)));
         assertEquals(0, new Num("301996388647263979610753").compareTo(Num
                 .standardSingleDigitProduct(a, 7)));
+        assertEquals(0, new Num("172569364941293702634716").compareTo(Num
+                .standardSingleDigitProduct(a, 4)));
     }
 
     @Test
@@ -55,7 +58,8 @@ public class NumTest {
         assertEquals(0,Num.add(new Num("388281071117910830928111"),new Num("301996388647263979610753")).compareTo(new Num("690277459765174810538864")));
         assertEquals(0,Num.add(new Num("1"),new Num("-100")).compareTo(new Num("-99")));
         assertEquals(0,Num.add(new Num("100"),new Num("-100")).compareTo(new Num("0")));
-//        assertEquals(0,Num.subtract(new Num("100"),new Num("-100")).compareTo(new Num("200")));
+        assertEquals(0,Num.add(new Num("99999999"),new Num("1")).compareTo(new Num("100000000")));
+        System.out.println(Num.add(new Num("999"),new Num("9990")));
     }
 
     @Test
@@ -70,7 +74,6 @@ public class NumTest {
         assertEquals(0,Num.subtract(am, b).compareTo(new Num("-43142341235324249115468")));
         assertEquals(0,Num.subtract(a, bm).compareTo(new Num("43142341235324249115468")));
         assertEquals(0,Num.subtract(b, b).compareTo(new Num("0")));
-        assertEquals(0,Num.subtract(b, b.negate()).compareTo(new Num("0")));
 
     }
 //

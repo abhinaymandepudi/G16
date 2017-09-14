@@ -4,8 +4,10 @@
 // Change following line to your group number
 package cs6301.g16;
 
-import java.util.*;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Num implements Comparable<Num> {
 
@@ -14,9 +16,9 @@ public class Num implements Comparable<Num> {
     private int base = defaultBase;  // Change as needed
 
     /**
-     * The sign of the Num. -1 for negative, 0 for zero, 1 for positive number.
-     * Use int rather than boolean could eliminate duplicate representation of zero.
-     * Final keyword requires the sign be initialize in constructor.
+     * The sign of the Num. -1 for negative, 0 for zero, 1 for positive number. Use int rather than
+     * boolean could eliminate duplicate representation of zero. Final keyword requires the sign be
+     * initialize in constructor.
      */
     private final int sign;
     public List<Long> numList = new LinkedList<>();
@@ -29,6 +31,7 @@ public class Num implements Comparable<Num> {
     /**
      * Construct Num from String. The String representation consists of an optional minus or plus
      * sign followed by a sequence of one or more digits in the default radix 10.
+     *
      * @param s String representation of Num.
      */
     public Num(String s) {
@@ -70,11 +73,11 @@ public class Num implements Comparable<Num> {
     }
 
     /**
-     * Internal constructor used to create Num with same numList and specific sign, such as abs()
-     * or constant ZERO.
-     * Note that, the numList inside Num should be immutable in general. Operations on the
-     * numList inside Num often leads to new Num with newly allocated numList (for example
+     * Internal constructor used to create Num with same numList and specific sign, such as abs() or
+     * constant ZERO. Note that, the numList inside Num should be immutable in general. Operations
+     * on the numList inside Num often leads to new Num with newly allocated numList (for example
      * add/substract/product). Thus, copying the reference to the numList would be sufficient.
+     *
      * @param list List allocated already.
      * @param sign New sign to the number.
      */
@@ -94,7 +97,7 @@ public class Num implements Comparable<Num> {
 
         x = Math.abs(x);
 
-        while(x != 0) {
+        while (x != 0) {
             numList.add((x % base));
             x = x / base;
         }
@@ -104,11 +107,11 @@ public class Num implements Comparable<Num> {
     public Num(Num x) {
         base = x.base;
         sign = x.sign;
-        numList = (List<Long>) ((LinkedList<Long>)x.numList).clone();
+        numList = (List<Long>) ((LinkedList<Long>) x.numList).clone();
     }
 
     static Long zeroNext(Iterator<Long> it) {
-        if(it.hasNext())
+        if (it.hasNext())
             return it.next();
         else
             return (long) 0;
@@ -117,7 +120,12 @@ public class Num implements Comparable<Num> {
     static Num add(Num a, Num b) {
         assert a.base == b.base;
 
-        if(a.sign == b.sign) {
+        if (b.sign == 0)
+            return a;
+        if (a.sign == 0)
+            return b;
+
+        if (a.sign == b.sign) {
             return new Num(add(a.numList, b.numList, a.base), a.sign);
         }
 
@@ -144,8 +152,8 @@ public class Num implements Comparable<Num> {
 
         List<Long> result = new LinkedList<>();
 
-        while(it1.hasNext() || it2.hasNext() || carry > 0) {
-            long sum = zeroNext(it1)+zeroNext(it2)+carry;
+        while (it1.hasNext() || it2.hasNext() || carry > 0) {
+            long sum = zeroNext(it1) + zeroNext(it2) + carry;
             result.add(sum % base);
             carry = sum / base;
         }
@@ -154,8 +162,8 @@ public class Num implements Comparable<Num> {
     }
 
     /**
-     * Internal implementation of two numList substract with specific base. Return a newly
-     * allocated LinkedList of the result. Note that first numList a must be larger than b.
+     * Internal implementation of two numList substract with specific base. Return a newly allocated
+     * LinkedList of the result. Note that first numList a must be larger than b.
      */
     private static List<Long> subtract(List<Long> a, List<Long> b, long base) {
         int numOfLeadingZero = 0;
@@ -236,7 +244,7 @@ public class Num implements Comparable<Num> {
         List<Long> shift = new LinkedList<>();
         Num singleDigitProduct;
 
-        for (Long n: a.numList) {
+        for (Long n : a.numList) {
             singleDigitProduct = standardSingleDigitProduct(b, n);
             singleDigitProduct.numList.addAll(0, shift);
             ret = Num.add(ret, singleDigitProduct);
@@ -296,44 +304,45 @@ public class Num implements Comparable<Num> {
         return this;
     }
 
-//     Use divide and conquer
+    //     Use divide and conquer
     static Num power(Num a, long n) {
-        if(n==0){
+        if (n == 0) {
             return new Num("1");
         }
-        if(n==1){
+        if (n == 1) {
             return a;
         }
-        if(n%2==0){    // n is even
-            return standardProduct(power(a,n/2),power(a,n/2));
-        }else
-            return standardProduct(power(a,n/2),standardProduct(power(a,n/2),a));
+        if (n % 2 == 0) {    // n is even
+            return standardProduct(power(a, n / 2), power(a, n / 2));
+        } else
+            return standardProduct(power(a, n / 2), standardProduct(power(a, n / 2), a));
 
     }
     /* End of Level 1 */
 
     /* Start of Level 2 */
     static Num divide(Num a, Num b) {
-	return null;
+        return null;
     }
 
     static Num mod(Num a, Num b) {
-	return null;
+        return null;
     }
 
     // Use divide and conquer
     public static Num power(Num a, Num n) {
-	return null;
+        return null;
     }
 
     static Num squareRoot(Num a) {
-	return null;
+        return null;
     }
     /* End of Level 2 */
 
 
     /**
      * Compare the numList with other Num, ignoring sign.
+     *
      * @param other The other numList to be compared to.
      * @return -1, 0 or 1 as this numList is less than, equal to or greater than the other numList.
      */
@@ -346,8 +355,8 @@ public class Num implements Comparable<Num> {
         Iterator<Long> it1 = this.numList.iterator();
         Iterator<Long> it2 = other.numList.iterator();
         int result;
-        while(it1.hasNext()) {
-            result =  zeroNext(it1).compareTo(zeroNext(it2));
+        while (it1.hasNext()) {
+            result = zeroNext(it1).compareTo(zeroNext(it2));
             if (result != 0)
                 return result;
         }
@@ -370,17 +379,19 @@ public class Num implements Comparable<Num> {
         }
         return this.sign > other.sign ? 1 : -1;
     }
-    
+
     // Output using the format "base: elements of list ..."
     // For example, if base=100, and the number stored corresponds to 10965,
     // then the output is "100: 65 9 1"
     void printList() {
     }
-    
+
     // Return number to a string in base 10
     public String toString() {
         return this.numList.toString();
     }
 
-    public int base() { return base; }
+    public int base() {
+        return base;
+    }
 }
