@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 3-1</h1>
+ * <h1>Fall 2017 Short Project 3-2</h1>
  * <p>
  * Strongly connected components of a directed graph.  Implement the
  * algorithm for finding strongly connected components of a directed
