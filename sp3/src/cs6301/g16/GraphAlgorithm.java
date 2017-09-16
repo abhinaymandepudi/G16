@@ -1,7 +1,5 @@
 package cs6301.g16;
 
-import cs6301.g00.Graph;
-
 public class GraphAlgorithm<T> {
     Graph g;
     // Algorithm uses a parallel array for storing information about vertices

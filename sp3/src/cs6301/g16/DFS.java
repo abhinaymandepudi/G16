@@ -1,16 +1,14 @@
-package cs6301.g16;
-
 /**
  * <h1>Fall 2017 Short Project 3</h1>
  * <p>
- *     Helper class extends GraphAlgorithm to provide functionality of DFS in Graph object.
+ * Helper class extends GraphAlgorithm to provide functionality of DFS in Graph object.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
  * @since 2017-09-11
  */
 
-import cs6301.g00.Graph;
+package cs6301.g16;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,7 +26,6 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         int fin; //finish time
         int dis; //discover time
         int top; // topological order
-        int cno;
         Graph.Vertex parent;
         DFSVertex(Graph.Vertex u) {
             reset();
@@ -38,14 +35,13 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
             fin = 0;
             dis = 0;
             top = 0;
-            cno = 0;
             parent = null;
         }
     }
 
     int topNum;
     int time;
-    int cno;
+    boolean isCyclic;
     List<Graph.Vertex> decFinList;
 
     public DFS(Graph g) {
@@ -61,7 +57,7 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
     public void dfs() {
         topNum = g.size();
         time = 0;
-        cno = 0;
+        isCyclic = false;
         decFinList = new LinkedList<>();
 
         for(Graph.Vertex u: g) {
@@ -74,7 +70,6 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         while (it.hasNext()) {
             Graph.Vertex u = it.next();
             if(!seen(u)){
-                cno++;
                 dfsVisit(u);
             }
         }
@@ -85,13 +80,15 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         DFSVertex dv = getVertex(v);
         dv.seen = true;
         dv.dis = ++time;
-        dv.cno = cno;
         for(Graph.Edge edge : v) {
             Graph.Vertex u = edge.otherEnd(v);
             if(!seen(u)) {
                 getVertex(u).parent = v;
                 dfsVisit(u);
             }
+            else if (getVertex(u).fin==0)
+                // it is a back edge
+                isCyclic = true;
         }
         dv.fin = ++time;
         dv.top = topNum--;
@@ -152,6 +149,7 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
             DFS dfSearch = new DFS(g);
             dfSearch.dfs();
             System.out.println(dfSearch.decFinList);
+            System.out.println(dfSearch.isCyclic);
         }
     }
 }
