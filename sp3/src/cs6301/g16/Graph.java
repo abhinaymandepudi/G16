@@ -1,12 +1,22 @@
+/**
+ * <h1>Fall 2017 Short Project 3</h1>
+ * <p>
+ * Revision of given Graph class, tailored especially for sp3
+ * Modifications:
+ * 1. Add Copy constructor for Graph object
+ * 2. Add removeVertex method
+ * 3. Add reversedGraph to generate reversed graph
+ * 4. Add inDegree method to get in-degree of the vertex
+ * 5. Add outDegree method to get out-degree of the vertex
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-09-11
+ */
+
 package cs6301.g16;
 
-/**
- * Class to represent a graph
- *  @author rbk
- *  Ver 1.1: 2017/08/28.  Updated some methods to public.  Added getName() to Vertex
- *  Ver 1.2: 2017/09/08.  Added getVertex() method for GraphAlgorithm.java
- *
- */
+import cs6301.g00.ArrayIterator;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -59,6 +69,20 @@ public class Graph implements Iterable<Graph.Vertex> {
          */
         public String toString() {
             return Integer.toString(name+1);
+        }
+
+        /**
+         * Get incoming edges count
+         */
+        public int inDegree() {
+            return revAdj.size();
+        }
+
+        /**
+         * Get outgoing edges count
+         */
+        public int outDegree() {
+            return adj.size();
         }
     }
 
@@ -135,6 +159,28 @@ public class Graph implements Iterable<Graph.Vertex> {
     }
 
     /**
+     * Add Copy Constructor for Question 1 topologicalOrder1
+     */
+    public Graph(Graph g) {
+        this.n = g.n;
+        this.v = new Vertex[n];
+        this.directed = g.directed;
+        // create an array of Vertex objects
+        for (int i = 0; i < n; i++)
+            v[i] = new Vertex(i);
+        // copy edges
+        for (Vertex v1 : g) {
+            Vertex v2 = this.v[v1.name];
+            for(Edge e: v1.adj) {
+                if(v1 == e.from) {
+                    Vertex u2 = this.v[e.otherEnd(v1).name];
+                    addEdge(v2, u2, e.weight);
+                }
+            }
+        }
+    }
+
+    /**
      * Find vertex no. n
      * @param n
      *           : int
@@ -202,4 +248,76 @@ public class Graph implements Iterable<Graph.Vertex> {
         return g;
     }
 
+    /**
+     * Getter method for graph properties
+     */
+    public boolean isDirected() {
+        return directed;
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    /**
+     * Add Remove Vertex Method for the first question 1 - topoloicalOrder1
+     * Note once a vertex is removed the method getVertex will return null at that position
+     * and iterator will also return null.
+     */
+    public List<Vertex> removeVertex(Vertex vertex) {
+
+        List<Vertex> affectedVertexes = new LinkedList<>();
+
+        // remove outgoing edges
+        for(Edge e : vertex.adj) {
+            Vertex other =  e.otherEnd(vertex);
+            if(directed)
+                other.revAdj.remove(e);
+            else
+                other.adj.remove(e);
+
+            affectedVertexes.add(other);
+        }
+
+        // remove incoming edges
+        for(Edge e : vertex.revAdj) {
+            Vertex other = e.otherEnd(vertex);
+            other.adj.remove(e);
+
+            affectedVertexes.add(other);
+        }
+
+        // set vertex to null in the array
+        // Discuss - use null as placeholder to avoid breaking index of internal vertex array
+        this.v[vertex.name] = null;
+        this.n -= 1;
+
+        return affectedVertexes;
+    }
+
+    /**
+     * Generate reversed graph of this graph
+     * @return Reversed graph
+     */
+    public Graph reversedGraph() {
+        Graph g = new Graph(this);
+
+        if(g.directed) {
+            for (Vertex vertex : g) {
+                // switch adj with revAdj
+                List<Edge> tmpEs = vertex.adj;
+                vertex.adj = vertex.revAdj;
+                vertex.revAdj = tmpEs;
+
+                // reverse the order of from and to vertex in edge
+                for(Edge e: vertex.adj) {
+                    Vertex tmpV = e.from;
+                    e.from = e.to;
+                    e.to = tmpV;
+                }
+            }
+        }
+
+        return g;
+    }
 }

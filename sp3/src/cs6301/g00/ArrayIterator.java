@@ -1,4 +1,4 @@
-package cs6301.g16;
+package cs6301.g00;
 
 /**  Iterator for arrays
  *   @author rbk
