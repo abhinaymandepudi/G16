@@ -5,7 +5,7 @@
  * Modifications:
  * 1. Add Copy constructor for Graph object
  * 2. Add removeVertex method
- * 3. Add reversedGraph to generate reversed graph
+ * 3. Add reverseGraph to reverse graph
  * 4. Add inDegree method to get in-degree of the vertex
  * 5. Add outDegree method to get out-degree of the vertex
  *
@@ -296,14 +296,12 @@ public class Graph implements Iterable<Graph.Vertex> {
     }
 
     /**
-     * Generate reversed graph of this graph
-     * @return Reversed graph
+     * Helper function to reversed graph of this graph
      */
-    public Graph reversedGraph() {
-        Graph g = new Graph(this);
+    public void reverseGraph() {
 
-        if(g.directed) {
-            for (Vertex vertex : g) {
+        if(directed) {
+            for (Vertex vertex : this) {
                 // switch adj with revAdj
                 List<Edge> tmpEs = vertex.adj;
                 vertex.adj = vertex.revAdj;
@@ -317,7 +315,5 @@ public class Graph implements Iterable<Graph.Vertex> {
                 }
             }
         }
-
-        return g;
     }
 }

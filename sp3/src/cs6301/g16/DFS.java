@@ -25,7 +25,8 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         boolean seen;
         int fin; //finish time
         int dis; //discover time
-        int top; // topological order
+        int top; //topological order
+        int cno; //component number * not work properly with directed graph
         Graph.Vertex parent;
         DFSVertex(Graph.Vertex u) {
             reset();
@@ -41,12 +42,16 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
 
     int topNum;
     int time;
+    int cno; // the cno may not work properly with directed graph e.g. 4->3->2->1 will be counted as 4 components
     boolean isCyclic;
     List<Graph.Vertex> decFinList;
 
     public DFS(Graph g) {
         super(g);
+        initParallelArray();
+    }
 
+    void initParallelArray() {
         node = new DFSVertex[g.size()];
         // Create array for storing vertex properties
         for(Graph.Vertex u: g) {
@@ -54,9 +59,22 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         }
     }
 
+    /**
+     * Perform dfs on the graph, use default graph vertex iterator
+     */
     public void dfs() {
+        Iterator<Graph.Vertex> it = g.iterator();
+        dfs(it);
+    }
+
+    /**
+     * Perform dfs based on the order of a certain iterator
+     * @param it the iterator used while searching
+     */
+    public void dfs(Iterator<Graph.Vertex> it) {
         topNum = g.size();
         time = 0;
+        cno = 0;
         isCyclic = false;
         decFinList = new LinkedList<>();
 
@@ -65,21 +83,25 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
             du.reset();
         }
 
-        Iterator<Graph.Vertex> it = g.iterator();
-
         while (it.hasNext()) {
             Graph.Vertex u = it.next();
             if(!seen(u)){
+                cno++;
                 dfsVisit(u);
             }
         }
 
     }
 
+    /**
+     * Helper function perform visit operation on a vertex
+     * @param v the vertex to visit
+     */
     void dfsVisit(Graph.Vertex v) {
         DFSVertex dv = getVertex(v);
         dv.seen = true;
         dv.dis = ++time;
+        dv.cno = cno;
         for(Graph.Edge edge : v) {
             Graph.Vertex u = edge.otherEnd(v);
             if(!seen(u)) {
