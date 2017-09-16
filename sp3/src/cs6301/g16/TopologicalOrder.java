@@ -25,7 +25,7 @@ public class TopologicalOrder {
      *  time, along with their incident edges, and add them to a list.
      */
 
-    public static List<Graph.Vertex> toplogicalOrder1(Graph g) {
+    public static List<Graph.Vertex> topologicalOrder1(Graph g) {
         // the graph need to be directed
         if(!g.isDirected())
             return null;
@@ -56,7 +56,7 @@ public class TopologicalOrder {
     /** Algorithm 2. Run DFS on g and add nodes to the front of the output list,
      *  in the order in which they finish.  Try to write code without using global variables.
      */
-     public static List<Graph.Vertex> toplogicalOrder2(Graph g) {
+     public static List<Graph.Vertex> topologicalOrder2(Graph g) {
         // the graph need to be directed
         if(!g.isDirected())
             return null;
@@ -116,8 +116,8 @@ public class TopologicalOrder {
         }
         Graph g = Graph.readGraph(in,true);
 
-        System.out.println("\nResult 1:\n"+toplogicalOrder1(g));
-        System.out.println("\nResult 2:\n"+toplogicalOrder2(g));
+        System.out.println("\nResult 1:\n"+topologicalOrder1(g));
+        System.out.println("\nResult 2:\n"+topologicalOrder2(g));
 
     }
 }
