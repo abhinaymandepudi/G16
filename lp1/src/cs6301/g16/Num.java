@@ -497,7 +497,7 @@ public class Num implements Comparable<Num> {
 
         long a0 = n.numList.get(0);
         n.shift(-1);
-        return product(power(power(b, n), n.base), power(b, new Num(a0)));
+        return product(power(power(b, n), n.base), power(b, a0));
     }
 
     static Num squareRoot(Num a) {
