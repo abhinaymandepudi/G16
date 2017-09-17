@@ -34,7 +34,7 @@ public class Num implements Comparable<Num> {
     /**
      * Constant ZERO.
      */
-    public static final Num ZERO = new Num(new LinkedList<>(Collections.singletonList((long) 0)), 0);
+    public static final Num ZERO = new Num(Collections.unmodifiableList(new ArrayList<>(Collections.singleton((long) 0))), 0);
 
     private static ArrayList<Long> buffer = new ArrayList<>();
 
@@ -306,14 +306,14 @@ public class Num implements Comparable<Num> {
 
         // Otherwise, perform standard product with n square algorithm.
         Num ret = new Num("0");
-        List<Long> shift = new LinkedList<>();
+        int shift = 0;
         Num singleDigitProduct;
 
         for (Long n : a.numList) {
             singleDigitProduct = SingleDigitProduct(b, n);
-            singleDigitProduct.numList.addAll(0, shift);
+            singleDigitProduct.shift(shift);
             ret = Num.add(ret, singleDigitProduct);
-            shift.add((long) 0);
+            shift++;
         }
         return a.sign == b.sign ? new Num(ret.numList, SIGN_POSITIVE) : new Num(ret.numList, SIGN_NEGATIVE);
     }
@@ -324,6 +324,9 @@ public class Num implements Comparable<Num> {
     }
 
     public static Num KaratsubaProduct(Num a, Num b) {
+        assert a.numList.size() != 0;
+        assert b.numList.size() != 0;
+
 //        if (a.numList.size() <= 1 || b.numList.size() <= 1)
 //            return standardProduct(a, b);
         if (a.numList.size() == 1)
@@ -340,22 +343,31 @@ public class Num implements Comparable<Num> {
         split(a.numList, alow, ahigh, m2);
         split(b.numList, blow, bhigh, m2);
 
-        Num al = new Num(alow, SIGN_POSITIVE);
+        Num al = alow.size() == 0 ? ZERO : new Num(alow, SIGN_POSITIVE);
         Num ah = new Num(ahigh, SIGN_POSITIVE);
-        Num bl = new Num(blow, SIGN_POSITIVE);
+        Num bl = blow.size() == 0 ? ZERO : new Num(blow, SIGN_POSITIVE);
         Num bh = new Num(bhigh, SIGN_POSITIVE);
+
+        assert al.numList.size() != 0;
+        assert bl.numList.size() != 0;
+        assert ah.numList.size() != 0;
+        assert bh.numList.size() != 0;
 //        split(a, ha, la, m2);
 //        split(b, hb, lb, m2);
         Num z0 = KaratsubaProduct(al, bl);
-        Num z1 = KaratsubaProduct(add(ah, al), add(bh, bl));
         Num z2 = KaratsubaProduct(ah, bh);
+        Num z1 = KaratsubaProduct(add(ah, al), add(bh, bl));
 
         Num z3 = subtract(subtract(z1, z2), z0);
-        for (int i = 0; i < m2; i++)
-            z3.numList.add(0, (long) 0);
 
-        for (int i = 0; i < m2 * 2; i++)
-            z2.numList.add(0, (long) 0);
+        z3.shift(m2);
+//        if (!z3.isZero())
+//            for (int i = 0; i < m2; i++)
+//                z3.numList.add(0, (long) 0);
+
+        z2.shift(m2 * 2);
+//        for (int i = 0; i < m2 * 2; i++)
+//            z2.numList.add(0, (long) 0);
 
         return add(add(z2, z3), z0);
     }
@@ -408,6 +420,7 @@ public class Num implements Comparable<Num> {
             buffer.clear();
             xlow.add(d);
         }
+        buffer.clear();
 
         // No leading zero should appear with high part.
         while (it.hasNext())
@@ -417,6 +430,12 @@ public class Num implements Comparable<Num> {
 //        xhigh.addAll(x.subList(k, x.size()));
     }
 
+    public void shift(int n) {
+        if (this.isZero())
+            return;
+        for (int i = 1; i <= n; i++)
+            this.numList.add(0, (long) 0);
+    }
 //    Num trim() {
 //        if (this.numList.size() > 1)
 //            for (int i = this.numList.size() - 1; this.numList.get(i) == 0 && i > 0; i--)
@@ -504,6 +523,10 @@ public class Num implements Comparable<Num> {
     // For example, if base=100, and the number stored corresponds to 10965,
     // then the output is "100: 65 9 1"
     void printList() {
+    }
+
+    public boolean isZero() {
+        return this.sign == 0;
     }
 
     // Return number to a string in base 10

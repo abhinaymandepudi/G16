@@ -61,6 +61,7 @@ public class NumTest {
     @Test
     public void karatsubaProduct() throws Exception {
         assertEquals(0, Num.Karatsuba(piNum, primeNum).compareTo(Num.standardProduct(piNum, primeNum)));
+        assertEquals(0, Num.Karatsuba(primeNumMinus, piNum).compareTo(Num.Karatsuba(primeNum, piNumMinus)));
         assertEquals(0, Num.Karatsuba(primeNumMinus, piNum).compareTo(Num.standardProduct(primeNum, piNumMinus)));
     }
 
@@ -114,8 +115,32 @@ public class NumTest {
     @Test
     public void product() throws Exception {
         long start, end, k, s;
-        Num a = new Num(pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi+pi);
-        Num b = new Num(pi+pi+pi+pi+pi+pi+pi+pi+pi+pi);
+        StringBuilder str1 = new StringBuilder(pi);
+        str1.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
+        StringBuilder str2 = new StringBuilder(pi);
+        str2.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
+        Num a = new Num(str1.toString());
+        Num b = new Num(str2.toString());
+
         start = System.currentTimeMillis();
         Num sr = Num.standardProduct(a, b);
         end = System.currentTimeMillis();
@@ -130,7 +155,7 @@ public class NumTest {
         assertEquals(0, kr.compareTo(sr));
         assertTrue(s < k);
     }
-//
+
 //    @Test
 //    public void power() throws Exception {
 //        Num a = new Num("100");
