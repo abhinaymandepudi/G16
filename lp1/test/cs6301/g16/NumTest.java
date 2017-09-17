@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class NumTest {
     static final String pi =
@@ -124,49 +125,49 @@ public class NumTest {
 
     }
 
-    @Test
-    public void product() throws Exception {
-        long start, end, k, s;
-        StringBuilder str1 = new StringBuilder(pi);
-        str1.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
-        StringBuilder str2 = new StringBuilder(pi);
-        str2.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
-        Num a = new Num(str1.toString());
-        Num b = new Num(str2.toString());
-
-        start = System.currentTimeMillis();
-        Num sr = Num.standardProduct(a, b);
-        end = System.currentTimeMillis();
-        s = end - start;
-
-        start = System.currentTimeMillis();
-        Num kr = Num.Karatsuba(a, b);
-        end = System.currentTimeMillis();
-        k = end - start;
-
-        System.out.println(k + " " + s);
-        assertEquals(0, kr.compareTo(sr));
-        assertTrue(s < k);
-    }
+//    @Test
+//    public void product() throws Exception {
+//        long start, end, k, s;
+//        StringBuilder str1 = new StringBuilder(pi);
+//        str1.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
+//        StringBuilder str2 = new StringBuilder(pi);
+//        str2.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
+//        Num a = new Num(str1.toString());
+//        Num b = new Num(str2.toString());
+//
+//        start = System.currentTimeMillis();
+//        Num sr = Num.standardProduct(a, b);
+//        end = System.currentTimeMillis();
+//        s = end - start;
+//
+//        start = System.currentTimeMillis();
+//        Num kr = Num.Karatsuba(a, b);
+//        end = System.currentTimeMillis();
+//        k = end - start;
+//
+//        System.out.println(k + " " + s);
+//        assertEquals(0, kr.compareTo(sr));
+//        assertTrue(s < k);
+//    }
 
     @Test
     public void power() throws Exception {
@@ -181,11 +182,12 @@ public class NumTest {
         assertEquals(0, Num.power(a.negate(), b).compareTo(r.negate()));
     }
 
-    //
-//    @Test
-//    public void divide() throws Exception {
-//    }
-//
+
+    @Test
+    public void divide() throws Exception {
+        System.out.println(Num.divide(new Num(10), new Num(2)));
+    }
+
 //    @Test
 //    public void mod() throws Exception {
 //    }

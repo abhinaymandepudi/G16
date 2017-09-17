@@ -39,7 +39,7 @@ public class Num implements Comparable<Num> {
     /**
      * Constant ONE.
      */
-    public static final Num ONE = new Num(Collections.unmodifiableList(new ArrayList<>(Collections.singleton((long) 1))), 0);
+    public static final Num ONE = new Num(Collections.unmodifiableList(new ArrayList<>(Collections.singleton((long) 1))), 1);
 
     private static ArrayList<Long> buffer = new ArrayList<>();
 
@@ -435,18 +435,34 @@ public class Num implements Comparable<Num> {
 //        xhigh.addAll(x.subList(k, x.size()));
     }
 
-    public void shift(int n) {
-        if (this.isZero())
-            return;
-        if (n > 0) {
-            for (int i = 1; i <= n; i++)
-                this.numList.add(0, (long) 0);
-            return;
+    /* Start of Level 2 */
+    public static Num divide(final Num a, final Num b) {
+        if (b.isZero())
+            throw new ArithmeticException("divide by zero");
+
+        if (b.compareTo(ONE) == 0)
+            return a;
+
+        if (b.abs().compareTo(a.abs()) > 0)
+            return ZERO;
+
+        Num left = ONE;
+        Num right = a;
+        Num ret;
+        while (true) {
+            ret = add(left, right).shift(-1);
+            if (product(ret, b).compareTo(a) > 0) {
+                right = ret;
+                continue;
+            }
+            if (product(add(ret, ONE), b).compareTo(a) < 0) {
+                left = ret;
+                continue;
+            }
+            break;
         }
-        if (n < 0) {
-            for (int i = n; i < 0; i++)
-                this.numList.remove(0);
-        }
+
+        return null;
     }
 
     /**
@@ -472,9 +488,19 @@ public class Num implements Comparable<Num> {
     }
     /* End of Level 1 */
 
-    /* Start of Level 2 */
-    static Num divide(Num a, Num b) {
-        return null;
+    public Num shift(int n) {
+        if (this.isZero())
+            return this;
+        if (n > 0) {
+            for (int i = 1; i <= n; i++)
+                this.numList.add(0, (long) 0);
+            return this;
+        }
+        if (n < 0) {
+            for (int i = n; i < 0; i++)
+                this.numList.remove(0);
+        }
+        return this;
     }
 
     static Num mod(Num a, Num b) {
