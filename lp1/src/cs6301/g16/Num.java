@@ -36,6 +36,11 @@ public class Num implements Comparable<Num> {
      */
     public static final Num ZERO = new Num(Collections.unmodifiableList(new ArrayList<>(Collections.singleton((long) 0))), 0);
 
+    /**
+     * Constant ONE.
+     */
+    public static final Num ONE = new Num(Collections.unmodifiableList(new ArrayList<>(Collections.singleton((long) 1))), 0);
+
     private static ArrayList<Long> buffer = new ArrayList<>();
 
 
@@ -373,7 +378,7 @@ public class Num implements Comparable<Num> {
     }
 
     static Num product(Num a, Num b) {
-        return null;
+        return Karatsuba(a, b);
     }
 
 //    static void split(Num x, Num hx, Num lx, int m) {
@@ -433,29 +438,37 @@ public class Num implements Comparable<Num> {
     public void shift(int n) {
         if (this.isZero())
             return;
-        for (int i = 1; i <= n; i++)
-            this.numList.add(0, (long) 0);
+        if (n > 0) {
+            for (int i = 1; i <= n; i++)
+                this.numList.add(0, (long) 0);
+            return;
+        }
+        if (n < 0) {
+            for (int i = n; i < 0; i++)
+                this.numList.remove(0);
+        }
     }
-//    Num trim() {
-//        if (this.numList.size() > 1)
-//            for (int i = this.numList.size() - 1; this.numList.get(i) == 0 && i > 0; i--)
-//                this.numList.remove(i);
-//        return this;
-//    }
 
-    //     Use divide and conquer
-    static Num power(Num a, long n) {
-        if (n == 0) {
-            return new Num("1");
-        }
-        if (n == 1) {
-            return a;
-        }
-        if (n % 2 == 0) {    // n is even
-            return standardProduct(power(a, n / 2), power(a, n / 2));
-        } else
-            return standardProduct(power(a, n / 2), standardProduct(power(a, n / 2), a));
+    /**
+     * Return {@code b^n}.
+     *
+     * @param b Base in format Num.
+     * @param n Exponent in format long integer.
+     * @return {@code b^n}.
+     */
+    static Num power(Num b, long n) {
+        if (n == 0)
+            return ONE;
 
+        if (n == 1)
+            return b;
+
+        Num s = power(b, n / 2);
+        // n is even
+        if (n % 2 == 0)
+            return product(s, s);
+        else
+            return product(s, product(s, b));
     }
     /* End of Level 1 */
 
@@ -468,9 +481,23 @@ public class Num implements Comparable<Num> {
         return null;
     }
 
-    // Use divide and conquer
-    public static Num power(Num a, Num n) {
-        return null;
+    /**
+     * Return {@code b^n}.
+     *
+     * @param b Base in format Num.
+     * @param n Exponent in format Num.
+     * @return {@code b^n}.
+     */
+    public static Num power(Num b, Num n) {
+        if (n.isZero())
+            return ONE;
+
+        if (n.numList.size() == 1)
+            return power(b, n.numList.get(0));
+
+        long a0 = n.numList.get(0);
+        n.shift(-1);
+        return product(power(power(b, n), n.base), power(b, new Num(a0)));
     }
 
     static Num squareRoot(Num a) {
