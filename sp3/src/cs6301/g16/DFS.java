@@ -22,6 +22,7 @@ public class DFS<T extends DFS.DFSVertex> extends GraphAlgorithm<DFS.DFSVertex> 
     static class DFSVertex {
         boolean seen = false;
 
+        // need to override if subclass use extension of DFSVertex
         void reset() {
             seen = false;
         }
@@ -122,7 +123,7 @@ public class DFS<T extends DFS.DFSVertex> extends GraphAlgorithm<DFS.DFSVertex> 
     void outerLoop(Graph.Vertex v){}
 
     void beforeVisitVertex(Graph.Vertex v){}
-    void encounterUnseenVertex(Graph.Vertex v, Graph.Vertex unseenVertex){}
+    void encounterUnseenVertex(Graph.Vertex v, Graph.Vertex seenVertex){}
     void encounterSeenVertex(Graph.Vertex v, Graph.Vertex unseenVertex){}
     void finishVisitVertex(Graph.Vertex v){};
 
