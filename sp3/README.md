@@ -18,13 +18,14 @@ Deliverable structure is as follow:
     cs6301
     ├── README.md
     └── g16
+        ├── BridgeCut.java                  # Solution for Problem 5
         ├── DFS.java                        # Perform dfs on the graph
         ├── Graph.java                      # Sample code with some modification.
         ├── GraphAlgorithm.java             # Sample code with some modification.
         ├── SCC.java                        # Solution for Problem 2
         ├── TestEulerian.java               # Solution for Problem 3
         ├── TopologicalOrder.java           # Solution for Problem 1
-        └── testDAG.java                    # Solution for Problem 4
+        └── TestDAG.java                    # Solution for Problem 4
 
 Compile
 -------
@@ -42,7 +43,10 @@ javac cs6301/g16/SCC.java
 javac cs6301/g16/TestEulerian.java
 
 # Problem 4
-javac cs6301/g16/testDAG.java
+javac cs6301/g16/TestDAG.java
+
+# Problem 5
+javac cs6301/g16/BridgeCut.java
 ```
 
 There is no dependency with file from package `cs6301.g00`.
@@ -212,7 +216,7 @@ Test Running
 
 - Problem 4
 
-    Execute the command `java cs6301.g16.testDAG`.
+    Execute the command `java cs6301.g16.TestDAG`.
 
    The program will determine whether a graph is DAG or not. If the graph
    has directed and detect there hasn't back edge during dfs, the graph is
@@ -221,7 +225,7 @@ Test Running
     Example:
 
     ```
-     > java cs6301.g16.testDAG 
+     > java cs6301.g16.TestDAG 
      Test Graph 1: 
         11 17
         1 11 1
@@ -288,5 +292,65 @@ Test Running
     5: 
     ==============
     Whether the graph is DAG: true
+
+    ```
+    
+- Problem 5
+
+    Execute the command `java cs6301.g16.BridgeCut`.
+
+    The program will find out the bridge edges and cut vertexes in the input graph.
+
+    Example:
+
+    ```
+     > java cs6301.g16.BridgeCut 
+     
+    10 14
+    1 2 1
+    1 3 1
+    1 5 1
+    2 3 1
+    2 4 1
+    3 4 1
+    5 6 1
+    5 10 1
+    6 7 1
+    6 8 1
+    6 9 1
+    6 10 1
+    7 8 1
+    8 9 1
+    1: (1,2) (1,3) (1,5) 
+    2: (1,2) (2,3) (2,4) 
+    3: (1,3) (2,3) (3,4) 
+    4: (2,4) (3,4) 
+    5: (1,5) (5,6) (5,10) 
+    6: (5,6) (6,7) (6,8) (6,9) (6,10) 
+    7: (6,7) (7,8) 
+    8: (6,8) (7,8) (8,9) 
+    9: (6,9) (8,9) 
+    10: (5,10) (6,10) 
+    
+    =============
+    DFS Start
+    =============
+    
+    1 2 3 4 5 6 7 8 9 10 
+    =============
+    DFS End
+    =============
+    1 dis:1 low:1 cut:false parent:null
+    2 dis:2 low:1 cut:false parent:1
+    3 dis:3 low:1 cut:false parent:2
+    4 dis:4 low:2 cut:false parent:3
+    5 dis:5 low:5 cut:false parent:1
+    6 dis:6 low:5 cut:false parent:5
+    7 dis:7 low:6 cut:false parent:6
+    8 dis:8 low:6 cut:false parent:7
+    9 dis:9 low:6 cut:false parent:8
+    10 dis:10 low:5 cut:false parent:6
+    Cut Vertexes: [5, 6, 1]
+    Bridges: [(1,5)]
 
     ```
