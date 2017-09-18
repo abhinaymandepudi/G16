@@ -88,7 +88,7 @@ public class NumTest {
     }
 
     @Test
-    public void standardSingleDigitProduct() throws Exception {
+    public void SingleDigitProduct() throws Exception {
         Num a = new Num("43142341235323425658679");
         assertEquals(0, new Num("388281071117910830928111").compareTo(Num
                 .SingleDigitProduct(a, 9)));
@@ -96,6 +96,10 @@ public class NumTest {
                 .SingleDigitProduct(a, 7)));
         assertEquals(0, new Num("172569364941293702634716").compareTo(Num
                 .SingleDigitProduct(a, 4)));
+
+        // Test for other base.
+        Num b = new Num(1024, 2);
+        assertEquals(0, new Num(2048, 2).compareTo(Num.SingleDigitProduct(b, 2)));
     }
 
     @Test
@@ -185,7 +189,7 @@ public class NumTest {
 
     @Test
     public void divide() throws Exception {
-        System.out.println(Num.divide(new Num(10), new Num(2)));
+        System.out.println(new Num(1024).convert(2));
     }
 
 //    @Test

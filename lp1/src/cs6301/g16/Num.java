@@ -125,6 +125,27 @@ public class Num implements Comparable<Num> {
         }
     }
 
+    /**
+     * Construct Num from long integer.
+     *
+     * @param x Long representation of Num.
+     */
+    public Num(long x, int radix) {
+        if (x == 0) {
+            this.sign = ZERO.sign;
+            this.numList = ZERO.numList;
+            return;
+        }
+
+        this.sign = x > 0 ? SIGN_POSITIVE : SIGN_NEGATIVE;
+
+        this.base = radix;
+        x = Math.abs(x);
+        while (x != 0) {
+            numList.add((x % this.base));
+            x = x / this.base;
+        }
+    }
 //    public Num(Num x) {
 //        base = x.base;
 //        sign = x.sign;
@@ -553,6 +574,20 @@ public class Num implements Comparable<Num> {
                 result = dresult;
         }
         return result;
+    }
+
+    public Num convert(int radix) {
+        final Num BASE = new Num(this.base, radix);
+        Num ret = new Num(0, radix);
+        Num base = new Num(1, radix);
+        Iterator<Long> it = this.numList.iterator();
+        long x;
+        while (it.hasNext()) {
+            x = it.next();
+            ret = add(ret, SingleDigitProduct(base, x));
+            base = product(base, BASE);
+        }
+        return new Num(ret.numList, this.sign);
     }
 
     // compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise
