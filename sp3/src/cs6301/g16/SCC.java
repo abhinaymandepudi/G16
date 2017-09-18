@@ -24,40 +24,118 @@ package cs6301.g16;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SCC extends DFS {
+public class SCC <T extends SCC.SCCVertex> extends TopologicalOrder.TopAlg2<TestDAG.DAGVertex> {
+
+    /**
+     * Custom vertex wrapper class to hold vertex's component number.
+     * Extend DAGVertex since the outer class is extended from TopAlg2 <- TestDAG which uses DAGVertex
+     */
+    static class SCCVertex extends DAGVertex {
+        int cno; // component number of the vertex
+        @Override
+        void reset() {
+            super.reset();
+            cno = 0;
+        }
+    }
+
+    int cno=0; // number of component;
 
     public SCC(Graph g) {
         super(g);
     }
 
+    /**
+     * Override/Overload Parallel array related functions to use DAGVertex instead
+     */
+    @Override
+    void initParallelArray() {
+        node = new SCCVertex[g.size()];
+        // Create array for storing vertex properties
+        for(Graph.Vertex u: g) {
+            node[u.getName()] = new SCCVertex();
+        }
+    }
+    //Overload
+    SCCVertex getVertex(Graph.Vertex u) {
+        return (SCCVertex)super.getVertex(u);
+    }
+
+    /**
+     * Override extension point functions
+     */
+    void beforeDFS(){
+        super.beforeDFS();
+        this.cno = 0; // reset cno
+    }
+    void outerLoop(Graph.Vertex v){
+        super.outerLoop(v);
+        getVertex(v).cno = ++this.cno;
+    }
+    void beforeVisitVertex(Graph.Vertex v){
+        super.beforeVisitVertex(v);
+        //Set current cno to vertex
+        getVertex(v).cno = cno;
+    }
+
+    /**
+     * Get number of strongly connected components in the graph
+     * @return num of SCC
+     */
     public int getStronglyConnectedComponents() {
         // reference for input graph
         Graph tmpGraph = g;
         // perform the algorithm on a copied graph object, avoid modifying the input graph
         this.g = new Graph(g);
-        // init parallel array on the new graph copy
-        initParallelArray();
         this.dfs();
 
-        // get the decreasing finish time list
-        List<Graph.Vertex> firstDecFinList = this.decFinList;
+        // get the topOrderList aka decreasing finish time list of the first DFS
+        List<Graph.Vertex> firstDecFinList = this.topOrderList;
 
         // reverse the graph
         this.g.reverseGraph();
         // perform 2nd DFS in the descending finish time order of 1st DFS
         this.dfs(firstDecFinList.iterator());
 
+        // print SCCs found in graph
+        printSCCs();
+
         // restore the original graph object
         this.g = tmpGraph;
-        return cno;
+        return this.cno;
     }
 
+    /**
+     * Debug helper - print out SCCs found in the graph
+     */
+    private void printSCCs() {
+
+        System.out.println("\n==============\nSCCs found:");
+
+        List<Graph.Vertex>[] SCCs = new List[cno];
+        for(Graph.Vertex v : g) {
+            if(SCCs[getVertex(v).cno-1]==null)
+                SCCs[getVertex(v).cno-1] = new LinkedList<>();
+            SCCs[getVertex(v).cno-1].add(v);
+        }
+
+        for(int i=0; i<SCCs.length;i++)
+            System.out.println("SCC "+(1+i)+":"+SCCs[i]);
+    }
+
+    /**
+     * Signature required in question
+     * @param g the graph to check
+     * @return number of strongly connected components in the graph
+     */
+
     public static int stronglyConnectedComponents(Graph g) {
-        SCC SCC = new SCC(g);
-        return SCC.getStronglyConnectedComponents();
+        SCC scc = new SCC(g);
+        return scc.getStronglyConnectedComponents();
     }
 
     public static void main(String[] args) throws FileNotFoundException {

@@ -4,10 +4,10 @@
  * Revision of given Graph class, tailored especially for sp3
  * Modifications:
  * 1. Add Copy constructor for Graph object
- * 2. Add removeVertex method
- * 3. Add reverseGraph to reverse graph
- * 4. Add inDegree method to get in-degree of the vertex
- * 5. Add outDegree method to get out-degree of the vertex
+ * 2. Add reverseGraph to reverse graph
+ * 3. Add inDegree method to get in-degree of the vertex
+ * 4. Add outDegree method to get out-degree of the vertex
+ * 5. Some getter methods such as isDirected(), getNum(), etc.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
@@ -257,42 +257,6 @@ public class Graph implements Iterable<Graph.Vertex> {
 
     public int getN() {
         return n;
-    }
-
-    /**
-     * Add Remove Vertex Method for the first question 1 - topoloicalOrder1
-     * Note once a vertex is removed the method getVertex will return null at that position
-     * and iterator will also return null.
-     */
-    public List<Vertex> removeVertex(Vertex vertex) {
-
-        List<Vertex> affectedVertexes = new LinkedList<>();
-
-        // remove outgoing edges
-        for(Edge e : vertex.adj) {
-            Vertex other =  e.otherEnd(vertex);
-            if(directed)
-                other.revAdj.remove(e);
-            else
-                other.adj.remove(e);
-
-            affectedVertexes.add(other);
-        }
-
-        // remove incoming edges
-        for(Edge e : vertex.revAdj) {
-            Vertex other = e.otherEnd(vertex);
-            other.adj.remove(e);
-
-            affectedVertexes.add(other);
-        }
-
-        // set vertex to null in the array
-        // Discuss - use null as placeholder to avoid breaking index of internal vertex array
-        this.v[vertex.name] = null;
-        this.n -= 1;
-
-        return affectedVertexes;
     }
 
     /**

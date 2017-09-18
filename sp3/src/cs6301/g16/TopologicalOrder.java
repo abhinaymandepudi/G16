@@ -24,51 +24,115 @@ public class TopologicalOrder {
     /** Algorithm 1. Remove vertices with no incoming edges, one at a
      *  time, along with their incident edges, and add them to a list.
      */
+    static class TopAlg1 extends GraphAlgorithm<TopAlg1.TopVertex> {
 
-    public static List<Graph.Vertex> topologicalOrder1(Graph g) {
-        // the graph need to be directed
-        if(!g.isDirected())
-            return null;
-
-        Graph tmpG = new Graph(g); // make copy of the input graph
-        List<Graph.Vertex> topList = new LinkedList<>();
-        Queue<Graph.Vertex> q = new LinkedList<>(); // Queue for vertex with in-degree of 0
-        for(Graph.Vertex v : tmpG)
-            if(v.inDegree()==0)
-                q.add(v);
-
-        while (!q.isEmpty()) {
-            Graph.Vertex u = q.remove();
-            topList.add(u);
-            List<Graph.Vertex> affectedVertexes = tmpG.removeVertex(u);
-            for(Graph.Vertex affectedV : affectedVertexes) {
-                if (affectedV.inDegree()==0)
-                    q.add(affectedV);
+        static class TopVertex {
+            int inDegree = 0;
+            void reset(){
+                inDegree = 0;
             }
         }
 
-        if(topList.size()!=g.getN())
-            return null;
-        else
-            return topList;
+        TopAlg1(Graph g) {
+            super(g);
+
+            node = new TopVertex[g.size()];
+            // Create array for storing vertex properties
+            for(Graph.Vertex u: g) {
+                node[u.getName()] = new TopVertex();
+            }
+        }
+
+        List<Graph.Vertex> getTopologicalOrder() {
+            // the graph has to be directed
+            if(!g.isDirected())
+                return null;
+
+            List<Graph.Vertex> topList = new LinkedList<>();
+            Queue<Graph.Vertex> q = new LinkedList<>(); // Queue for vertex with in-degree of 0
+            // set initial inDegree
+            for (Graph.Vertex v : g) {
+                getVertex(v).inDegree = v.inDegree();
+                if(v.inDegree()==0)
+                    q.add(v);
+            }
+
+            while (!q.isEmpty()) {
+                Graph.Vertex u = q.remove();
+                topList.add(u);
+                for(Graph.Edge e : u) {
+                    Graph.Vertex o = e.otherEnd(u);
+                    getVertex(o).inDegree -=1;
+                    if(getVertex(o).inDegree==0){
+                        q.add(o);
+                    }
+                }
+            }
+
+            if(topList.size()!=g.getN()) // the graph is not a DAG
+                return null;
+            else
+                return topList;
+        }
+
+        /**
+         * Required Signature in question to get topological order
+         * @param g
+         * @return
+         */
+        public static List<Graph.Vertex> topologicalOrder1(Graph g) {
+            TopAlg1 alg = new TopAlg1(g);
+            return alg.getTopologicalOrder();
+        }
     }
+
 
     /** Algorithm 2. Run DFS on g and add nodes to the front of the output list,
      *  in the order in which they finish.  Try to write code without using global variables.
      */
-     public static List<Graph.Vertex> topologicalOrder2(Graph g) {
-        // the graph need to be directed
-        if(!g.isDirected())
-            return null;
+    public static class TopAlg2<T extends TestDAG.DAGVertex> extends TestDAG<TestDAG.DAGVertex> {
 
-        DFS dfSearch = new DFS(g);
-        dfSearch.dfs();
+        List<Graph.Vertex> topOrderList;
 
-        // the graph is not a DAG if it is cyclic
-        if(dfSearch.isCyclic)
-            return null;
+        TopAlg2(Graph g) {
+            super(g);
+        }
 
-        return dfSearch.decFinList;
+        /**
+         * Perform algorithm to get topological order of the graph
+         * @return List of vertexes in topological order
+         */
+        List<Graph.Vertex> getTopOrder() {
+            boolean isDAG = dfsWithDAGTest();
+            if(isDAG)
+                return topOrderList;
+            else
+                return null;
+        }
+
+        /**
+         * Override extension functions
+         */
+        @Override
+        void beforeDFS(){
+            super.beforeDFS();
+            topOrderList = new LinkedList<>();
+        }
+        @Override
+        void finishVisitVertex(Graph.Vertex v){
+            super.finishVisitVertex(v);
+            topOrderList.add(0,v);
+        }
+
+        /**
+         * Required Signature in question to get topological order
+         * @param g
+         * @return
+         */
+        public static List<Graph.Vertex> topologicalOrder2(Graph g) {
+            TopAlg2 topAlg = new TopAlg2(g);
+            return topAlg.getTopOrder();
+        }
     }
 
     /**
@@ -116,8 +180,8 @@ public class TopologicalOrder {
         }
         Graph g = Graph.readGraph(in,true);
 
-        System.out.println("\nResult 1:\n"+topologicalOrder1(g));
-        System.out.println("\nResult 2:\n"+topologicalOrder2(g));
+        System.out.println("\nResult 1:\n"+TopAlg1.topologicalOrder1(g));
+        System.out.println("\nResult 2:\n"+TopAlg2.topologicalOrder2(g));
 
     }
 }

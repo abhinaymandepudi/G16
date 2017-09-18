@@ -1,7 +1,7 @@
 /**
  * <h1>Fall 2017 Short Project 3</h1>
  * <p>
- * Helper class extends GraphAlgorithm to provide functionality of DFS in Graph object.
+ * Helper class extends GraphAlgorithm to provide basic but extensible functionality of DFS.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
@@ -13,49 +13,36 @@ package cs6301.g16;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 
-public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
+public class DFS<T extends DFS.DFSVertex> extends GraphAlgorithm<DFS.DFSVertex> {
 
-    // Class to store information about a vertex in this algorithm
+    // Class to store vertex information, using parallel vertex arrays
     static class DFSVertex {
-        boolean seen;
-        int fin; //finish time
-        int dis; //discover time
-        int top; //topological order
-        int cno; //component number * not work properly with directed graph
-        Graph.Vertex parent;
-        DFSVertex(Graph.Vertex u) {
-            reset();
-        }
+        boolean seen = false;
+
         void reset() {
             seen = false;
-            fin = 0;
-            dis = 0;
-            top = 0;
-            parent = null;
         }
     }
 
-    int topNum;
-    int time;
-    int cno; // the cno may not work properly with directed graph e.g. 4->3->2->1 will be counted as 4 components
-    boolean isCyclic;
-    List<Graph.Vertex> decFinList;
+    boolean printFootprint = false; // Flag for debug, printing out dfs footprint
 
     public DFS(Graph g) {
         super(g);
+        // initiation of properties of DFS
         initParallelArray();
     }
-
+    /**
+     * Helper function to initiate parallel array.
+     * This function need to be override if extending DFSVertex Class
+     */
     void initParallelArray() {
         node = new DFSVertex[g.size()];
         // Create array for storing vertex properties
         for(Graph.Vertex u: g) {
-            node[u.getName()] = new DFSVertex(u);
+            node[u.getName()] = new DFSVertex();
         }
     }
 
@@ -72,25 +59,26 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
      * @param it the iterator used while searching
      */
     public void dfs(Iterator<Graph.Vertex> it) {
-        topNum = g.size();
-        time = 0;
-        cno = 0;
-        isCyclic = false;
-        decFinList = new LinkedList<>();
 
+        if(printFootprint) System.out.println("\n=============\nDFS Start\n=============\n");
+
+        // reset all vertex before dfs
         for(Graph.Vertex u: g) {
             DFSVertex du = getVertex(u);
             du.reset();
         }
-
+        beforeDFS(); // function extension point
+        // Outer loop
         while (it.hasNext()) {
             Graph.Vertex u = it.next();
             if(!seen(u)){
-                cno++;
+                outerLoop(u);
                 dfsVisit(u);
             }
         }
+        afterDFS(); // function extension point
 
+        if(printFootprint) System.out.print("\n=============\nDFS End\n=============\n");
     }
 
     /**
@@ -98,28 +86,51 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
      * @param v the vertex to visit
      */
     void dfsVisit(Graph.Vertex v) {
+
+        if(printFootprint) System.out.print(v+" ");
+
         DFSVertex dv = getVertex(v);
         dv.seen = true;
-        dv.dis = ++time;
-        dv.cno = cno;
+        beforeVisitVertex(v); // function extension point
         for(Graph.Edge edge : v) {
             Graph.Vertex u = edge.otherEnd(v);
             if(!seen(u)) {
-                getVertex(u).parent = v;
+                encounterUnseenVertex(v,u); // function extension point
                 dfsVisit(u);
             }
-            else if (getVertex(u).fin==0)
-                // it is a back edge
-                isCyclic = true;
+            else
+                encounterSeenVertex(v, u); // function extension point
         }
-        dv.fin = ++time;
-        dv.top = topNum--;
-        decFinList.add(0,v);
+        finishVisitVertex(v); // function extension point
     }
 
+    /**
+     * Helper function to check whether a vertex is seen
+     * @param u vertex to check
+     * @return whether the vertex is seen
+     */
     boolean seen(Graph.Vertex u) {
         return getVertex(u).seen;
     }
+
+    /**
+     * Methods to override by child class to extend functionality
+     */
+
+    void beforeDFS(){}
+    void afterDFS() {}
+    void outerLoop(Graph.Vertex v){}
+
+    void beforeVisitVertex(Graph.Vertex v){}
+    void encounterUnseenVertex(Graph.Vertex v, Graph.Vertex unseenVertex){}
+    void encounterSeenVertex(Graph.Vertex v, Graph.Vertex unseenVertex){}
+    void finishVisitVertex(Graph.Vertex v){};
+
+    /**
+     * Main function for testing
+     * @param args
+     * @throws FileNotFoundException
+     */
 
     public static void main(String[] args) throws FileNotFoundException {
         /*
@@ -169,9 +180,8 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
 
         if (g.size()>0) {
             DFS dfSearch = new DFS(g);
+            dfSearch.printFootprint = true;
             dfSearch.dfs();
-            System.out.println(dfSearch.decFinList);
-            System.out.println(dfSearch.isCyclic);
         }
     }
 }
