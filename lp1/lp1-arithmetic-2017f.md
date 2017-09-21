@@ -3,8 +3,9 @@
 Fall 2017;  Wed, Sep 6.
 Long Project LP1: Integer arithmetic with arbitrarily large numbers
 
-Ver 1.0: Initial description (Wed, Sep 6).
-Ver 1.1: Changed type of base to long in Num.java
+* Ver 1.0: Initial description (Wed, Sep 6).
+* Ver 1.1: Changed type of base to long in Num.java
+* Ver 1.2: Added missing line in grammar (level 4) for operator % (Tue, Sep 12)
 
 Due: 11:59 PM, Sun, Sep 24 (1st deadline), Sun, Oct 8 (2nd deadline).
 
@@ -25,7 +26,7 @@ trees. Do not use BigInteger, BigNum, or other libraries that implement
 arbitrary precision arithmetic.
 
 [Starter code and sample drivers are provided. Download lp1-starter.zip
-here](lp1-starter.zip)
+here](https://www.utdallas.edu/~rbk/teach/2017f/projects/lp1-starter.zip)
 
 Your task is to implement the class Num that stores and performs
 arithmetic operations on arbitrarily large integers. You must use the
@@ -161,6 +162,7 @@ spaces, so that input can be parsed easily. See
 
     term::            term * factor 
                     | term / factor  
+                    | term % factor  
                     | factor
 
     factor::          uterm ^ factor 
