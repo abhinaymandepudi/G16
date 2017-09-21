@@ -124,8 +124,7 @@ choice of base, between 2 and 10,000. For example, if your program is
 run as "java LP1L4 32", then all numbers should be stored in base 32.
 **Note that input/output is always in base 10.**
 
-Implement the [Shunting Yard algorithm:
-https://en.wikipedia.org/wiki/Shunting-yard\_algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm)
+Implement the [Shunting Yard algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm)
 to be able to parse arithmetic expressions using the following
 precedence rules (highest to the lowest).
 
