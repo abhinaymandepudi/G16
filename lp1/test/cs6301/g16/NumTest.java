@@ -11,12 +11,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class NumTest {
-    @Test
-    public void getHalf() throws Exception {
-        System.out.println(new Num(5430).getHalf());
-    }
-
-    static final String pi =
+    private static final String pi =
             "314159265358979323846264338327950288419716939937510582097494459230781640628620" +
                     "899862803482534211706798214808651328230664709384460955058223172535940812848111" +
                     "745028410270193852110555964462294895493038196442881097566593344612847564823378" +
@@ -25,17 +20,27 @@ public class NumTest {
                     "194151160943305727036575959195309218611738193261179310511854807446237996274956" +
                     "735188575272489122793818301194912983367336244065664308602139494639522473719070" +
                     "217986094370277053921717629317675238467481846766940513200056812714526356082778";
-    static final String prime = "999836351599";
-    static final Num primeNum = new Num(prime);
-    static final Num primeNumMinus = new Num("-" + prime);
-    static final Num piNum = new Num(pi);
-    static final Num piNumMinus = new Num("-" + pi);
-    static final String as = "1024";
-    static final String bs = "1919";
-    static final String cs = "123456789";
-    static final long al = 1024;
-    static final long bl = 1919;
-    static final long cl = 123456789;
+    private static final String prime = "999836351599";
+    private static final Num primeNum = new Num(prime);
+    private static final Num primeNumMinus = new Num("-" + prime);
+    private static final Num piNum = new Num(pi);
+    private static final Num piNumMinus = new Num("-" + pi);
+    private static final String as = "1024";
+    private static final String bs = "1919";
+    private static final String cs = "123456789";
+    private static final long al = 1024;
+    private static final long bl = 1919;
+    private static final long cl = 123456789;
+
+    @Test
+    public void printList() throws Exception {
+        piNum.printList();
+    }
+
+    @Test
+    public void getHalf() throws Exception {
+        System.out.println(new Num(5430).getHalf());
+    }
 
     @Test
     public void shift() throws Exception {
@@ -103,8 +108,8 @@ public class NumTest {
                 .SingleDigitProduct(a, 4)));
 
         // Test for other base.
-        Num b = new Num(1024, 2);
-        assertEquals(0, new Num(2048, 2).compareTo(Num.SingleDigitProduct(b, 2)));
+//        Num b = new Num(1024, 2);
+//        assertEquals(0, new Num(2048, 2).compareTo(Num.SingleDigitProduct(b, 2)));
     }
 
     @Test
@@ -134,49 +139,33 @@ public class NumTest {
 
     }
 
-//    @Test
-//    public void product() throws Exception {
-//        long start, end, k, s;
-//        StringBuilder str1 = new StringBuilder(pi);
-//        str1.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
-//        StringBuilder str2 = new StringBuilder(pi);
-//        str2.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-//                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
-//        Num a = new Num(str1.toString());
-//        Num b = new Num(str2.toString());
-//
-//        start = System.currentTimeMillis();
-//        Num sr = Num.standardProduct(a, b);
-//        end = System.currentTimeMillis();
-//        s = end - start;
-//
-//        start = System.currentTimeMillis();
-//        Num kr = Num.Karatsuba(a, b);
-//        end = System.currentTimeMillis();
-//        k = end - start;
-//
-//        System.out.println(k + " " + s);
-//        assertEquals(0, kr.compareTo(sr));
-//        assertTrue(s < k);
-//    }
+    @Test
+    public void product() throws Exception {
+        long start, end, k, s;
+        StringBuilder str1 = new StringBuilder(pi);
+        str1.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
+        StringBuilder str2 = new StringBuilder(pi);
+        str2.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
+                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
+        Num a = new Num(str1.toString());
+        Num b = new Num(str2.toString());
+
+        start = System.currentTimeMillis();
+        Num sr = Num.standardProduct(a, b);
+        end = System.currentTimeMillis();
+        s = end - start;
+
+        start = System.currentTimeMillis();
+        Num kr = Num.Karatsuba(a, b);
+        end = System.currentTimeMillis();
+        k = end - start;
+
+        System.out.println(k + " " + s);
+        assertEquals(0, kr.compareTo(sr));
+    }
 
     @Test
     public void power() throws Exception {
@@ -191,7 +180,6 @@ public class NumTest {
         assertEquals(0, Num.power(a.negate(), b).compareTo(r.negate()));
     }
 
-
     @Test
     public void divide() throws Exception {
         assertEquals(0, Num.divide(primeNum, new Num(cs)).compareTo(new Num(8098)));
@@ -199,8 +187,7 @@ public class NumTest {
 
     @Test
     public void mod() throws Exception {
-        assertEquals(0, Num.squareRoot(primeNum).compareTo(new Num(999918)));
-        assertEquals(0, Num.squareRoot(new Num(cs)).compareTo(new Num(11111)));
+        assertEquals(0, Num.mod(primeNum, new Num(cs)).compareTo(new Num(83274277)));
     }
 
     @Test
@@ -226,10 +213,12 @@ public class NumTest {
         assertEquals(0, Num.power(new Num(123), new Num(439)).compareTo(r));
         assertEquals(0, Num.power(new Num(-123), new Num(439)).compareTo(r.negate()));
     }
-//
-//    @Test
-//    public void squareRoot() throws Exception {
-//    }
+
+    @Test
+    public void squareRoot() throws Exception {
+        assertEquals(0, Num.squareRoot(primeNum).compareTo(new Num(999918)));
+        assertEquals(0, Num.squareRoot(new Num(cs)).compareTo(new Num(11111)));
+    }
 
     @Test
     public void compareTo() throws Exception {

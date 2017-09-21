@@ -146,6 +146,7 @@ public class Num implements Comparable<Num> {
             x = x / this.base;
         }
     }
+
 //    public Num(Num x) {
 //        base = x.base;
 //        sign = x.sign;
@@ -524,8 +525,8 @@ public class Num implements Comparable<Num> {
         return this;
     }
 
-    static Num mod(Num a, Num b) {
-        return null;
+    static Num mod(final Num a, final Num b) {
+        return subtract(a, product(b, divide(a, b)));
     }
 
     /**
@@ -629,12 +630,27 @@ public class Num implements Comparable<Num> {
         return this.sign > other.sign ? 1 : -1;
     }
 
-    // Output using the format "base: elements of list ..."
-    // For example, if base=100, and the number stored corresponds to 10965,
-    // then the output is "100: 65 9 1"
-    void printList() {
+    /**
+     * Output using the format "base: elements of list ..." For example, if base=100, and the number
+     * stored corresponds to 10965, then the output is "100: 65 9 1"
+     */
+    public void printList() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(this.base).append(":");
+
+        for (long i : this.numList)
+            stringBuilder.append(' ').append(i);
+
+        System.out.println(stringBuilder.toString());
     }
 
+    /**
+     * An internal function used by {@code divide} and {@code squareRoot}, for binary search
+     * method.
+     *
+     * @return A new Num with value half of current Num.
+     */
     public Num getHalf() {
         return Num.SingleDigitProduct(this, this.base / 2).shift(-1);
     }
