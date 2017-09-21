@@ -11,6 +11,11 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class NumTest {
+    @Test
+    public void getHalf() throws Exception {
+        System.out.println(new Num(5430).getHalf());
+    }
+
     static final String pi =
             "314159265358979323846264338327950288419716939937510582097494459230781640628620" +
                     "899862803482534211706798214808651328230664709384460955058223172535940812848111" +
@@ -189,13 +194,15 @@ public class NumTest {
 
     @Test
     public void divide() throws Exception {
-        System.out.println(new Num(1024).convert(2));
+        assertEquals(0, Num.divide(primeNum, new Num(cs)).compareTo(new Num(8098)));
     }
 
-//    @Test
-//    public void mod() throws Exception {
-//    }
-//
+    @Test
+    public void mod() throws Exception {
+        assertEquals(0, Num.squareRoot(primeNum).compareTo(new Num(999918)));
+        assertEquals(0, Num.squareRoot(new Num(cs)).compareTo(new Num(11111)));
+    }
+
     @Test
     public void power1() throws Exception {
         assertEquals(0, Num.power(new Num(1234), new Num(43)).compareTo(new Num(

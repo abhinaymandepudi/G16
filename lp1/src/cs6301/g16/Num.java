@@ -467,23 +467,23 @@ public class Num implements Comparable<Num> {
         if (b.abs().compareTo(a.abs()) > 0)
             return ZERO;
 
+        Num ret;
         Num left = ONE;
         Num right = a;
-        Num ret;
         while (true) {
-            ret = add(left, right).shift(-1);
+            ret = add(left, right).getHalf();
             if (product(ret, b).compareTo(a) > 0) {
                 right = ret;
                 continue;
             }
-            if (product(add(ret, ONE), b).compareTo(a) < 0) {
+            if (product(add(ret, ONE), b).compareTo(a) <= 0) {
                 left = ret;
                 continue;
             }
             break;
         }
 
-        return null;
+        return ret;
     }
 
     /**
@@ -548,7 +548,29 @@ public class Num implements Comparable<Num> {
     }
 
     static Num squareRoot(Num a) {
-        return null;
+        if (a.compareTo(ZERO) < 0)
+            throw new ArithmeticException("square root of non-negative number.");
+
+        if (a.compareTo(ONE) == 0)
+            return a;
+
+        Num ret;
+        Num left = ZERO;
+        Num right = a;
+        while (true) {
+            ret = add(left, right).getHalf();
+            if (power(ret, 2).compareTo(a) > 0) {
+                right = ret;
+                continue;
+            }
+            if (power(add(ret, ONE), 2).compareTo(a) <= 0) {
+                left = ret;
+                continue;
+            }
+            break;
+        }
+
+        return ret;
     }
     /* End of Level 2 */
 
@@ -611,6 +633,10 @@ public class Num implements Comparable<Num> {
     // For example, if base=100, and the number stored corresponds to 10965,
     // then the output is "100: 65 9 1"
     void printList() {
+    }
+
+    public Num getHalf() {
+        return Num.SingleDigitProduct(this, this.base / 2).shift(-1);
     }
 
     public boolean isZero() {
