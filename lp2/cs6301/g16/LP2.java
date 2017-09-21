@@ -9,7 +9,7 @@ import java.util.List;
 import cs6301.g00.*;
 
 public class LP2 {
-    static int VERBOSE = 1;
+    static int VERBOSE = 10;
     public static void main(String[] args) throws FileNotFoundException {
         Scanner in;
         if (args.length > 0) {
