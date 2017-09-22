@@ -10,8 +10,15 @@ public class Num implements Comparable<Num> {
 
     /**
      * Constant ZERO.
+     * <p>
+     * The design of {@code ZERO} is to simplify some operations. However, introducing this constant
+     * sometimes makes the situation more complicated. For example, {@code ZERO} has sign 0, forcing
+     * the originally boolean sign variable to be int. Besides, {@code ZERO} has base 0. This
+     * require of the asserion of {@code this.base == other.base} in the function must appear after
+     * {@code isZero} is verified.
      */
     public static final Num ZERO = new Num((new LinkedList<>(Collections.singleton((long) 0))), 0, 0);
+
     /**
      * Constant for sign. sign of zero can be access as ZERO.sign.
      */
@@ -262,7 +269,6 @@ public class Num implements Comparable<Num> {
      * LinkedList of the result. Note that first numList a must be larger than b.
      */
     private static LinkedList<Long> subtract(List<Long> a, LinkedList<Long> b, long base) {
-//        int numOfLeadingZero = 0;
 
         Iterator<Long> it1 = a.iterator();
         Iterator<Long> it2 = b.iterator();
@@ -279,13 +285,9 @@ public class Num implements Comparable<Num> {
                 borrow = 1;
             }
             result.add(sub);
-//            if (sub == 0)
-//                numOfLeadingZero++;
-//            else
-//                numOfLeadingZero = 0;
         }
 
-        // remove leading zero - if the result is zero, we should keep one zero in the numList
+        // remove leading zero
         Iterator<Long> it = result.descendingIterator();
         long last;
         while (it.hasNext()) {
@@ -294,6 +296,9 @@ public class Num implements Comparable<Num> {
                 break;
             it.remove();
         }
+
+        // Since the caller has already verify that a > b, here the result shouldn't be zero.
+        assert result.size() > 0;
         return result;
     }
 

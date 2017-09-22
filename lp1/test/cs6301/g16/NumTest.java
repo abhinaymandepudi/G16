@@ -128,9 +128,9 @@ public class NumTest {
     public void add() throws Exception {
         assertEquals(0, Num.add(new Num("388281071117910830928111"), new Num("301996388647263979610753")).compareTo(new Num("690277459765174810538864")));
         assertEquals(0, Num.add(new Num("1"), new Num("-100")).compareTo(new Num("-99")));
-//        assertEquals(0, Num.add(new Num("100"), new Num("-100")).compareTo(new Num("0")));
         assertEquals(0, Num.add(new Num("99999999"), new Num("1")).compareTo(new Num("100000000")));
-        System.out.println(Num.add(new Num("999", base), new Num("9990", base)));
+        assertEquals(0, Num.add(new Num("100"), new Num("-100")).compareTo(new Num("0")));
+        assertEquals(0, Num.add(new Num("99999999", base), new Num("-99999999", base)).compareTo(new Num("00000000", base)));
     }
 
     @Test
@@ -149,6 +149,7 @@ public class NumTest {
         assertEquals(0, new Num(16).compareTo(Num.subtract(new Num(80), new Num(64))));
         assertEquals(0, new Num(16).compareTo(Num.subtract(Num.subtract(new Num(81), new Num(1)), new Num(64))));
         assertEquals(0, new Num(1).compareTo(Num.subtract(new Num(999999), new Num(999998))));
+        assertEquals(0, new Num(0).compareTo(Num.subtract(new Num(999999), new Num(999999))));
 
     }
 
