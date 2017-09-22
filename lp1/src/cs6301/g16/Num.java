@@ -449,7 +449,7 @@ public class Num implements Comparable<Num> {
         return add(add(z2, z3), z0);
     }
 
-    static Num product(Num a, Num b) {
+    public static Num product(Num a, Num b) {
         return Karatsuba(a, b);
     }
 
