@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Line {
 
-    Expression.Var left;
-    Expression right = null;
+    private Expression.Var left;
+    private Expression right = null;
 
     /**
      * Postfix expression constructor.

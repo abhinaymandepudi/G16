@@ -9,17 +9,15 @@ import java.util.Scanner;
 
 public class LP1L3 {
 
-    public static List<Num> store = new ArrayList<>(26);
+    public static void main(String[] args) throws Exception {
 
-    public LP1L3() {
+        List<Num> store = new ArrayList<>(26);
+
         for (int i = 0; i < 26; i++) {
             store.add(null);
         }
-    }
 
-    public static void main(String[] args) throws Exception {
         Scanner in = new Scanner(System.in);
-        LP1L3 x = new LP1L3();
         ArrayList<String[]> src = new ArrayList<>();
 
         boolean newLine = Boolean.TRUE;
