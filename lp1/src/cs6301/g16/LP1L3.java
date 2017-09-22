@@ -54,5 +54,24 @@ public class LP1L3 {
         assert last != null;
         last.printList();
 
+
+        /**
+         * test case:
+
+         a = 999 ;
+         b = 8 ;
+         c = a b ^ a b * - ;
+         d = c 99999 / | | ;
+         x = d 1234 % ;
+         ;
+
+
+         +999
+         +8
+         +992027944069944027984009
+         +56121
+         +591
+         10: 1 9 5
+         */
     }
 }
