@@ -41,16 +41,20 @@ public class LP1L3 {
                 line.add(word);
         }
 
-        ArrayList<Line> exe = new ArrayList<>(src.size());
+        ArrayList<ExecutableLine> exe = new ArrayList<>(src.size());
         for (String[] l : src)
-            exe.add(new Line(l, store));
+            exe.add(new ExecutableLine.ExpressionLine(l, store));
 
-        Num last = null;
-        for (Line l : exe)
-            System.out.println(last = l.execute());
+        for (int i = 0; i < exe.size(); i++) {
+            ExecutableLine l = exe.get(i);
 
-        assert last != null;
-        last.printList();
+            int next = l.execute();
+
+            if (next == 0)
+                continue;
+        }
+
+        exe.get(exe.size() - 1).print();
 
 
         /**
