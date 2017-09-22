@@ -760,6 +760,7 @@ public class Num implements Comparable<Num> {
     }
 
     // Return number to a string in base 10
+    @Override
     public String toString() {
         Num ret = new Num(0);
 

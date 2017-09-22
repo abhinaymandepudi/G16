@@ -5,8 +5,19 @@ import java.util.Deque;
 import java.util.List;
 
 public interface ExecutableLine {
+
+    /**
+     * Execute current line and return the next line number. If no specific line number, return -1.
+     *
+     * @return Next line number.
+     */
     int execute();
 
+    Num getNum();
+
+    /**
+     * Print current line result to standard output.
+     */
     void print();
 
     class ExpressionLine implements ExecutableLine {
@@ -62,15 +73,45 @@ public interface ExecutableLine {
         }
 
         @Override
+        public Num getNum() {
+            return left.getValue();
+        }
+
+        @Override
         public int execute() {
             this.left.assign(this.right.getValue());
             this.print();
-            return 0;
+            return -1;
         }
 
         @Override
         public void print() {
+            assert this.left != null;
             System.out.println(this.left.getValue());
+        }
+    }
+
+    class ControlLine implements ExecutableLine {
+        private Expression.Var condition;
+        private int pos;
+        private int neg;
+
+        public ControlLine(String[] line, List<Num> store) {
+        }
+
+        @Override
+        public int execute() {
+            return 0;
+        }
+
+        @Override
+        public Num getNum() {
+            return condition.getValue();
+        }
+
+        @Override
+        public void print() {
+
         }
     }
 }

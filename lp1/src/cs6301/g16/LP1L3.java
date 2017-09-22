@@ -42,8 +42,10 @@ public class LP1L3 {
         }
 
         ArrayList<ExecutableLine> exe = new ArrayList<>(src.size());
-        for (String[] l : src)
+        for (int i = 0; i < src.size(); i++) {
+            String[] l = src.get(i);
             exe.add(new ExecutableLine.ExpressionLine(l, store));
+        }
 
         for (int i = 0; i < exe.size(); i++) {
             ExecutableLine l = exe.get(i);
@@ -54,7 +56,7 @@ public class LP1L3 {
                 continue;
         }
 
-        exe.get(exe.size() - 1).print();
+        exe.get(exe.size() - 1).getNum().printList();
 
 
         /**
