@@ -197,11 +197,17 @@ public class NumTest {
     @Test
     public void divide() throws Exception {
         assertEquals(0, Num.divide(primeNum, new Num(cs, base)).compareTo(new Num(8098, base)));
+        assertEquals(0, Num.divide(primeNumMinus, new Num(cs, base)).compareTo(new Num(-8098, base)));
+        assertEquals(0, Num.divide(primeNum, new Num(cs, base).negate()).compareTo(new Num(-8098, base)));
+        assertEquals(0, Num.divide(primeNumMinus, new Num(cs, base).negate()).compareTo(new Num(8098, base)));
     }
 
     @Test
     public void mod() throws Exception {
         assertEquals(0, Num.mod(primeNum, new Num(cs, base)).compareTo(new Num(83274277, base)));
+        assertEquals(0, Num.mod(primeNum, new Num(cs, base).negate()).compareTo(new Num(83274277, base)));
+        assertEquals(0, Num.mod(primeNumMinus, new Num(cs, base)).compareTo(new Num(-83274277, base)));
+        assertEquals(0, Num.mod(primeNumMinus, new Num(cs, base).negate()).compareTo(new Num(-83274277, base)));
     }
 
     @Test

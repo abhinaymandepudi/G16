@@ -496,7 +496,7 @@ public class Num implements Comparable<Num> {
     }
 
     /* Start of Level 2 */
-    public static Num divide(final Num a, final Num b) {
+    public static Num absDivide(final Num a, final Num b) {
         Num ONE = new Num(1, a.base());
         if (b.isZero())
             throw new ArithmeticException("divide by zero");
@@ -526,6 +526,10 @@ public class Num implements Comparable<Num> {
         return ret;
     }
 
+    public static Num divide(final Num a, final Num b) {
+        return a.sign == b.sign ? absDivide(a.abs(), b.abs()) : absDivide(a.abs(), b.abs()).negate();
+    }
+
     /**
      * Return {@code b^n}.
      *
@@ -549,7 +553,7 @@ public class Num implements Comparable<Num> {
             return product(s, product(s, b));
     }
 
-    static Num mod(final Num a, final Num b) {
+    public static Num mod(final Num a, final Num b) {
         return subtract(a, product(b, divide(a, b)));
     }
 
