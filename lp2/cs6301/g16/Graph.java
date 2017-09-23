@@ -1,4 +1,7 @@
 /**
+ *
+ * Keep in g16 package for convenience of accessing certain fields
+ *
  * Class to represent a graph
  *  @author rbk
  *  Ver 1.1: 2017/08/28.  Updated some methods to public.  Added getName() to Vertex
@@ -7,6 +10,8 @@
  */
 
 package cs6301.g16;
+import cs6301.g00.ArrayIterator;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
