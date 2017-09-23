@@ -44,8 +44,12 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
     List<Graph.Edge> tour;
     Graph.Vertex start;
 
-    // Constructor
-    Euler(Graph g, Graph.Vertex start) {
+    /**
+     * Constructor for Euler Class
+     * @param g input graph
+     * @param start start point to perform algorithm
+     */
+    public Euler(Graph g, Graph.Vertex start) {
         super(g);
         this.start = start;
         VERBOSE = 1;
@@ -57,7 +61,10 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
         }
     }
 
-    // To do: function to find an Euler tour
+    /**
+     * Find a Euler Tour from the start point specified
+     * @return List of edges in the order of euler tour
+     */
     public List<Graph.Edge> findEulerTour() {
         findTours();
         if (VERBOSE > 9) {
@@ -67,13 +74,15 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
         return tour;
     }
 
-    /* To do: test if the graph is Eulerian.
+    /**
+     * Test if the graph is Eulerian.
      * If the graph is not Eulerian, it prints the message:
      * "Graph is not Eulerian" and one reason why, such as
      * "inDegree = 5, outDegree = 3 at Vertex 37" or
      * "Graph is not strongly connected"
+     * @return boolean value indicate whether the graph is Eulerian
      */
-    boolean isEulerian() {
+    public boolean isEulerian() {
 
         // Test if the graph is directed
         if(!g.directed) {
@@ -88,7 +97,7 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
             int inDegree = v.revAdj.size();
             if(inDegree!=outDegree) {
                 System.out.println("Graph is not Eulerian");
-                System.out.printf("inDegree = %d, outDegree = %d at Vertex %s",inDegree,outDegree,v.toString());
+                System.out.printf("Reason: inDegree = %d, outDegree = %d at Vertex %s",inDegree,outDegree,v.toString());
                 return false;
             }
         }
@@ -106,7 +115,11 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
 
     }
 
-    // Helper function - find a tour from vertex u
+    /**
+     * Helper function - find a sub tour from vertex u
+     * @param u start vertex of the sub tour
+     * @param tour empty list used to return sub tour
+     */
     void findSubTour(Graph.Vertex u, List<Graph.Edge> tour) {
         while (getVertex(u).hasNext()) {
             Graph.Edge e = getVertex(u).next();
@@ -115,7 +128,9 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
         }
     }
 
-    // Find tours starting at vertices with unexplored edges
+    /**
+     * Find sub tours starting at vertices with unexplored edges
+     */
     void findTours() {
         for(Graph.Vertex v:g) {
             getVertex(v).reset(v);
@@ -161,7 +176,9 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
         }
     }
 
-    // Stitch tours into a single tour using the algorithm discussed in class
+    /**
+     * Stitch tours into a single tour using the algorithm discussed in class
+     */
     void stitchTours() {
 
         tour.clear();
@@ -177,7 +194,9 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
         }
     }
 
-    // Helper function for Stitch tours
+    /**
+     * Helper function for Stitch tours
+     */
     private void explore(Graph.Vertex v) {
         if(getVertex(v).tour==null) {
             System.out.println("Error - explore vertex without sub tour");
