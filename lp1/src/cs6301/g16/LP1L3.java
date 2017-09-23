@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class LP1L3 {
 
     public static void main(String[] args) throws Exception {
+        long base = 10;
 
         List<Num> store = new ArrayList<>(26);
 
@@ -20,6 +21,7 @@ public class LP1L3 {
         Scanner in = new Scanner(System.in);
         ArrayList<String[]> src = new ArrayList<>();
 
+        ArrayList<ExecutableLine> exe = new ArrayList<>(src.size());
         boolean newLine = Boolean.TRUE;
         ArrayList<String> line = null;
         String word;
@@ -36,15 +38,9 @@ public class LP1L3 {
                 if (line.size() == 0)
                     break;
                 newLine = Boolean.TRUE;
-                src.add(line.toArray(new String[line.size()]));
+                exe.add(new ExecutableLine.PosFixExpressionLine(line, store, base));
             } else
                 line.add(word);
-        }
-
-        ArrayList<ExecutableLine> exe = new ArrayList<>(src.size());
-        for (int i = 0; i < src.size(); i++) {
-            String[] l = src.get(i);
-            exe.add(new ExecutableLine.ExpressionLine(l, store));
         }
 
         for (int i = 0; i < exe.size(); i++) {

@@ -19,6 +19,8 @@ public class Tokenizer {
             return Token.CLOSE;
         } else if (s.equals(";")) {
             return Token.EOL;
+        } else if (s.equals("?")) {
+            return Token.CTRL;
         } else {  // Error
             throw new Exception("Unknown token: " + s);
         }
@@ -36,5 +38,5 @@ public class Tokenizer {
         }
     }
 
-    public enum Token {VAR, NUM, OP, EQ, OPEN, CLOSE, EOL}
+    public enum Token {VAR, NUM, OP, EQ, OPEN, CLOSE, EOL, CTRL}
 }
