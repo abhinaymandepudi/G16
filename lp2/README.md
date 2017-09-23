@@ -23,12 +23,12 @@ Project Structure
 Deliverable structure is as follow:
 
     cs6301
-    ├── README.md
     └── g16
         ├── Euler.java                      # Euler Tour Algorithm implementation 
         ├── Graph.java                      # Graph class given with minoral modification for accessibility
         ├── GraphAlgorithm.java             # GraphAlgorithm class given, put it here for accessibility
         ├── LP2.java                        # Test entry for LP2
+        ├── README.md                       # This file
         └── TarjanSCC.java                  # Helper class implementing Tarjan SCC algorithm for strongly connected test
 
 Compile
