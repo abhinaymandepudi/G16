@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p": "cs6301.g16", "l": "Num"}];
