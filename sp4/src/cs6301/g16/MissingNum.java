@@ -83,9 +83,17 @@ public class MissingNum {
     }
 
     public static void main(String[] args) {
-        int[] arr = new int[]{1, 3, 4, 5, 8, 9, 10};
-        System.out.println("\n-------------\nInput array: " + Arrays.toString(arr));
-        System.out.println("\nOutput array: " + missingNums(arr));
 
+        {
+            int[] arr = new int[]{1, 3, 4, 5, 8, 9, 10};
+            System.out.println("\n-------------\nInput array: " + Arrays.toString(arr));
+            System.out.println("\nOutput array: " + missingNums(arr));
+        }
+
+        {
+            int[] arr = new int[]{1, 2, 4, 6, 8, 9, 10, 22};
+            System.out.println("\n-------------\nInput array: " + Arrays.toString(arr));
+            System.out.println("\nOutput array: " + missingNums(arr));
+        }
     }
 }

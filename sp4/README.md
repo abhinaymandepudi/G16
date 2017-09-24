@@ -21,6 +21,7 @@ Deliverable structure is as follow:
         ├── BSTreeLinkedList.java                # Solution for Problem 1
         ├── Fibonacci.java                       # Solution for Problem 2
         ├── Mergesort.java                       # Solution for Problem 3
+        ├── MissingNum.java                      # Solution for Problem 6
         └── README.md                            # This File 
 
 Compile
@@ -44,6 +45,7 @@ To compile, run the following commands:
 # Problem 5
 
 # Problem 6
+# javac cs6301/g16/MissingNum.java
 ```
 
 There is no dependency with file from package `cs6301.g00`.
@@ -146,8 +148,6 @@ Test Running
        Average running time 4:41ms
       ```
          
-     
-     
 
 - Problem 4
 
@@ -175,4 +175,26 @@ Test Running
     -----------
     Input: arr:[1, 3, 8, 10, 22, 80]; x=50;
     Output:4
+    ```
+
+- Problem 6
+
+    Execute the command `java cs6301.g16.MissingNum`.
+
+    This program will take a sorted list from 1 to n+k and find a list of k missing numbers from the input array  
+
+    Example:
+
+    ```
+     > java cs6301.g16.MissingNum 
+     
+    -------------
+    Input array: [1, 3, 4, 5, 8, 9, 10]
+    
+    Output array: [2, 6, 7]
+    
+    -------------
+    Input array: [1, 2, 4, 6, 8, 9, 10, 22]
+    
+    Output array: [3, 5, 7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
     ```
