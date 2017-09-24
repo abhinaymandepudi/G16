@@ -1,7 +1,16 @@
+/**
+ * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
+ * <p>
+ * Implement the class Num that stores and performs arithmetic operations on arbitrarily large
+ * integers using {@code LinkedList}, where the digits are in the chosen base. Each node of the list
+ * stores exactly one long integer. The base is defined to be 10 by default, but caller may modify
+ * it. For base = 10, the number 4628 is represented by the list: 8-->2-->6-->4.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-09-23
+ */
 
-// Starter code for lp1.
-
-// Change following line to your group number
 package cs6301.g16;
 
 import java.util.*;
@@ -28,64 +37,30 @@ public class Num implements Comparable<Num> {
 
     private static ArrayList<Long> buffer = new ArrayList<>();
     private final long base;
+
     /**
      * The sign of the Num. -1 for negative, 0 for zero, 1 for positive number. Use int rather than
      * boolean could eliminate duplicate representation of zero. Final keyword requires the sign be
      * initialize in constructor.
      */
     private final int sign;
+
     /**
      * The number is store in LinkedList with most significant digit at the end of the LinkedList,
      * and the least significant digit at the beginning.
      */
-    public LinkedList<Long> numList = new LinkedList<>();
-
-
-    /* Start of Level 1 */
+    private LinkedList<Long> numList = new LinkedList<>();
 
     /**
-     * Construct Num from String. The String representation consists of an optional minus or plus
-     * sign followed by a sequence of one or more digits in the default radix 10.
+     * Construct Num from String. No radix is specified, so the default base is used.
      *
      * @param s String representation of Num.
      */
     public Num(String s) {
-        this.base = defaultBase;
-        int sign = SIGN_POSITIVE, cursor = 0;
-        final int len = s.length();
-
-        // Leading sign, if exists, must appear at beginning.
-        int plusIndex = s.lastIndexOf('+');
-        int minusIndex = s.lastIndexOf('-');
-        if (plusIndex > 0 || minusIndex > 0)
-            throw new NumberFormatException("Sign character in the middle.");
-
-        // If leading sign exist, set cursor to 1.
-        if (plusIndex >= 0 || minusIndex >= 0) {
-            cursor = 1;
-
-            // "-" at front, otherwise keep default value 1.
-            if (minusIndex == 0) {
-                sign = SIGN_NEGATIVE;
-            }
-        }
-
-        // Skip leading zeros and compute number of digits in magnitude
-        while (cursor < len && s.charAt(cursor) == '0') {
-            cursor++;
-        }
-
-        if (cursor == len) {
-            this.sign = ZERO.sign;
-            numList = ZERO.numList;
-            return;
-        }
-
-        this.sign = sign;
-
-        for (int i = cursor; i <= s.length() - 1; i++) {
-            numList.add(0, (long) (s.charAt(i) - '0'));
-        }
+        Num t = new Num(s, defaultBase);
+        this.sign = t.sign;
+        this.base = t.base;
+        this.numList = t.numList;
     }
 
     /**
@@ -93,7 +68,8 @@ public class Num implements Comparable<Num> {
      * optional minus or plus sign followed by a sequence of one or more digits in the default radix
      * 10.
      *
-     * @param s String representation of Num.
+     * @param s     String representation of Num.
+     * @param radix Specific radix in long int.
      */
     public Num(String s, long radix) {
         int sign = SIGN_POSITIVE, cursor = 0;
@@ -143,7 +119,7 @@ public class Num implements Comparable<Num> {
      * Internal constructor used to create Num with same numList and specific sign, such as abs() or
      * constant ZERO. Note that, the numList inside Num should be immutable in general. Operations
      * on the numList inside Num often leads to new Num with newly allocated numList (for example
-     * add/substract/product). Thus, copying the reference to the numList would be sufficient.
+     * add/subtract/product). Thus, copying the reference to the numList would be sufficient.
      *
      * @param list List allocated already.
      * @param sign New sign to the number.
@@ -199,12 +175,13 @@ public class Num implements Comparable<Num> {
         }
     }
 
-//    public Num(Num x) {
-//        base = x.base;
-//        sign = x.sign;
-//        numList = (List<Long>) ((LinkedList<Long>) x.numList).clone();
-//    }
-
+    /**
+     * Alternative iterator of a {@code LinkedList}, return the number if there exists a next
+     * number, otherwise return 0. Internal use only.
+     *
+     * @param it Iterator of the digit list.
+     * @return The next digit if exist, otherwise {@code 0}.
+     */
     private static Long zeroNext(Iterator<Long> it) {
         if (it.hasNext())
             return it.next();
@@ -243,8 +220,42 @@ public class Num implements Comparable<Num> {
     }
 
     /**
+     * Return the Num with value of {@code (a - b)}.
+     *
+     * @param a Value to be subtracted from.
+     * @param b Value to be subtracted with.
+     * @return {@code (a + b)}.
+     */
+    public static Num subtract(Num a, Num b) {
+        if (b.isZero())
+            return a;
+        if (a.isZero())
+            return b.negate();
+
+        assert a.base == b.base;
+
+        if (a.sign != b.sign)
+            return new Num(add(a.numList, b.numList, a.base), a.sign, a.base());
+
+        int cmp = a.modCompareTo(b);
+        if (cmp == 0)
+            return ZERO;
+
+        LinkedList<Long> result = cmp > 0 ? subtract(a.numList, b.numList, a.base)
+                : subtract(b.numList, a.numList, a.base);
+
+        return new Num(result, cmp == a.sign ? SIGN_POSITIVE : SIGN_NEGATIVE, a.base());
+    }
+
+    /**
      * Internal implementation of two numList add with specific base. Return a newly allocated
      * LinkedList of the result.
+     *
+     * @param a    First {@code LinkedList} to add.
+     * @param b    Second {@code LinkedList} to add.
+     * @param base Base of each {@code LinkedList}. Since only the {@code LinkedList} is given, the
+     *             base is required here.
+     * @return Newly allocated {@code LinkedList} of {@code a + b}.
      */
     private static LinkedList<Long> add(List<Long> a, LinkedList<Long> b, long base) {
 
@@ -260,13 +271,18 @@ public class Num implements Comparable<Num> {
             result.add(sum % base);
             carry = sum / base;
         }
-
         return result;
     }
 
     /**
-     * Internal implementation of two numList substract with specific base. Return a newly allocated
+     * Internal implementation of two numList subtract with specific base. Return a newly allocated
      * LinkedList of the result. Note that first numList a must be larger than b.
+     *
+     * @param a    First {@code LinkedList} to subtract from.
+     * @param b    Second {@code LinkedList} to subtract with.
+     * @param base Base of each {@code LinkedList}. Since only the {@code LinkedList} is given, the
+     *             base is required here.
+     * @return Newly allocated {@code LinkedList} of {@code a - b}.
      */
     private static LinkedList<Long> subtract(List<Long> a, LinkedList<Long> b, long base) {
 
@@ -302,33 +318,6 @@ public class Num implements Comparable<Num> {
         return result;
     }
 
-    /**
-     * Return the Num with value of {@code (a - b)}.
-     *
-     * @param a Value to be subtracted from.
-     * @param b Value to be subtracted with.
-     * @return {@code (a + b)}.
-     */
-    public static Num subtract(Num a, Num b) {
-        if (b.isZero())
-            return a;
-        if (a.isZero())
-            return b.negate();
-
-        assert a.base == b.base;
-
-        if (a.sign != b.sign)
-            return new Num(add(a.numList, b.numList, a.base), a.sign, a.base());
-
-        int cmp = a.modCompareTo(b);
-        if (cmp == 0)
-            return ZERO;
-
-        LinkedList<Long> result = cmp > 0 ? subtract(a.numList, b.numList, a.base)
-                : subtract(b.numList, a.numList, a.base);
-
-        return new Num(result, cmp == a.sign ? SIGN_POSITIVE : SIGN_NEGATIVE, a.base());
-    }
 
     /**
      * Return the Num with value {@code (a * n)}, where n be a long integer.
@@ -356,13 +345,14 @@ public class Num implements Comparable<Num> {
     }
 
     /**
-     * Standard n-squared algorithm for product. Return the Num with value {@code (a * b)}.
+     * Standard n-squared algorithm for product. Return the Num with value {@code (a * b)}. This
+     * function is used to validate the result of Karatsuba Algorithm product.
      *
      * @param a First Num in product.
      * @param b Second Num in product.
      * @return {@code (a * b)}.
      */
-    public static Num standardProduct(Num a, Num b) {
+    static Num standardProduct(Num a, Num b) {
 
         // Return ZERO if a or b == 0.
         if (a.isZero() || b.isZero())
@@ -395,31 +385,52 @@ public class Num implements Comparable<Num> {
         return a.sign == b.sign ? new Num(ret.numList, SIGN_POSITIVE, a.base()) : new Num(ret.numList, SIGN_NEGATIVE, a.base());
     }
 
-    public static Num Karatsuba(Num a, Num b) {
-        Num absRet = KaratsubaProduct(a.abs(), b.abs());
+    /**
+     * Karatsuba algorithm implementation for product. Return the Num with value {@code (a * b)}.
+     * Use the unsigned version to compute result and deal with sign afterward.
+     *
+     * @param a First Num in product.
+     * @param b Second Num in product.
+     * @return {@code (a * b)}.
+     */
+    static Num Karatsuba(Num a, Num b) {
+        Num absRet = KaratsubaUnsigned(a.abs(), b.abs());
         return new Num(absRet.numList, a.sign * b.sign, a.base());
     }
 
-    public static Num KaratsubaProduct(Num a, Num b) {
+    /**
+     * Unsigned version of Karatsuba algorithm for product. Return the Num with value {@code (a *
+     * b)}.
+     *
+     * @param a First Num in product.
+     * @param b Second Num in product.
+     * @return {@code (a * b)}.
+     */
+    private static Num KaratsubaUnsigned(Num a, Num b) {
         assert a.numList.size() != 0;
         assert b.numList.size() != 0;
 
-//        if (a.numList.size() <= 1 || b.numList.size() <= 1)
-//            return standardProduct(a, b);
+        // If one Num has only one digit, use SingleDigitProduct directly.
         if (a.numList.size() == 1)
             return SingleDigitProduct(b, a.numList.get(0));
         if (b.numList.size() == 1)
             return SingleDigitProduct(a, b.numList.get(0));
+
+        // Otherwise, take the half of the smaller length of Num.
         int m = Integer.min(a.numList.size(), b.numList.size());
         int m2 = m / 2;
-//        Num ha = new Num(), la = new Num(), hb = new Num(), lb = new Num();
+
+        // Allocate new LinkedList for split the Num in two.
         LinkedList<Long> alow = new LinkedList<>();
         LinkedList<Long> ahigh = new LinkedList<>();
         LinkedList<Long> blow = new LinkedList<>();
         LinkedList<Long> bhigh = new LinkedList<>();
+
+        // Split both Num based on half length of the shorter one.
         split(a.numList, alow, ahigh, m2);
         split(b.numList, blow, bhigh, m2);
 
+        // Generate lower and higher part of both a and b respectively.
         Num al = alow.size() == 0 ? ZERO : new Num(alow, SIGN_POSITIVE, a.base());
         Num ah = new Num(ahigh, SIGN_POSITIVE, a.base());
         Num bl = blow.size() == 0 ? ZERO : new Num(blow, SIGN_POSITIVE, a.base());
@@ -429,26 +440,28 @@ public class Num implements Comparable<Num> {
         assert bl.numList.size() != 0;
         assert ah.numList.size() != 0;
         assert bh.numList.size() != 0;
-//        split(a, ha, la, m2);
-//        split(b, hb, lb, m2);
-        Num z0 = KaratsubaProduct(al, bl);
-        Num z2 = KaratsubaProduct(ah, bh);
-        Num z1 = KaratsubaProduct(add(ah, al), add(bh, bl));
+
+        // Recursive call on Karatsuba Product itself.
+        Num z0 = KaratsubaUnsigned(al, bl);
+        Num z2 = KaratsubaUnsigned(ah, bh);
+        Num z1 = KaratsubaUnsigned(add(ah, al), add(bh, bl));
 
         Num z3 = subtract(subtract(z1, z2), z0);
 
         z3.shift(m2);
-//        if (!z3.isZero())
-//            for (int i = 0; i < m2; i++)
-//                z3.numList.add(0, (long) 0);
-
         z2.shift(m2 * 2);
-//        for (int i = 0; i < m2 * 2; i++)
-//            z2.numList.add(0, (long) 0);
 
         return add(add(z2, z3), z0);
     }
 
+    /**
+     * Return the product of two {@code Num} instance {@code a} and {@code b}. Internally, Karatsuba
+     * Algorithm is used.
+     *
+     * @param a First Num in product.
+     * @param b Second Num in product.
+     * @return {@code a * b}.
+     */
     public static Num product(Num a, Num b) {
         return Karatsuba(a, b);
     }
@@ -491,12 +504,16 @@ public class Num implements Comparable<Num> {
         while (it.hasNext())
             xhigh.add(it.next());
 
-//        xlow.addAll(x.subList(0, k));
-//        xhigh.addAll(x.subList(k, x.size()));
     }
 
     /* Start of Level 2 */
-    public static Num absDivide(final Num a, final Num b) {
+
+    /**
+     * @param a
+     * @param b
+     * @return
+     */
+    static Num DivideUnsigned(final Num a, final Num b) {
         Num ONE = new Num(1, a.base());
         if (b.isZero())
             throw new ArithmeticException("divide by zero");
@@ -527,7 +544,7 @@ public class Num implements Comparable<Num> {
     }
 
     public static Num divide(final Num a, final Num b) {
-        return a.sign == b.sign ? absDivide(a.abs(), b.abs()) : absDivide(a.abs(), b.abs()).negate();
+        return a.sign == b.sign ? DivideUnsigned(a.abs(), b.abs()) : DivideUnsigned(a.abs(), b.abs()).negate();
     }
 
     /**
@@ -553,6 +570,12 @@ public class Num implements Comparable<Num> {
             return product(s, product(s, b));
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static Num mod(final Num a, final Num b) {
         return subtract(a, product(b, divide(a, b)));
     }
@@ -777,7 +800,8 @@ public class Num implements Comparable<Num> {
 
         StringBuilder stringBuilder = new StringBuilder(ret.numList.size() + 1);
 
-        stringBuilder.append(this.sign == 1 ? '+' : '-');
+        if (this.sign == SIGN_NEGATIVE)
+            stringBuilder.append('-');
 
         while (it.hasNext())
             stringBuilder.append(it.next());

@@ -61,7 +61,6 @@ public class LP1L4 {
         }
 
         for (int i = 0; i < exe.size(); i++) {
-//            System.out.println("Execute line: " + i);
             ExecutableLine l = exe.get(i);
 
             int next = l.execute();

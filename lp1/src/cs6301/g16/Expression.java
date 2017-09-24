@@ -3,12 +3,9 @@ package cs6301.g16;
 import java.util.List;
 
 public interface Expression {
-    public Num getValue();
+    Num getValue();
 
-    public abstract class Operation implements Expression {
-    }
-
-    public class Var implements Expression {
+    class Var implements Expression {
 
         private char varname;
         private List<Num> store = null;
@@ -28,7 +25,7 @@ public interface Expression {
         }
     }
 
-    public class Number implements Expression {
+    class Number implements Expression {
         cs6301.g16.Num num;
 
         public Number(String s) {
@@ -45,7 +42,7 @@ public interface Expression {
         }
     }
 
-    public class Plus extends Operation {
+    class Plus implements Expression {
 
         Expression a;
         Expression b;
@@ -61,7 +58,7 @@ public interface Expression {
         }
     }
 
-    public class Minus extends Operation {
+    class Minus implements Expression {
         Expression a;
         Expression b;
 
@@ -76,7 +73,7 @@ public interface Expression {
         }
     }
 
-    public class Product extends Operation {
+    class Product implements Expression {
 
         Expression a;
         Expression b;
@@ -92,7 +89,7 @@ public interface Expression {
         }
     }
 
-    public class Divide extends Operation {
+    class Divide implements Expression {
 
         Expression a;
         Expression b;
@@ -108,7 +105,7 @@ public interface Expression {
         }
     }
 
-    public class Mod extends Operation {
+    class Mod implements Expression {
 
         Expression a;
         Expression b;
@@ -124,7 +121,7 @@ public interface Expression {
         }
     }
 
-    public class Power extends Operation {
+    class Power implements Expression {
 
         Expression b;
         Expression n;
@@ -140,7 +137,7 @@ public interface Expression {
         }
     }
 
-    public class SquareRoot extends Operation {
+    class SquareRoot implements Expression {
 
         Expression a;
 

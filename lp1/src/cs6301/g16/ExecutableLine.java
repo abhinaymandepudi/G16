@@ -1,10 +1,31 @@
+/**
+ * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
+ * <p>
+ * Supporting class of L4 driver function.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-09-23
+ */
+
 package cs6301.g16;
 
 import java.util.*;
 
+/**
+ * Each line of input is stored in a class which implemented the {@code ExecutableLine} interface.
+ * The main interface function is {@code execute()}, which execute the current line and return the
+ * next line number.
+ */
 public interface ExecutableLine {
 
-    public enum LineType {POSFIX, INFIX, CTRL}
+    /**
+     * Return the value representing current {@code ExecutableLine} (left value of a in/post fix
+     * expression or the condition value for the control expression).
+     *
+     * @return The Num representing current {@code ExecutableLine}.
+     */
+    Num getNum();
 
     /**
      * Execute current line and return the next line number. If no specific line number, return -1.
@@ -13,15 +34,24 @@ public interface ExecutableLine {
      */
     int execute();
 
-    Num getNum();
+    enum LineType {POSFIX, INFIX, CTRL}
 
     /**
      * Print current line result to standard output.
      */
     void print();
 
+    /**
+     * Class to store the post fix expression line. A post fix expression consists of two part, the
+     * left value (which should be a variable), and the right value (which should be an {@code
+     * Expression} instance). To execute a line, evaluate the right value and assign the value (in a
+     * {@code Num} instance) to the left value.
+     */
     class PosFixExpressionLine implements ExecutableLine {
 
+        /**
+         * Left value of
+         */
         private Expression.Var left;
         private Expression right = null;
 
