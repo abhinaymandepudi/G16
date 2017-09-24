@@ -28,6 +28,11 @@ Deliverable structure is as follow:
         ├── ShuntingYardTest.java   # Unittest class for ShuntingYard.
         └── Tokenizer.java          # A modified Tokenizer.
 
+Javadoc
+-------
+
+An online Javadoc for `Num` class is hosted at [Num](https://hanlin-he.github.io/G16/lp1/doc/cs6301/g16/Num.html).
+
 Compile
 -------
 

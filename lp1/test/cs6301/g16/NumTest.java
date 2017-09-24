@@ -42,20 +42,6 @@ public class NumTest {
     private static final Num piNumMinus = new Num("-" + pi, base);
 
     @Test
-    public void printList() throws Exception {
-        piNum.printList();
-        new Num("0", 256).printList();
-        new Num(999999999, 16).printList();
-        new Num("999999999", 16).printList();
-
-        System.out.println(new Num("0", 16));
-        System.out.println(new Num(999999999, 16));
-        System.out.println(new Num("999999999", 16));
-        System.out.println(new Num(-999999999, 16));
-        System.out.println(new Num("-999999999", 16));
-    }
-
-    @Test
     public void getHalf() throws Exception {
         assertEquals(0, new Num(5430).getHalf().compareTo(new Num(2715)));
         assertEquals(0, new Num(5431).getHalf().compareTo(new Num(2715)));
