@@ -50,13 +50,18 @@ public interface ExecutableLine {
     class PosFixExpressionLine implements ExecutableLine {
 
         /**
-         * Left value of
+         * The left value of the post fix expression.
          */
         private Expression.Var left;
+
+        /**
+         * The right expression of the post fix expression.
+         */
         private Expression right = null;
 
         /**
-         * Postfix expression constructor.
+         * Postfix expression constructor from an {@code ArrayList} of {@code Token} in {@code
+         * String} format.
          *
          * @param line Array of token in String for a line.
          */
@@ -122,14 +127,32 @@ public interface ExecutableLine {
         }
     }
 
+    /**
+     * Class to store the in fix expression line. A in fix expression consists of three part, the
+     * specific line number, the left value (which should be a variable), and the right value (which
+     * should be an {@code Expression} instance). To execute a line, evaluate the right value and
+     * assign the value (in a {@code Num} instance) to the left value.
+     */
     class InFixExpressionLine implements ExecutableLine {
 
+        /**
+         * The left value of the in fix expression.
+         */
         private Expression.Var left;
+
+        /**
+         * The right expression of the in fix expression.
+         */
         private Expression right = null;
+
+        /**
+         * The specific line number of the in fix expression.
+         */
         private Map<Integer, Integer> lineno;
 
         /**
-         * Postfix expression constructor.
+         * Infix expression constructor from an {@code ArrayList} of {@code Token} in {@code String}
+         * format.
          *
          * @param line Array of token in String for a line.
          */
@@ -189,7 +212,6 @@ public interface ExecutableLine {
         public int execute() {
             if (this.right != null)
                 this.left.assign(this.right.getValue());
-//            System.out.println(this.right);
             return -1;
         }
 
@@ -200,6 +222,13 @@ public interface ExecutableLine {
         }
     }
 
+    /**
+     * Class to store the control line. A control line consists of three part, the specific line
+     * number, the condition variable, and the next line number whether the condition hold or not.
+     * To execute a line, evaluate the condition variable, if the number is not zero, execute
+     * specific line and otherwise the other line (if exist). If no other line is specified, execute
+     * the directly next line in original sense. to the left value.
+     */
     class ControlLine implements ExecutableLine {
         private Expression.Var condition;
         private int pos;
@@ -207,7 +236,7 @@ public interface ExecutableLine {
         private Map<Integer, Integer> lineno;
 
         public ControlLine(ArrayList<String> line, List<Num> store, Map<Integer, Integer> lineno, int actLine) throws Exception {
-//            7 y ? 5 ;
+
             assert Tokenizer.tokenize(line.get(0)) == Tokenizer.Token.NUM;
             this.lineno = lineno;
             this.lineno.put(Integer.valueOf(line.get(0)), actLine);
@@ -239,7 +268,8 @@ public interface ExecutableLine {
 
         @Override
         public void print() {
-
+            assert this.condition != null;
+            System.out.println(this.condition.getValue());
         }
     }
 }
