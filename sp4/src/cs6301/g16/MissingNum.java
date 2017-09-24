@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 4-4</h1>
+ * <h1>Fall 2017 Short Project 4-6</h1>
  * <p>
  * Given an array of n distinct integers, in sorted order, starting at 1 and
  * ending with n+k, find the k missing numbers in the sequence. Your algorithm
