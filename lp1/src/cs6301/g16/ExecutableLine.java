@@ -1,7 +1,7 @@
 /**
  * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
  * <p>
- * Supporting class of L4 driver function.
+ * Supporting class of driver function.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
