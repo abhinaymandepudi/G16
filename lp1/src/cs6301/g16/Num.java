@@ -29,13 +29,28 @@ public class Num implements Comparable<Num> {
     public static final Num ZERO = new Num((new LinkedList<>(Collections.singleton((long) 0))), 0, 0);
 
     /**
-     * Constant for sign. sign of zero can be access as ZERO.sign.
+     * Constant for positive sign. Sign of zero can be access as ZERO.sign.
      */
     private static final int SIGN_POSITIVE = 1;
+
+    /**
+     * Constant for negative sign. Sign of zero can be access as ZERO.sign.
+     */
     private static final int SIGN_NEGATIVE = -1;
+
+    /**
+     * Default base if not specified in constructor.
+     */
     private static long defaultBase = 10;
 
+    /**
+     * Buffer used internally for some operations.
+     */
     private static ArrayList<Long> buffer = new ArrayList<>();
+
+    /**
+     * Base of the number store internally.
+     */
     private final long base;
 
     /**
@@ -122,6 +137,7 @@ public class Num implements Comparable<Num> {
      *
      * @param list List allocated already.
      * @param sign New sign to the number.
+     * @param base Radix of the number.
      */
     private Num(LinkedList<Long> list, int sign, long base) {
         this.base = base;
@@ -154,7 +170,8 @@ public class Num implements Comparable<Num> {
     /**
      * Construct Num from long integer.
      *
-     * @param x Long representation of Num.
+     * @param x     Long representation of Num.
+     * @param radix Radix of the Num.
      */
     public Num(long x, long radix) {
         this.base = radix;
@@ -665,8 +682,8 @@ public class Num implements Comparable<Num> {
     /**
      * Shift current num specific digit. Internal use only.
      *
-     * @param n Number of digits to shift. If n > 0, right shift (i.e., {@code num * base ^ n}), if
-     *          n < 0, left shift (i.e., {@code num / (base ^ n)})
+     * @param n Number of digits to shift. If {@code n > 0}, right shift (i.e., {@code num * base ^ n}), if
+     *          {@code n < 0}, left shift (i.e., {@code num / (base ^ n)})
      * @return The newly allocated number after shifting.
      */
     Num shift(int n) {
