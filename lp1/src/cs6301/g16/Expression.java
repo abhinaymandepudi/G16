@@ -1,4 +1,4 @@
-/**
+/*
  * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
  * <p>
  * Supporting class of driver function.
@@ -55,9 +55,9 @@ public interface Expression {
         /**
          * Assign the current variable with specific value in format {@code Num}.
          *
-         * @param right
+         * @param right The right value to be assigned.
          */
-        public void assign(Num right) {
+        void assign(Num right) {
             store.set(varname - 'a', right);
         }
 
