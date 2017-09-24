@@ -1,6 +1,13 @@
-// Starter code for Level 4 driver for lp1
+/*
+ * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
+ * <p>
+ * Driver function 4.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-09-23
+ */
 
-// Change following line to your group number
 package cs6301.g16;
 
 import java.util.*;
@@ -24,7 +31,6 @@ public class LP1L4 {
         }
 
         Scanner in = new Scanner(System.in);
-        ArrayList<String[]> src = new ArrayList<>();
 
         boolean newLine = Boolean.TRUE;
         ArrayList<String> line = null;
@@ -74,7 +80,7 @@ public class LP1L4 {
         exe.get(exe.size() - 1).getNum().printList();
     }
 
-    public static ExecutableLine.LineType getType(ArrayList<String> l) throws Exception {
+    private static ExecutableLine.LineType getType(ArrayList<String> l) throws Exception {
         // First token is line number.
         if (Tokenizer.tokenize(l.get(0)) == Tokenizer.Token.NUM) {
             // Third token is "=".
@@ -89,6 +95,5 @@ public class LP1L4 {
             assert Tokenizer.tokenize(l.get(0)) == Tokenizer.Token.VAR;
             return ExecutableLine.LineType.POSFIX;
         }
-
     }
 }

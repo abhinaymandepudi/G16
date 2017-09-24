@@ -1,4 +1,4 @@
-/**
+/*
  * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
  * <p>
  * Implement the class Num that stores and performs arithmetic operations on arbitrarily large
@@ -105,8 +105,7 @@ public class Num implements Comparable<Num> {
 
         this.base = radix;
         this.sign = sign;
-        Num TEN = new Num(10, this.base);
-        Num ret = new Num(0, this.base);
+        Num ret = ZERO;
 
         for (int i = cursor; i <= s.length() - 1; i++) {
             ret = SingleDigitProduct(ret, 10);
@@ -506,12 +505,12 @@ public class Num implements Comparable<Num> {
 
     }
 
-    /* Start of Level 2 */
-
     /**
-     * @param a
-     * @param b
-     * @return
+     * Unsigned version of divide.
+     *
+     * @param a Dividend.
+     * @param b Divisor.
+     * @return {@code a / b}.
      */
     static Num DivideUnsigned(final Num a, final Num b) {
         Num ONE = new Num(1, a.base());
@@ -543,12 +542,19 @@ public class Num implements Comparable<Num> {
         return ret;
     }
 
+    /**
+     * Return the Num with value of {@code a / b}.
+     *
+     * @param a Dividend.
+     * @param b Divisor.
+     * @return {@code a / b}.
+     */
     public static Num divide(final Num a, final Num b) {
         return a.sign == b.sign ? DivideUnsigned(a.abs(), b.abs()) : DivideUnsigned(a.abs(), b.abs()).negate();
     }
 
     /**
-     * Return {@code b^n}.
+     * Return the Num with value of {@code b^n}.
      *
      * @param b Base in format Num.
      * @param n Exponent in format long integer.
@@ -571,17 +577,18 @@ public class Num implements Comparable<Num> {
     }
 
     /**
+     * Return the Num with value of {@code a % b}.
      *
-     * @param a
-     * @param b
-     * @return
+     * @param a Dividend.
+     * @param b Divisor.
+     * @return {@code a % b}.
      */
     public static Num mod(final Num a, final Num b) {
         return subtract(a, product(b, divide(a, b)));
     }
 
     /**
-     * Return {@code b^n}.
+     * Return the Num with value of {@code b^n}.
      *
      * @param b Base in format Num.
      * @param n Exponent in format Num.
@@ -599,8 +606,13 @@ public class Num implements Comparable<Num> {
         n.shift(-1);
         return product(power(power(b, n), n.base), power(b, a0));
     }
-    /* End of Level 1 */
 
+    /**
+     * Return the Num with value of {@code sqrt(a)}.
+     *
+     * @param a Number to perform square root.
+     * @return {@code sqrt(a)}.
+     */
     static Num squareRoot(final Num a) {
         if (a.sign < 0)
             throw new ArithmeticException("square root of non-negative number.");
@@ -650,7 +662,14 @@ public class Num implements Comparable<Num> {
         return new Num(this.numList, SIGN_POSITIVE, this.base());
     }
 
-    public Num shift(int n) {
+    /**
+     * Shift current num specific digit. Internal use only.
+     *
+     * @param n Number of digits to shift. If n > 0, right shift (i.e., {@code num * base ^ n}), if
+     *          n < 0, left shift (i.e., {@code num / (base ^ n)})
+     * @return The newly allocated number after shifting.
+     */
+    Num shift(int n) {
         if (this.isZero())
             return this;
         if (n > 0) {
@@ -664,7 +683,6 @@ public class Num implements Comparable<Num> {
         }
         return this;
     }
-    /* End of Level 2 */
 
     /**
      * Compare the numList with other Num, ignoring sign.
@@ -689,21 +707,11 @@ public class Num implements Comparable<Num> {
         return result;
     }
 
-    public Num convert(long radix) {
-        final Num BASE = new Num(this.base, radix);
-        Num ret = new Num(0, radix);
-        Num base = new Num(1, radix);
-        Iterator<Long> it = this.numList.iterator();
-        long x;
-        while (it.hasNext()) {
-            x = it.next();
-            ret = add(ret, SingleDigitProduct(base, x));
-            base = product(base, BASE);
-        }
-        return new Num(ret.numList, this.sign, radix);
-    }
-
-    // compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise
+    /**
+     * compare "this" to "other": return +1 if this is greater, 0 if equal, -1 otherwise.
+     *
+     * @return {@code +1} if this is greater, {@code 0} if equal, {@code -1} otherwise.
+     */
     public int compareTo(Num other) {
         if (this.isZero())
             return -other.sign;
@@ -750,16 +758,18 @@ public class Num implements Comparable<Num> {
         if (this.isZero())
             return this;
 
+        // If the base is even, multiply by half base and left shift.
         if (this.base / 2 * 2 == this.base)
             return Num.SingleDigitProduct(this, this.base / 2).shift(-1);
 
+        // Otherwise, manually compute the half number from left to right (higher significance to lower significance).
         Iterator<Long> it = this.numList.descendingIterator();
 
         LinkedList<Long> halfList = new LinkedList<>();
 
         long remain = 0;
-        long pre = 0;
-        long cur = 0;
+        long pre;
+        long cur;
         boolean leadingZero = true;
 
         while (it.hasNext()) {
@@ -778,11 +788,20 @@ public class Num implements Comparable<Num> {
         return new Num(halfList, this.sign, this.base);
     }
 
+    /**
+     * Return whether current number is {@code ZERO}.
+     *
+     * @return {@code true} if current number is {@code ZERO}, and {@code false} otherwise.
+     */
     public boolean isZero() {
         return this.sign == ZERO.sign;
     }
 
-    // Return number to a string in base 10
+    /**
+     * Return number to a string in base 10.
+     *
+     * @return Current number in a string of base 10.
+     */
     @Override
     public String toString() {
         Num ret = new Num(0);
@@ -809,6 +828,11 @@ public class Num implements Comparable<Num> {
         return stringBuilder.toString();
     }
 
+    /**
+     * Return current number's base.
+     *
+     * @return Current number's base.
+     */
     public long base() {
         return this.base;
     }

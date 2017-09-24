@@ -1,4 +1,4 @@
-/**
+/*
  * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
  * <p>
  * Supporting class of driver function.
@@ -86,20 +86,29 @@ public interface ExecutableLine {
 
                     assert Tokenizer.tokenize(line.get(i)) == Tokenizer.Token.OP;
 
-                    if (line.get(i).equals("+"))
-                        expressions.push(new Expression.Plus(expressions.pop(), expressions.pop()));
-                    else if (line.get(i).equals("-"))
-                        expressions.push(new Expression.Minus(expressions.pop(), expressions.pop()));
-                    else if (line.get(i).equals("*"))
-                        expressions.push(new Expression.Product(expressions.pop(), expressions.pop()));
-                    else if (line.get(i).equals("/"))
-                        expressions.push(new Expression.Divide(expressions.pop(), expressions.pop()));
-                    else if (line.get(i).equals("%"))
-                        expressions.push(new Expression.Mod(expressions.pop(), expressions.pop()));
-                    else if (line.get(i).equals("^"))
-                        expressions.push(new Expression.Power(expressions.pop(), expressions.pop()));
-                    else if (line.get(i).equals("|"))
-                        expressions.push(new Expression.SquareRoot(expressions.pop()));
+                    switch (line.get(i)) {
+                        case "+":
+                            expressions.push(new Expression.Plus(expressions.pop(), expressions.pop()));
+                            break;
+                        case "-":
+                            expressions.push(new Expression.Minus(expressions.pop(), expressions.pop()));
+                            break;
+                        case "*":
+                            expressions.push(new Expression.Product(expressions.pop(), expressions.pop()));
+                            break;
+                        case "/":
+                            expressions.push(new Expression.Divide(expressions.pop(), expressions.pop()));
+                            break;
+                        case "%":
+                            expressions.push(new Expression.Mod(expressions.pop(), expressions.pop()));
+                            break;
+                        case "^":
+                            expressions.push(new Expression.Power(expressions.pop(), expressions.pop()));
+                            break;
+                        case "|":
+                            expressions.push(new Expression.SquareRoot(expressions.pop()));
+                            break;
+                    }
                 }
             }
             assert expressions.size() == 1;
@@ -181,20 +190,29 @@ public interface ExecutableLine {
 
                     assert Tokenizer.tokenize(e) == Tokenizer.Token.OP;
 
-                    if (e.equals("+"))
-                        expressions.push(new Expression.Plus(expressions.pop(), expressions.pop()));
-                    else if (e.equals("-"))
-                        expressions.push(new Expression.Minus(expressions.pop(), expressions.pop()));
-                    else if (e.equals("*"))
-                        expressions.push(new Expression.Product(expressions.pop(), expressions.pop()));
-                    else if (e.equals("/"))
-                        expressions.push(new Expression.Divide(expressions.pop(), expressions.pop()));
-                    else if (e.equals("%"))
-                        expressions.push(new Expression.Mod(expressions.pop(), expressions.pop()));
-                    else if (e.equals("^"))
-                        expressions.push(new Expression.Power(expressions.pop(), expressions.pop()));
-                    else if (e.equals("|"))
-                        expressions.push(new Expression.SquareRoot(expressions.pop()));
+                    switch (e) {
+                        case "+":
+                            expressions.push(new Expression.Plus(expressions.pop(), expressions.pop()));
+                            break;
+                        case "-":
+                            expressions.push(new Expression.Minus(expressions.pop(), expressions.pop()));
+                            break;
+                        case "*":
+                            expressions.push(new Expression.Product(expressions.pop(), expressions.pop()));
+                            break;
+                        case "/":
+                            expressions.push(new Expression.Divide(expressions.pop(), expressions.pop()));
+                            break;
+                        case "%":
+                            expressions.push(new Expression.Mod(expressions.pop(), expressions.pop()));
+                            break;
+                        case "^":
+                            expressions.push(new Expression.Power(expressions.pop(), expressions.pop()));
+                            break;
+                        case "|":
+                            expressions.push(new Expression.SquareRoot(expressions.pop()));
+                            break;
+                    }
                 }
             }
 

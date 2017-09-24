@@ -1,3 +1,13 @@
+/*
+ * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
+ * <p>
+ * Supporting class of to transform in fix expression into post fix expression.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-09-23
+ */
+
 package cs6301.g16;
 
 import java.util.ArrayDeque;
@@ -5,7 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShuntingYard {
-    public static ArrayList<String> InfixToPostfix(List<String> in) throws Exception {
+
+    /**
+     * Transform in fix expression to post fix expression using Shunting-Yard algorithm.
+     *
+     * @param in The in fix expression in format of {@code List<String>}.
+     */
+    static ArrayList<String> InfixToPostfix(List<String> in) throws Exception {
+
 //        while there are tokens to be read:
 //            read a token.
 //            if the token is a number, then push it to the output queue.

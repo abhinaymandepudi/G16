@@ -1,3 +1,13 @@
+/*
+ * <h1>Fall 2017 Long Project 1: Integer arithmetic with arbitrarily large numbers</h1>
+ * <p>
+ * Unit test case for Num class.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-09-23
+ */
+
 package cs6301.g16;
 
 import org.junit.Test;
@@ -158,8 +168,6 @@ public class NumTest {
         long start, end, k, s;
         StringBuilder str1 = new StringBuilder(pi);
         str1.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
-                .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
                 .append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi);
         StringBuilder str2 = new StringBuilder(pi);
         str2.append(pi).append(pi).append(pi).append(pi).append(pi).append(pi).append(pi)
