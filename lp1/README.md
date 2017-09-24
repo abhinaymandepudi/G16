@@ -39,7 +39,7 @@ Compile
 
 To compile `Num` class with unit test case, run the following command:
 
-    javac -cp .:junit-4.12.jar:hamcrest-core-1.3.jar  cs6301/g16/Num.java cs6301/g16/NumTest.java
+    javac -cp .:junit-4.12.jar:hamcrest-core-1.3.jar cs6301/g16/Num.java cs6301/g16/NumTest.java
 
 To run unit test of `Num`, run the following command:
 
