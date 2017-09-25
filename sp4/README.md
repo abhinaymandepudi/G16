@@ -1,6 +1,8 @@
 Short Project 4
 ================
 
+The problems set [click here](./sp4-recursion-2017f.md)
+
 Group Members
 -------------
 
