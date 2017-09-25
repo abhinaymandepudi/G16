@@ -136,6 +136,8 @@ public class BSTreeLinkedList<T extends Comparable> {
             int nextLevelId = 0;
             int nextLevelNodeCount = 2;
 
+            int fullSize = (int)Math.pow(2, numOfLevel) -1;
+
             String leadingSpace = ""; // leading space for each level of tree
             for (int i = 0; i < Math.pow(2, numOfLevel - 1); i++)
                 leadingSpace += " ";
@@ -145,15 +147,14 @@ public class BSTreeLinkedList<T extends Comparable> {
             System.out.print(leadingSpace);
             for (int i = 0; !bfsQueue.isEmpty(); i++) {
                 Node node = bfsQueue.remove();
-                if (node.prev != null)
+                if (node!= null) {
                     bfsQueue.add(node.prev);
-                if (node.next != null)
                     bfsQueue.add(node.next);
-
+                }
                 //print node
-                System.out.print(node);
+                System.out.print(node==null?" ":node.toString());
                 //print inter-node space or new level leading
-                if (i == size - 1) break;
+                if (i == fullSize - 1) break;
                 else if (i == nextLevelId) {
                     nextLevelId += nextLevelNodeCount;
                     nextLevelNodeCount *= 2;
