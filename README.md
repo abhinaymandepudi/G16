@@ -10,6 +10,8 @@ Long Project
 
 1.  [Num](./lp1)
 
+2.  [Euler tours in directed graphs](./lp2)
+
 Short Project
 -------------
 
