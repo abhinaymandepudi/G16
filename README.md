@@ -8,7 +8,7 @@ Course Title: Implementation of advanced data structures and algorithms (Fall 20
 Long Project
 ------------
 
-1.  [Num](./lp1)
+1.  [Integer arithmetic with arbitrarily large numbers](./lp1)
 
 2.  [Euler tours in directed graphs](./lp2)
 
