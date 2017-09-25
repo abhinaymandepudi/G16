@@ -31,21 +31,22 @@ To compile, run the following commands:
 
 ```bash
 # Problem 1
-# javac cs6301/g16/BSTreeLinkedList.java
+javac cs6301/g16/BSTreeLinkedList.java
 
 # Problem 2
-# javac cs6301/g16/Fibonacci.java
+javac cs6301/g16/Fibonacci.java
 
 # Problem 3
-# javac cs6301/g16/Mergesort.java
+javac cs6301/g16/Mergesort.java
 
 # Problem 4
-# javac cs6301/g16/BinarySearch.java
+javac cs6301/g16/BinarySearch.java
 
 # Problem 5
+javac cs6301/g16/RearrangeMinusPlus.java
 
 # Problem 6
-# javac cs6301/g16/MissingNum.java
+javac cs6301/g16/MissingNum.java
 ```
 
 There is no dependency with file from package `cs6301.g00`.
@@ -175,8 +176,26 @@ Test Running
     -----------
     Input: arr:[1, 3, 8, 10, 22, 80]; x=50;
     Output:4
-    ```
 
+
+- Problem 5
+
+    Execute the command `java cs6301.g16.RearrangeMinusPlus`.
+
+    This program will generate a random array of length 20 with positive and negative number,
+    and then rearrange the array.
+
+    Example:
+
+    ```
+     > java cs6301.g16.RearrangeMinusPlus 
+     
+    Original array:
+    -986 -36 -625 646 -460 -248 -342 416 -995 -712 -557 646 90 -462 774 -758 43 -845 -945 -665 -35 -517 968 171 -523 -491 -608 -96 -466 3 750 -103 -486 912 667 -536 226 -72 -353 -7 
+    Rearranged array:
+    -986 -36 -625 -460 -248 -342 -995 -712 -557 -462 -758 -845 -945 -665 -35 -517 -523 -491 -608 -96 -466 -103 -486 -536 -72 -353 -7 646 416 646 90 774 43 968 171 3 750 912 667 226 
+    ```
+  
 - Problem 6
 
     Execute the command `java cs6301.g16.MissingNum`.
@@ -197,4 +216,5 @@ Test Running
     Input array: [1, 2, 4, 6, 8, 9, 10, 22]
     
     Output array: [3, 5, 7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
-    ```
+    ```  ```
+
