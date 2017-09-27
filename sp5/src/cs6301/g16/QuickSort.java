@@ -14,27 +14,9 @@ package cs6301.g16;
 
 import java.util.Arrays;
 import java.util.Random;
-
 import cs6301.g00.Timer;
 
 public class QuickSort {
-
-    /**
-     * Helper function to exchange 2 elements in the given array
-     * Utilizing XOR exchange algorithm
-     *
-     * @param A - input array
-     * @param i - element index 1
-     * @param j - element index 2
-     */
-    private static void exchange(int[] A, int i, int j) {
-//        A[i] = A[i] ^ A[j];
-//        A[j] = A[i] ^ A[j];
-//        A[i] = A[i] ^ A[j];
-        int tmp = A[i];
-        A[i] = A[j];
-        A[j] = tmp;
-    }
 
     /**
      * First version of partition discussed in class
@@ -51,7 +33,7 @@ public class QuickSort {
         int i = p + rand.nextInt(r-p+1);
 
         // Put pivot element to last
-        exchange(A, i, r);
+        ArrayHelper.exchange(A, i, r);
         // set pivot value for comparing
         int x = A[r];
 
@@ -61,12 +43,12 @@ public class QuickSort {
         for (int j = p; j < r; j++) {
             if (A[j] < x) {
                 i = i + 1;
-                exchange(A, i, j);
+                ArrayHelper.exchange(A, i, j);
             }
         }
 
         // Bring pivot back to the middle
-        exchange(A, i + 1, r);
+        ArrayHelper.exchange(A, i + 1, r);
         // A[p...i] ≤x, A[i+1] = x, A[i+2...r] > x
 
         return i + 1;
@@ -89,23 +71,15 @@ public class QuickSort {
         int i = p;
         int j = r;
 
-//        System.out.printf("Before partition: p=%d r=%d idx=%d x=%d",p,r,idx,x);
-//        printArray(A);
-
         // LI:A[p...i] ≤ x, A[j...r] ≥ x
         while (true) {
 
-            while (A[i] < x)
-                i++;
+            while (A[i] < x) i++;
+            while (A[j] > x) j--;
 
-            while (A[j] > x)
-                j--;
-            if (i >= j) {
-//                System.out.printf("After partition: return=%d",j);
-//                printArray(A);
-                return j;
-            }
-            exchange(A, i, j);
+            if (i >= j) return j;
+
+            ArrayHelper.exchange(A, i, j);
         }
     }
 
@@ -158,42 +132,6 @@ public class QuickSort {
     }
 
     /**
-     * Helper functions for testing
-     */
-
-    /**
-     * Print an array
-     **/
-    private static void printArray(int[] A) {
-        if(A.length>100) {
-            System.out.print("[");
-            for (int i = 0; i < 5; i++) {
-                System.out.print(A[i]+" ");
-            }
-            System.out.print("...");
-            for (int i = A.length-6; i < A.length; i++) {
-                System.out.print(" "+A[i]);
-            }
-            System.out.print("]\n");
-        }
-        else
-            System.out.println(Arrays.toString(A));
-    }
-
-    /**
-     * Returns a random shuffling of the array.
-     */
-    private static int[] shuffle(int[] nums) {
-        int[] rand = new int[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            int r = (int) (Math.random() * (i + 1));
-            rand[i] = rand[r];
-            rand[r] = nums[i];
-        }
-        return rand;
-    }
-
-    /**
      * Main function for testing
      *
      * @param args
@@ -205,13 +143,9 @@ public class QuickSort {
             System.out.println("\n==========================");
 
             int length = 10000000;
-            int[] A = new int[length];
-            for (int i = 0; i < length; i++) {
-                A[i] = i + 1;
-            }
-            A = shuffle(A);
+            int[] A = ArrayHelper.getRandomArray(length);
             System.out.println("Test 1 - Shuffled Input Array:");
-            printArray(A);
+            ArrayHelper.printArray(A);
             int[] B = Arrays.copyOf(A, length);
 
             System.out.println("==========================\n");
@@ -220,7 +154,7 @@ public class QuickSort {
             Timer timer1 = new Timer();
             quickSort1(A);
             timer1.end();
-            printArray(A);
+            ArrayHelper.printArray(A);
             System.out.println(timer1);
 
             System.out.println("\n------------------------\n");
@@ -229,21 +163,18 @@ public class QuickSort {
             Timer timer2 = new Timer();
             quickSort2(B);
             timer2.end();
-            printArray(B);
+            ArrayHelper.printArray(B);
             System.out.println(timer2);
         }
 
         // Test against array with reversed order
         {
-            System.out.println("\n==========================");
+            System.out.println("\n\n==========================");
 
             int length = 10000000;
-            int[] A = new int[length];
-            for (int i = 0; i < length; i++) {
-                A[i] = length - i;
-            }
+            int[] A = ArrayHelper.getReversedArray(length);
             System.out.println("Test 2 - Reversed Input Array:");
-            printArray(A);
+            ArrayHelper.printArray(A);
             int[] B = Arrays.copyOf(A, length);
 
             System.out.println("==========================\n");
@@ -252,7 +183,7 @@ public class QuickSort {
             Timer timer1 = new Timer();
             quickSort1(A);
             timer1.end();
-            printArray(A);
+            ArrayHelper.printArray(A);
             System.out.println(timer1);
 
             System.out.println("\n------------------------\n");
@@ -261,7 +192,7 @@ public class QuickSort {
             Timer timer2 = new Timer();
             quickSort2(B);
             timer2.end();
-            printArray(B);
+            ArrayHelper.printArray(B);
             System.out.println(timer2);
         }
 
