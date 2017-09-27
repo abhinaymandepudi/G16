@@ -11,6 +11,7 @@
 package cs6301.g16;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class ArrayHelper {
 
@@ -23,12 +24,12 @@ public class ArrayHelper {
      * @param j - element index 2
      */
     public static void exchange(int[] A, int i, int j) {
-//        A[i] = A[i] ^ A[j];
-//        A[j] = A[i] ^ A[j];
-//        A[i] = A[i] ^ A[j];
-        int tmp = A[i];
-        A[i] = A[j];
-        A[j] = tmp;
+        // bitwise exchange doesn't work when value are equal, and we don't need exchange equal values.
+        if(A[i] == A[j]) return;
+
+        A[i] = A[i] ^ A[j];
+        A[j] = A[i] ^ A[j];
+        A[i] = A[i] ^ A[j];
     }
 
     /**
@@ -64,6 +65,26 @@ public class ArrayHelper {
     }
 
     /**
+     * Shuffle an array in place.
+     * @param arr
+     */
+    public static void inPlaceShuffle(int[] arr) {
+
+        Random r = new Random();
+
+        // Start from the last element and swap one by one. We don't
+        // need to run for the first element that's why i > 0
+        for (int i = arr.length-1; i > 0; i--) {
+
+            // Pick a random index from 0 to i
+            int j = r.nextInt(i);
+
+            // Swap arr[i] with the element at random index
+            exchange (arr,i,j);
+        }
+    }
+
+    /**
      * Return a random array with specified length all elements are distinct
      * @param length
      * @return
@@ -73,7 +94,7 @@ public class ArrayHelper {
         for (int i = 0; i < length; i++) {
             A[i] = i + 1;
         }
-        A = shuffle(A);
+        inPlaceShuffle(A);
         return A;
     }
 
@@ -86,6 +107,29 @@ public class ArrayHelper {
         int[] A = new int[length];
         for (int i = 0; i < length; i++) {
             A[i] = length - i;
+        }
+        return A;
+    }
+
+    /**
+     * Return an array with duplicate element
+     * @param duplicationRate
+     * @param length
+     * @return
+     */
+    public static int[] getDuplicateElementArray(float duplicationRate, int length) {
+        int duplicateCount = (int)((float)length*duplicationRate);
+        int currentValue = 1;
+        int[] A = new int[length];
+        Random r = new Random();
+        for(int i=0;i<length;i++){
+
+            A[i] = currentValue;
+
+            if(r.nextBoolean()&&duplicateCount>0)
+                duplicateCount--;
+            else
+                currentValue ++;
         }
         return A;
     }
