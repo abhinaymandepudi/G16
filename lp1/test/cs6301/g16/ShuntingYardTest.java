@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -35,6 +36,12 @@ public class ShuntingYardTest {
         ArrayList<String> in2 = new ArrayList<>(Arrays.asList("1 % 2 + 2 * 3 - 4 / 2 ^ 20 * 20 |".split(" ")));
         String[] po2 = new String[]{"1", "2", "%", "2", "3", "*", "+", "4", "2", "20", "20", "|", "*", "^", "/", "-"};
         assertArrayEquals(po2, ShuntingYard.InfixToPostfix(in2).toArray(new String[1]));
+
+        List<String> in3 = new ArrayList<>(Arrays.asList("( ( 9 + 5 * 3 ) * 2 + 1 * ( 8 - 6 * 4 ) ) * 7 + 1".split(" ")));
+        List<String> a =  ShuntingYard.InfixToPostfix(in3);
+        System.out.print(Arrays.toString(ShuntingYard.InfixToPostfix(in3).toArray(new String[1])));
+//        String[] po3 = new String[]{"1", "2", "%", "2", "3", "*", "+", "4", "2", "20", "20", "|", "*", "^", "/", "-"};
+//        assertArrayEquals(po2, ShuntingYard.InfixToPostfix(in2).toArray(new String[1]));
     }
 
 }

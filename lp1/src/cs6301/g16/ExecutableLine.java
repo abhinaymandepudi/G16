@@ -177,7 +177,8 @@ public interface ExecutableLine {
             assert line.size() > 2;
             assert Tokenizer.tokenize(line.get(2)) == Tokenizer.Token.EQ;
 
-            List<String> posfix = ShuntingYard.InfixToPostfix(line.subList(3, line.size()));
+            List<String> infix = line.subList(3, line.size());
+            List<String> posfix = ShuntingYard.InfixToPostfix(infix);
 
             Deque<Expression> expressions = new ArrayDeque<>();
 

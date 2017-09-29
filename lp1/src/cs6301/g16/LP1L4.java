@@ -52,10 +52,10 @@ public class LP1L4 {
 
                 switch (getType(line)) {
                     case CTRL:
-                        exe.add(new ExecutableLine.ControlLine(line, store, lineno, exe.size() - 1));
+                        exe.add(new ExecutableLine.ControlLine(line, store, lineno, exe.size()));
                         continue;
                     case INFIX:
-                        exe.add(new ExecutableLine.InFixExpressionLine(line, store, lineno, exe.size() - 1, base));
+                        exe.add(new ExecutableLine.InFixExpressionLine(line, store, lineno, exe.size(), base));
                         continue;
                     default:
                         exe.add(new ExecutableLine.PosFixExpressionLine(line, store, base));
@@ -66,13 +66,15 @@ public class LP1L4 {
                 line.add(word);
         }
 
-        for (int i = 0; i < exe.size(); i++) {
+        for (int i = 0; i < exe.size();) {
             ExecutableLine l = exe.get(i);
 
             int next = l.execute();
 
-            if (next == -1)
+            if (next == -1) {
+                i++;
                 continue;
+            }
 
             i = next;
         }

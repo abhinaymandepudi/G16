@@ -345,6 +345,9 @@ public class Num implements Comparable<Num> {
     static Num SingleDigitProduct(Num a, long n) {
         if (n == 0 || a.isZero())
             return ZERO;
+
+        assert a.base != 0;
+
         LinkedList<Long> result = new LinkedList<>();
         long carry = 0;
         long product;
@@ -410,6 +413,10 @@ public class Num implements Comparable<Num> {
      * @return {@code (a * b)}.
      */
     static Num Karatsuba(Num a, Num b) {
+        // Return ZERO if a or b == 0.
+        if (a.isZero() || b.isZero())
+            return ZERO;
+
         Num absRet = KaratsubaUnsigned(a.abs(), b.abs());
         return new Num(absRet.numList, a.sign * b.sign, a.base());
     }
@@ -423,6 +430,11 @@ public class Num implements Comparable<Num> {
      * @return {@code (a * b)}.
      */
     private static Num KaratsubaUnsigned(Num a, Num b) {
+
+        // Return ZERO if a or b == 0.
+        if (a.isZero() || b.isZero())
+            return ZERO;
+
         assert a.numList.size() != 0;
         assert b.numList.size() != 0;
 
@@ -479,7 +491,7 @@ public class Num implements Comparable<Num> {
      * @return {@code a * b}.
      */
     public static Num product(Num a, Num b) {
-        return Karatsuba(a, b);
+        return standardProduct(a, b);
     }
 
     /**

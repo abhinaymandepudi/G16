@@ -71,7 +71,8 @@ public class ShuntingYard {
             if (Tokenizer.tokenize(token) == Tokenizer.Token.CLOSE) {
                 while (operator.peek() != null && Tokenizer.tokenize(operator.peek()) != Tokenizer.Token.OPEN)
                     output.offer(operator.pop());
-                assert Tokenizer.tokenize(operator.pop()) == Tokenizer.Token.OPEN;
+                String close = operator.pop();
+                assert Tokenizer.tokenize(close) == Tokenizer.Token.OPEN;
             }
         }
 
