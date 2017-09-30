@@ -85,15 +85,25 @@ public class ArrayHelper {
     }
 
     /**
+     * Return a array with specific length and distinct elements
+     * @param length
+     * @return
+     */
+    public static int[] getArray(int length) {
+        int[] A = new int[length];
+        for (int i = 0; i < length; i++) {
+            A[i] = i + 1;
+        }
+        return A;
+    }
+
+    /**
      * Return a random array with specified length all elements are distinct
      * @param length
      * @return
      */
     public static int[] getRandomArray(int length){
-        int[] A = new int[length];
-        for (int i = 0; i < length; i++) {
-            A[i] = i + 1;
-        }
+        int[] A = getArray(length);
         inPlaceShuffle(A);
         return A;
     }
