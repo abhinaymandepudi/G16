@@ -62,7 +62,7 @@ public class QuickSort {
      * @param r - rear index
      * @return - pivot index after partition
      */
-    private static int partition2(int[] A, int p, int r) {
+     static int partition2(int[] A, int p, int r) {
         // Select pivot x uniformly from A[p...r]
         Random rand = new Random();
         int idx = p+rand.nextInt(r-p+1);
