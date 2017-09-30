@@ -99,15 +99,15 @@ public class DualPivotQuickSort {
      * @param p - prior index
      * @param r - rear index
      */
-    private static void dualPivotQuickSort(int[] A, int p, int r) {
+    private static void dPQuickSort(int[] A, int p, int r) {
         if(p<r){
             int[] pResult = dPPartition(A,p,r);
             int idx1 = pResult[0];
             int idx2 = pResult[1];
-            dualPivotQuickSort(A,p,idx1-1);
-            dualPivotQuickSort(A,idx2+1, r);
+            dPQuickSort(A,p,idx1-1);
+            dPQuickSort(A,idx2+1, r);
             if(A[idx1]!=A[idx2])
-                dualPivotQuickSort(A,idx1+1,idx2-1);
+                dPQuickSort(A,idx1+1,idx2-1);
         }
     }
 
@@ -116,7 +116,7 @@ public class DualPivotQuickSort {
      * @param A - input array
      */
     public static void dPQuickSort(int[] A) {
-        dualPivotQuickSort(A,0,A.length-1);
+        dPQuickSort(A,0,A.length-1);
     }
 
     /**
