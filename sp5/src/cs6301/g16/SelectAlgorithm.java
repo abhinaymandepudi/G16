@@ -36,7 +36,7 @@ public class SelectAlgorithm {
             queue.offer(j);
         }
         for (int i = 1; i <= k; i++) {
-            list.add(queue.remove());
+            list.add(queue.remove());   //List is in decreasing order
         }
         return list.get(k - 1);
     }
@@ -48,13 +48,14 @@ public class SelectAlgorithm {
      * @param k most k largest we want to get.
      * @return kth largest number in array A.
      */
-    public static int PriorityQueueSort2(Stream<Integer> A, int k) {
+    public static Queue<Integer> PriorityQueueSort2(Stream<Integer> A, int k) {
         Iterator<Integer> it = A.iterator();
         Queue<Integer> q = new PriorityQueue<>();  //New a min heap
         for (int i = 1; i <= k; i++) {    //Initial min-heap
             if (it.hasNext()) {
                 q.add(it.next());
-            }
+            }else
+                return q;
         }
         while (it.hasNext()) {
             int x = it.next();
@@ -63,7 +64,7 @@ public class SelectAlgorithm {
                 q.add(x);
             }
         }
-        return q.peek();
+        return q;
     }
 
     /**
@@ -76,6 +77,8 @@ public class SelectAlgorithm {
 
     public static int[] Select(int[] A, int k) {
         int n = A.length;
+        if(k<=0)
+            return new int[n];
         if (k > n)
             return A;
         Select(A, 0, n, k);
@@ -155,7 +158,7 @@ public class SelectAlgorithm {
         for (int i : item)
             a.add(i);
         startTime = System.currentTimeMillis();
-        int resB = PriorityQueueSort2(a.stream(), k);
+        int resB = PriorityQueueSort2(a.stream(), k).peek();
         System.out.println("Kth element is: " + resB + "     Running time : " + (System.currentTimeMillis() - startTime) + "ms");
 
         System.out.println("test (c):");
