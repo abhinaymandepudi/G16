@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 5</h1>
+ * <h1>Fall 2017 Short Project 5-3</h1>
  * <p>
  * Compare the performance of your best implementation of Merge sort with
  * quick sort that uses dual-pivot (or multi-pivot) partition. Try inputs
@@ -29,7 +29,7 @@ public class QuickSortVsMergeSort {
      */
     public static void mergeSort(int[] A, int[] B, int p, int r) {
         if (r - p < threshold) {
-            insertion_srt(A, p, r);
+            ArrayHelper.insertionSort(A, p, r);
         } else if (p < r) {
             int q = (p + r) / 2;
             mergeSort(B, A, p, q);
@@ -54,27 +54,6 @@ public class QuickSortVsMergeSort {
                 B[k] = A[i++];
             else
                 B[k] = A[j++];
-        }
-    }
-
-    /**
-     * Insertion sort to sort part of array.
-     *
-     * @param arr   The array need to be sorted.
-     * @param start Start index of array will be sort.
-     * @param l     End index of array will be sort.
-     */
-    public static void insertion_srt(int[] arr, int start, int l) {
-        int k;
-        int key;
-        for (int i = start + 1; i <= l; i++) {
-            key = arr[i];
-            k = i - 1;
-            while (k > start - 1 && arr[k]>key) {
-                arr[k + 1] = arr[k];
-                k--;
-            }
-            arr[k + 1] = key;
         }
     }
 

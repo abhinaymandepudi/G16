@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 4-2</h1>
+ * <h1>Fall 2017 Short Project 5-4</h1>
  * <p>
  * Implement dual pivot partition and its version of quick sort.
  * Compare its performance with regular quick sort.  Try inputs that
@@ -12,12 +12,12 @@
 package cs6301.g16;
 
 import cs6301.g00.Timer;
-
-import java.sql.Time;
 import java.util.Arrays;
 import java.util.Random;
 
 public class DualPivotQuickSort {
+
+    static final int threshold = 20;
 
     /**
      * Dual pivot partition function
@@ -100,7 +100,10 @@ public class DualPivotQuickSort {
      * @param r - rear index
      */
     private static void dPQuickSort(int[] A, int p, int r) {
-        if(p<r){
+        if (r - p < threshold) {
+            ArrayHelper.insertionSort(A, p, r);
+        }
+        else if(p<r){
             int[] pResult = dPPartition(A,p,r);
             int idx1 = pResult[0];
             int idx2 = pResult[1];

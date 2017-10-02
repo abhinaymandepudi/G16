@@ -18,7 +18,7 @@ Deliverable structure is as follow:
     cs6301
     ├── README.md
     └── g16
-        ├── ArrayHelper.java                    # Operations of Array
+        ├── ArrayHelper.java                    # Helper Class with Array Related Functions
         ├── DualPivotQuickSort.java             # Solution for Problem 2
         ├── QuickSort.java                      # Solution for Problem 1
         ├── QuickSortVsMergeSort.java           # Solution for Problem 4
@@ -104,35 +104,36 @@ Test Running
         Test with array with duplicate elements:
         
         Input Array:
-        [2435340 459723 2380941 4622172 3693769 ... 3499475 4625506 2707785 4831311 1017604 3807044]
+        [327095 1083692 677442 2721419 2540762 ... 1197033 4807903 3329180 2845406 1751615 402571]
         Dual Pivot Quick Sort:
-        [1 1 2 2 2 ... 5003894 5003894 5003895 5003896 5003897 5003898]
+        [1 2 3 3 3 ... 5001962 5001963 5001964 5001964 5001965 5001965]
         Sorting Success
-        Time: 2355 msec.
-        Memory: 121 MB / 155 MB.
+        Time: 1351 msec.
+        Memory: 116 MB / 161 MB.
         
         Normal Quick Sort:
-        [1 1 2 2 2 ... 5003894 5003894 5003895 5003896 5003897 5003898]
+        [1 2 3 3 3 ... 5001962 5001963 5001964 5001964 5001965 5001965]
         Sorting Success
-        Time: 1904 msec.
-        Memory: 117 MB / 152 MB.
-
+        Time: 1864 msec.
+        Memory: 128 MB / 153 MB.
+        
+        
         ====================
         Test with array with distinct elements:
         
         Input Array:
-        [2259773 5945188 9847958 277804 8689917 ... 8585715 4525157 5105388 1013554 8532081 9951518]
+        [8351201 785850 4347372 6023624 9798537 ... 4876130 8844926 7363718 4526944 691754 9698228]
         Dual Pivot Quick Sort:
         [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
         Sorting Success
-        Time: 2391 msec.
-        Memory: 241 MB / 264 MB.
+        Time: 1440 msec.
+        Memory: 256 MB / 267 MB.
         
         Normal Quick Sort:
         [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
         Sorting Success
-        Time: 1841 msec.
-        Memory: 253 MB / 263 MB.
+        Time: 1710 msec.
+        Memory: 242 MB / 263 MB.
         
         
 
@@ -184,32 +185,33 @@ Test Running
         Test with array with distinct elements:
         
         Input Array:
-        [7666843 1846369 9478937 8450219 2361577 ... 2457128 4755480 6664826 2617945 8315679 9752214]
+        [6832021 9193702 945726 9186324 6356509 ... 2961776 6113391 8387073 860687 2591765 9370019]
         Dual Pivot Quick Sort:
         [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
         Sorting Success
-        Time: 2235 msec.
-        Memory: 140 MB / 157 MB.
+        Time: 1456 msec.
+        Memory: 143 MB / 161 MB.
         
         Merge Sort:
         [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
         Sorting Success
-        Time: 1874 msec.
-        Memory: 179 MB / 195 MB.
-               
+        Time: 1490 msec.
+        Memory: 181 MB / 200 MB.
+        
+        
         ====================
         Test with array with duplicate elements:
         
         Input Array:
-        [886771 1538677 2583747 1862295 1612139 ... 3843858 1029651 1249519 3610601 266402 4661479]
+        [3933021 586480 3150429 3605230 130723 ... 137510 3632490 4211770 1254549 1988895 3240681]
         Dual Pivot Quick Sort:
-        [1 1 1 2 3 ... 4999511 4999511 4999511 4999511 4999511 4999512]
+        [1 1 2 2 3 ... 4998655 4998656 4998657 4998658 4998658 4998658]
         Sorting Success
-        Time: 2127 msec.
-        Memory: 282 MB / 308 MB.
+        Time: 1473 msec.
+        Memory: 289 MB / 315 MB.
         
         Merge Sort:
-        [1 1 1 2 3 ... 4999511 4999511 4999511 4999511 4999511 4999512]
+        [1 1 2 2 3 ... 4998655 4998656 4998657 4998658 4998658 4998658]
         Sorting Success
-        Time: 1871 msec.
-        Memory: 321 MB / 347 MB.
+        Time: 1602 msec.
+        Memory: 327 MB / 354 MB.

@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 4-2</h1>
+ * <h1>Fall 2017 Short Project 5</h1>
  * <p>
  * Helper class to implement array related helper functions
  *
@@ -143,4 +143,26 @@ public class ArrayHelper {
         }
         return A;
     }
+
+    /**
+     * Insertion sort to sort part of array.
+     *
+     * @param arr   The array need to be sorted.
+     * @param start Start index of array will be sort.
+     * @param l     End index of array will be sort.
+     */
+    public static void insertionSort(int[] arr, int start, int l) {
+        int k;
+        int key;
+        for (int i = start + 1; i <= l; i++) {
+            key = arr[i];
+            k = i - 1;
+            while (k > start - 1 && arr[k]>key) {
+                arr[k + 1] = arr[k];
+                k--;
+            }
+            arr[k + 1] = key;
+        }
+    }
+
 }

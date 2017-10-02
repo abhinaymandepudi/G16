@@ -1,5 +1,5 @@
 /**
- * <h1>Fall 2017 Short Project 4-2</h1>
+ * <h1>Fall 2017 Short Project 5-1</h1>
  * <p>
  * Compare the performance of the two versions of partition discussed in class
  * on the running time of Quick sort, on arrays with distinct elements.
