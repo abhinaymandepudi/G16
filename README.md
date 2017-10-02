@@ -22,3 +22,5 @@ Short Project
 3.  [Depth-first search (DFS)](./sp3)
 
 4.  [Recursion](./sp4)
+
+5.  [Quick Sort](./sp5)
