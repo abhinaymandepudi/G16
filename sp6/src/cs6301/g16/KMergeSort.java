@@ -47,6 +47,26 @@ public class KMergeSort<T extends Comparable<? super T>> {
         return merger.merge(lists);
     }
 
+    public T[] sort(T[] arr) {
+        return null;
+    }
+
+    private T[] sort(T[] A, T[] B, int p, int r) {
+        if (r - p < threshold) {
+            T[] tmp = Arrays.copyOfRange(A, p, r);
+            int i = p;
+            for (T t : tmp)
+                A[i++] = t;
+        } else if (p < r) {
+            int q = (p + r) / 2;
+//            mergeSortFour(B, A, p, q);
+//            mergeSortFour(B, A, q + 1, r);
+//            mergeFour(B, A, p, q, r);
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
         int size = 5000000;
         if (args.length >= 1)

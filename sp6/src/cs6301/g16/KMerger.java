@@ -42,6 +42,10 @@ public class KMerger<T extends Comparable<? super T>> {
         return m;
     }
 
+    public T[] merge() {
+        return null;
+    }
+
     private class ListWrapper<T extends Comparable<? super T>> implements Comparable<ListWrapper<T>> {
         List<T> l;
         T next;
