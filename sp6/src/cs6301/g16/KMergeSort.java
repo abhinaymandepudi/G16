@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class KMergeSort<T extends Comparable<? super T>> {
-    private static final int threshold = 10;
+    private static final int threshold = 100;
     private int k;
 
     public KMergeSort(int k) {
@@ -37,7 +37,7 @@ public class KMergeSort<T extends Comparable<? super T>> {
 
         final int size = list.size() / k + 1;
 
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < k && i * size < list.size(); i++) {
             // Split the recursively sort each segment with length size.
             lists.add(this.sort(list.stream().skip(i * size).limit(size).collect(Collectors.toList())));
         }
@@ -53,11 +53,15 @@ public class KMergeSort<T extends Comparable<? super T>> {
     }
 
     private T[] sort(T[] A, T[] B, int p, int r) {
-        if (r - p < threshold || r - p <= k * 10) {
+        if (r - p < threshold || r - p + 1 <= k * 10) {
             T[] tmp = Arrays.copyOfRange(A, p, r+1);
+            Arrays.sort(tmp);
             int i = p;
-            for (T t : tmp)
-                A[i++] = t;
+            for (T t : tmp) {
+                B[i] = t;
+                i++;
+            }
+            assert i == r + 1;
         } else {
             int step = (r - p) / k + 1;
             for (int i = p; i <= r; i += step) {
@@ -81,20 +85,47 @@ public class KMergeSort<T extends Comparable<? super T>> {
     }
 
     public static void main(String[] args) {
-        int size = 2000000;
-        if (args.length >= 1)
-            size = Integer.parseInt(args[0]);
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Random generate array, enter size (-1 for automated 5 times random testing): ");
+
+        int size = sc.nextInt();
+
+        if (size == -1) {
+            Random r = new Random();
+
+            for (int i = 0; i < 5; i++)
+                test(r.nextInt(10000000), r.nextInt(20));
+        }
+
+        System.out.print("Enter k value for K-way merge sort: ");
+
+        int k = sc.nextInt();
+
+        test(size, k);
+    }
+
+    private static void test(int size, int k) {
         List<Integer> list = new ArrayList<>(size);
         Random r = new Random();
 
-        for (int i = 0; i < size; i++)
-            list.add(r.nextInt(100));
+        System.out.println();
+        System.out.print("Generating random array and list with length " + size + ".");
+        for (int i = 0; i < size; i++) {
+            list.add(r.nextInt(size));
+            if (i % (size / 10) == 0)
+                System.out.print(".");
+        }
+        System.out.println();
 
         assert !isSorted(list);
 
-        KMergeSort<Integer> sort = new KMergeSort<>(29);
+        System.out.println("K-way Sort with k = " + k + ".");
+
+        KMergeSort<Integer> sort = new KMergeSort<>(k);
 
         {
+            System.out.println("List<Integer>:");
             Timer t = new Timer();
             t.start();
             List<Integer> sortedList = sort.sort(list);
@@ -105,6 +136,7 @@ public class KMergeSort<T extends Comparable<? super T>> {
         }
 
         {
+            System.out.println("Integer[]:");
             Timer t = new Timer();
             t.start();
             Integer[] arr = list.toArray(new Integer[0]);
