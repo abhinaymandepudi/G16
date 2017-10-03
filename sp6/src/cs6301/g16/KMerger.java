@@ -18,78 +18,145 @@ import java.util.stream.Stream;
 
 public class KMerger<T extends Comparable<? super T>> {
     private int k;
-    private PriorityQueue<ListWrapper<T>> queue;
 
     public KMerger(int k) {
         this.k = k;
-        this.queue = new PriorityQueue<>(k);
     }
 
     public List<T> merge(List<List<T>> kList) {
+        PriorityQueue<ListWrapper<T>> queue = new PriorityQueue<>(k);
         Stream<ListWrapper<T>> kListWrapper = kList.stream().map(ListWrapper<T>::new);
         List<T> m = new ArrayList<>(this.k * kList.get(0).size());
 
-        kListWrapper.forEach(x -> this.queue.offer(x));
+        kListWrapper.forEach(queue::offer);
 
-        while (this.queue.peek() != null) {
-            ListWrapper<T> next = this.queue.poll();
-            m.add(next.pop());
+        while (queue.peek() != null) {
+            ListWrapper<T> next = queue.poll();
+            m.add(next.next());
             if (next.isEmpty())
                 continue;
-            this.queue.offer(next);
+            queue.offer(next);
         }
 
         return m;
     }
 
-    public T[] merge() {
-        return null;
+    public T[] merge(T[] A, T[] B, int p, int step, int r) {
+        PriorityQueue<TWrapper<T>> queue = new PriorityQueue<>(k);
+
+        for (int i = p; i <= r; i += step) {
+            int start = i;
+            int end = i + step - 1;
+            if (end > r)
+                end = r;
+            queue.offer(new TWrapper<>(A, start, end));
+        }
+
+        int i = p;
+        while (queue.peek() != null) {
+            TWrapper<T> next = queue.poll();
+            B[i++] = next.next();
+            if (next.isEmpty())
+                continue;
+            queue.offer(next);
+        }
+
+        return B;
     }
 
     private class ListWrapper<T extends Comparable<? super T>> implements Comparable<ListWrapper<T>> {
         List<T> l;
-        T next;
+        T val;
         Iterator<T> iterator;
 
         public ListWrapper(List<T> l) {
             this.l = l;
             this.iterator = this.l.iterator();
-            this.next = iterator.hasNext() ? iterator.next() : null;
+            this.val = iterator.hasNext() ? iterator.next() : null;
         }
 
-        public T pop() {
-            T ret = next;
-            next = iterator.hasNext() ? iterator.next() : null;
+        public T next() {
+            T ret = val;
+            val = iterator.hasNext() ? iterator.next() : null;
             return ret;
         }
 
         public boolean isEmpty() {
-            return next == null;
+            return val == null;
         }
 
         @Override
         public int compareTo(ListWrapper<T> o) {
-            return this.next.compareTo(o.next);
+            return this.val.compareTo(o.val);
         }
 
         @Override
         public String toString() {
-            return next + ": " + l;
+            return val + ": " + l;
         }
     }
 
+    private class TWrapper<T extends Comparable<? super T>> implements Comparable<TWrapper<T>> {
+        T[] arr;
+        int p, r;
+        T val;
+        int index;
+
+        public TWrapper(T[] arr, int p, int r) {
+            this.arr = arr;
+            this.p = p;
+            this.r = r;
+            this.val = arr[p];
+            this.index = p;
+        }
+
+        public T next() {
+            if (index == -1)
+                return null;
+            T ret = val;
+            if (index < r) {
+                val = arr[index + 1];
+                index++;
+            } else {
+                val = null;
+                index = -1;
+            }
+            return ret;
+        }
+
+        public boolean isEmpty() {
+            return val == null;
+        }
+
+        @Override
+        public int compareTo(TWrapper<T> o) {
+            return this.val.compareTo(o.val);
+        }
+
+    }
+
     public static void main(String[] args) throws Exception {
-        List<List<Integer>> lists = Arrays.asList(
-                new ArrayList<>(Arrays.asList(1, 3, 5, 7, 9)),
-                new ArrayList<>(Arrays.asList(3, 4, 5, 6, 7)),
-                new ArrayList<>(Arrays.asList(2, 4, 6, 8, 10)),
-                new ArrayList<>(Arrays.asList(4, 5, 7, 9, 12)),
-                new ArrayList<>(Arrays.asList(100, 200, 300, 400))
-        );
+        KMerger<Integer> merger = new KMerger<>(4);
 
-        KMerger<Integer> merger = new KMerger<>(lists.size());
+//        List<List<Integer>> lists = Arrays.asList(
+//                new ArrayList<>(Arrays.asList(1, 3, 5, 7, 9)),
+//                new ArrayList<>(Arrays.asList(3, 4, 5, 6, 7)),
+//                new ArrayList<>(Arrays.asList(2, 4, 6, 8, 10)),
+//                new ArrayList<>(Arrays.asList(4, 5, 7, 9, 12)),
+//                new ArrayList<>(Arrays.asList(100, 200, 300, 400))
+//        );
 
-        System.out.println(merger.merge(lists));
-        System.out.println(lists);
+
+//        System.out.println(merger.merge(lists));
+//        System.out.println(lists);
+
+
+        Integer[] A = new Integer[]{1,4,7,11,2,5,8,13,3,9,19};
+        Integer[] B = new Integer[20];
+
+        merger.merge(A, B, 0, 4, 10);
+
+        System.out.println(Arrays.toString(A));
+        System.out.println(Arrays.toString(B));
     }
 }

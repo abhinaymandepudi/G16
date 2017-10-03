@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class KMergeSort<T extends Comparable<? super T>> {
-    private static final int threshold = 20;
+    private static final int threshold = 10;
     private int k;
 
     public KMergeSort(int k) {
@@ -48,17 +48,30 @@ public class KMergeSort<T extends Comparable<? super T>> {
     }
 
     public T[] sort(T[] arr) {
-        return null;
+        T[] arrp = arr.clone();
+        return sort(arrp, arr, 0, arr.length - 1);
     }
 
     private T[] sort(T[] A, T[] B, int p, int r) {
-        if (r - p < threshold) {
-            T[] tmp = Arrays.copyOfRange(A, p, r);
+        if (r - p < threshold || r - p <= k * 10) {
+            T[] tmp = Arrays.copyOfRange(A, p, r+1);
             int i = p;
             for (T t : tmp)
                 A[i++] = t;
-        } else if (p < r) {
-            int q = (p + r) / 2;
+        } else {
+            int step = (r - p) / k + 1;
+            for (int i = p; i <= r; i += step) {
+                int start = i;
+                int end = i + step - 1;
+                if (end > r)
+                    end = r;
+                sort(B, A, start, end);
+            }
+
+            KMerger<T> merger = new KMerger<>(k);
+
+            merger.merge(A, B, p, step, r);
+
 //            mergeSortFour(B, A, p, q);
 //            mergeSortFour(B, A, q + 1, r);
 //            mergeFour(B, A, p, q, r);
@@ -68,7 +81,7 @@ public class KMergeSort<T extends Comparable<? super T>> {
     }
 
     public static void main(String[] args) {
-        int size = 5000000;
+        int size = 2000000;
         if (args.length >= 1)
             size = Integer.parseInt(args[0]);
         List<Integer> list = new ArrayList<>(size);
@@ -79,15 +92,28 @@ public class KMergeSort<T extends Comparable<? super T>> {
 
         assert !isSorted(list);
 
-        KMergeSort<Integer> sort = new KMergeSort<>(8);
+        KMergeSort<Integer> sort = new KMergeSort<>(29);
 
-        Timer t = new Timer();
-        t.start();
-        List<Integer> sortedList = sort.sort(list);
-        System.out.println(t.end());
+        {
+            Timer t = new Timer();
+            t.start();
+            List<Integer> sortedList = sort.sort(list);
+            System.out.println(t.end());
 
-        assert sortedList.size() == list.size();
-        assert isSorted(sortedList);
+            assert sortedList.size() == list.size();
+            assert isSorted(sortedList);
+        }
+
+        {
+            Timer t = new Timer();
+            t.start();
+            Integer[] arr = list.toArray(new Integer[0]);
+
+            sort.sort(arr);
+
+            System.out.println(t.end());
+            assert (isSorted(arr));
+        }
     }
 
     private static <T extends Comparable<? super T>> boolean isSorted(List<T> list) {
@@ -106,6 +132,9 @@ public class KMergeSort<T extends Comparable<? super T>> {
     }
 
     private static <T extends Comparable<? super T>> boolean isSorted(T[] arr) {
-        return false;
+        for (int i = 0; i < arr.length - 2; i++)
+            if (arr[i].compareTo(arr[i+1]) > 0)
+                return false;
+        return true;
     }
 }
