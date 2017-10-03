@@ -96,6 +96,8 @@ public class KMergeSort<T extends Comparable<? super T>> {
 
             for (int i = 0; i < 5; i++)
                 test(r.nextInt(10000000), r.nextInt(20));
+
+            return;
         }
 
         System.out.print("Enter k value for K-way merge sort: ");
