@@ -95,8 +95,7 @@ public class KMergeSort<T extends Comparable<? super T>> {
             Random r = new Random();
 
             for (int i = 0; i < 5; i++)
-                test(r.nextInt(10000000), r.nextInt(20));
-
+                test(r.nextInt(10000000), r.nextInt(18) + 2);
             return;
         }
 
