@@ -8,6 +8,13 @@ Group Members
 - Hanlin He (hxh160630@utdallas.edu)
 - Zheng Gao (zxg170430@utdallas.edu)
 
+Feedback
+--------
+
+Score: 100. EC: 6
+
+Level 4: t3, t7 - exception (base not properly set to default base, hence divideByZero exception) , t6 - totally wrong output.
+
 Project Structure
 -----------------
 
