@@ -10,6 +10,13 @@ Group Members
 - Hanlin He (hxh160630@utdallas.edu)
 - Zheng Gao (zxg170430@utdallas.edu)
 
+Feedback
+--------
+
+Complex code. Try to simplify design. Unnecessary use of inheritance.
+
+-   Q5: Root of tree is cut vertex if it has 2 or more children in DFS, and not if it has 2 or more neighbors in G.
+
 Project Structure
 -----------------
 
