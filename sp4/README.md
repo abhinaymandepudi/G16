@@ -10,6 +10,12 @@ Group Members
 - Hanlin He (hxh160630@utdallas.edu)
 - Zheng Gao (zxg170430@utdallas.edu)
 
+Feedback
+--------
+
+-   Q1 - BSTreeLinkedList.Node is a raw type. References to generic type BSTreeLinkedList.Node should be parameterized.
+-   Q3 – 2nd merge algorithm is not containing the temporary array as a parameter.
+
 Project Structure
 -----------------
 
