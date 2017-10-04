@@ -1,7 +1,10 @@
 
 /* Ver 1.0: Starter code for Kruskal's MST algorithm */
 
-package cs6301.g00;
+package cs6301.g16;
+
+import cs6301.g00.Graph;
+import cs6301.g00.Timer;
 
 import java.util.Scanner;
 import java.lang.Comparable;
