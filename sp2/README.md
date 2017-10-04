@@ -10,6 +10,11 @@ Group Members
 - Hanlin He (hxh160630@utdallas.edu)
 - Zheng Gao (zxg170430@utdallas.edu)
 
+Feedback
+--------
+
+Using flag to decide which iterator to forward is unnatural. Code can be simpler. difference() returns wrong answer if l2 is empty. It should return l1, but returns empty list.
+
 Project Structure
 -----------------
 
