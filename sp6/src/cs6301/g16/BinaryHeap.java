@@ -105,6 +105,16 @@ public class BinaryHeap<T> {
      * Create a heap.  Precondition: none.
      */
     void buildHeap() {
+        for (T item : pq) {
+            if (item == null)
+                break;
+            size++;
+        }
+        int i = (pq.length - 2) / 2;
+        if (i * 2 < pq.length - 2)
+            i++;
+        for (; i >= 0; i--)
+            percolateDown(i);
     }
 
     /* sort array A[].
@@ -113,6 +123,15 @@ public class BinaryHeap<T> {
        max heap ==> ascending order
      */
     public static <T> void heapSort(T[] A, Comparator<T> comp) { /* to be implemented */
+        BinaryHeap<T> bh = new BinaryHeap<>(A, comp, A.length);
+        bh.buildHeap();
+        for (int i = bh.size - 1; i > 0; i--) {
+            try {
+                bh.pq[i] = bh.remove();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -121,23 +140,14 @@ public class BinaryHeap<T> {
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[] A = new Integer[100];
-        BinaryHeap<Integer> bh = new BinaryHeap<>(A, Comparator.naturalOrder(), 50);
-
         Random r = new Random();
-        for (int i = 0; i < 50; i++)
-            bh.add(r.nextInt(100));
 
+        Integer[] A = new Integer[100];
+        for (int i = 0; i < 100; i++)
+            A[i] = r.nextInt(100);
 
-        while (true) {
-            try {
-                System.out.println(bh.deleteMin());
-            } catch (Exception e){
-                break;
-            }
-        }
+        BinaryHeap.heapSort(A, Comparator.naturalOrder());
 
-        System.out.print(bh);
 
     }
 }
