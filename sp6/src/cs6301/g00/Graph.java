@@ -2,6 +2,8 @@
  * Class to represent a graph
  *  @author rbk
  *  Ver 1.1: 2017/08/28.  Updated some methods to public.  Added getName() to Vertex
+ *  Ver 1.2: 2017/09/08.  Added getVertex() method for GraphAlgorithm.java
+ *  Ver 1.3: 2017/09/28.  Added isDirected() and additional Vertex constructor
  *
  */
 
@@ -15,7 +17,7 @@ public class Graph implements Iterable<Graph.Vertex> {
     Vertex[] v; // vertices of graph
     int n; // number of verices in the graph
     boolean directed;  // true if graph is directed, false otherwise
-    
+
 
     /**
      * Nested class to represent a vertex of a graph
@@ -27,7 +29,7 @@ public class Graph implements Iterable<Graph.Vertex> {
 
 	/**
 	 * Constructor for the vertex
-	 * 
+	 *
 	 * @param n
 	 *            : int - name of the vertex
 	 */
@@ -35,6 +37,12 @@ public class Graph implements Iterable<Graph.Vertex> {
 	    name = n;
 	    adj = new LinkedList<Edge>();
 	    revAdj = new LinkedList<Edge>();   /* only for directed graphs */
+	}
+
+	Vertex(Vertex u) {
+	    name = u.name;
+	    adj = u.adj;
+	    revAdj = u.revAdj;
 	}
 
 	/**
@@ -46,6 +54,11 @@ public class Graph implements Iterable<Graph.Vertex> {
 	}
 
 	public Iterator<Edge> iterator() { return adj.iterator(); }
+
+	// Helper function for parallel arrays used to store vertex attributes
+	public static<T> T getVertex(T[] node, Vertex u) {
+	    return node[u.name];
+	}
 
 	/**
 	 * Method to get vertex number.  +1 is needed because [0] is vertex 1.
@@ -66,7 +79,7 @@ public class Graph implements Iterable<Graph.Vertex> {
 
 	/**
 	 * Constructor for Edge
-	 * 
+	 *
 	 * @param u
 	 *            : Vertex - Vertex from which edge starts
 	 * @param v
@@ -83,7 +96,7 @@ public class Graph implements Iterable<Graph.Vertex> {
 	/**
 	 * Method to find the other end end of an edge, given a vertex reference
 	 * This method is used for undirected graphs
-	 * 
+	 *
 	 * @param u
 	 *            : Vertex
 	 * @return
@@ -96,7 +109,7 @@ public class Graph implements Iterable<Graph.Vertex> {
 		return to;
 	    } else {
 		return from;
-	    } 
+	    }
 	}
 
 	/**
@@ -114,7 +127,7 @@ public class Graph implements Iterable<Graph.Vertex> {
 
     /**
      * Constructor for Graph
-     * 
+     *
      * @param n
      *            : int - number of vertices
      */
@@ -127,6 +140,12 @@ public class Graph implements Iterable<Graph.Vertex> {
 	    v[i] = new Vertex(i);
     }
 
+    public Graph(Graph g) {
+	n = g.n;
+	v = g.v;
+	directed = g.directed;
+    }
+
     /**
      * Find vertex no. n
      * @param n
@@ -135,10 +154,10 @@ public class Graph implements Iterable<Graph.Vertex> {
     public Vertex getVertex(int n) {
 	return v[n-1];
     }
-    
+
     /**
      * Method to add an edge to the graph
-     * 
+     *
      * @param a
      *            : int - one end of edge
      * @param b
@@ -161,6 +180,10 @@ public class Graph implements Iterable<Graph.Vertex> {
 	return n;
     }
 
+    public boolean isDirected() {
+	return directed;
+    }
+
     /**
      * Method to create iterator for vertices of graph
      */
@@ -172,12 +195,12 @@ public class Graph implements Iterable<Graph.Vertex> {
     public static Graph readDirectedGraph(Scanner in) {
 	return readGraph(in, true);
     }
-    
+
     // read an undirected graph using the Scanner interface
     public static Graph readGraph(Scanner in) {
 	return readGraph(in, false);
     }
-    
+
     public static Graph readGraph(Scanner in, boolean directed) {
 	// read the graph related parameters
 	int n = in.nextInt(); // number of vertices in the graph
