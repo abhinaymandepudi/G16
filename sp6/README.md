@@ -16,15 +16,6 @@ Project Structure
 Deliverable structure is as follow:
 
     cs6301
-    ├── README.md
-    └── g16
-        ├── ArrayHelper.java                    # Helper Class with Array Related Functions
-        ├── DualPivotQuickSort.java             # Solution for Problem 2
-        ├── QuickSort.java                      # Solution for Problem 1
-        ├── QuickSortVsMergeSort.java           # Solution for Problem 4
-        └── SelectAlgorithm.java                # Solution for Problem 3
-
-    cs6301
     └── g16
         ├── BinaryHeap.java             # Binary Heap implementation for p5.
         ├── HuffmanCoding.java
@@ -45,17 +36,16 @@ Compile
 To compile, run the following commands:
 
     # Problem 1
-    javac cs6301/g16/QuickSort.java
+    javac cs6301/g16/KMergeSort.java
 
     # Problem 2
-    javac cs6301/g16/DualPivotQuickSort.java
 
     # Problem 3
-    javac cs6301/g16/SelectAlgorithm.java
 
     # Problem 4
-    javac cs6301/g16/QuickSortVsMergeSort.java
 
+    # Problem 5
+    javac cs6301/g16/P5Driver.java
   
 
 
@@ -63,169 +53,123 @@ Test Running
 ------------
 -   Problem 1
 
-    Execute the command `java cs6301.g16.QuickSort`.
+    Execute the command `java cs6301.g16.KMergeSort`.
 
-    The program implement two versions of partition of quick sort, and test their running time and memory
-    with randomly and descending order.
-    
+    Follow the prumpt, specify the length of array to be generated and k value.
+
     Example:
 
-        > java cs6301.g16.QuickSort 
-        Test 1 - Shuffled Input Array:
-        [2333320 7442905 2258551 9919783 3654082 ... 2928539 1905658 1431271 293565 249048 1015919]
-        ==========================
-        
-        Quick Sort with Partition Algorithm 1:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Time: 2281 msec.
-        Memory: 89 MB / 116 MB.
-        
-        ------------------------
-        
-        Quick Sort with Partition Algorithm 2:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Time: 2896 msec.
-        Memory: 104 MB / 113 MB.
-        ==========================
-        Test 2 - Reversed Input Array:
-        [10000000 9999999 9999998 9999997 9999996 ... 6 5 4 3 2 1]
-        ==========================
-        
-        Quick Sort with Partition Algorithm 1:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Time: 1162 msec.
-        Memory: 177 MB / 197 MB.
-        
-        ------------------------
-        
-        Quick Sort with Partition Algorithm 2:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Time: 1428 msec.
-        Memory: 184 MB / 249 MB.
-        
+        > java cs6301.g16.KMergeSort
+        Random generate array, enter size (-1 for automated 5 times random testing): 1000000
+        Enter k value for K-way merge sort: 13
+
+        Generating random array and list with length 1000000...........
+        K-way Sort with k = 13.
+        List<Integer>:
+        Time: 823 msec.
+        Memory: 44 MB / 256 MB.
+        Integer[]:
+        Time: 675 msec.
+        Memory: 65 MB / 256 MB.
+
+        > java cs6301.g16.KMergeSort
+        Random generate array, enter size (-1 for automated 5 times random testing): -1
+
+        Generating random array and list with length 9583233............
+        K-way Sort with k = 16.
+        List<Integer>:
+        Time: 8446 msec.
+        Memory: 370 MB / 681 MB.
+        Integer[]:
+        Time: 8986 msec.
+        Memory: 426 MB / 681 MB.
+
+        Generating random array and list with length 7141678............
+        K-way Sort with k = 4.
+        List<Integer>:
+        Time: 7565 msec.
+        Memory: 785 MB / 1343 MB.
+        Integer[]:
+        Time: 6144 msec.
+        Memory: 893 MB / 1343 MB.
+
+        Generating random array and list with length 3081433............
+        K-way Sort with k = 10.
+        List<Integer>:
+        Time: 2726 msec.
+        Memory: 210 MB / 1343 MB.
+        Integer[]:
+        Time: 1909 msec.
+        Memory: 253 MB / 1343 MB.
+
+        Generating random array and list with length 5440423............
+        K-way Sort with k = 8.
+        List<Integer>:
+        Time: 4811 msec.
+        Memory: 641 MB / 1343 MB.
+        Integer[]:
+        Time: 3786 msec.
+        Memory: 724 MB / 1343 MB.
+
+        Generating random array and list with length 1619193............
+        K-way Sort with k = 19.
+        List<Integer>:
+        Time: 1178 msec.
+        Memory: 671 MB / 1343 MB.
+        Integer[]:
+        Time: 1074 msec.
+        Memory: 528 MB / 1343 MB.
+
 -   Problem 2
 
-    Execute the command `java cs6301.g16.DualPivotQuickSort`.
-
-    The program implement dual pivot partition and its version of quick sort,and compare
-    its performance with regular quick sort. Test two version of quick sort with 
-    distinct or many duplicates array.
-    
-    Example:
-
-        > java cs6301.g16.DualPivotQuickSort 
-        ====================
-        Test with array with duplicate elements:
-        
-        Input Array:
-        [327095 1083692 677442 2721419 2540762 ... 1197033 4807903 3329180 2845406 1751615 402571]
-        Dual Pivot Quick Sort:
-        [1 2 3 3 3 ... 5001962 5001963 5001964 5001964 5001965 5001965]
-        Sorting Success
-        Time: 1351 msec.
-        Memory: 116 MB / 161 MB.
-        
-        Normal Quick Sort:
-        [1 2 3 3 3 ... 5001962 5001963 5001964 5001964 5001965 5001965]
-        Sorting Success
-        Time: 1864 msec.
-        Memory: 128 MB / 153 MB.
-        
-        
-        ====================
-        Test with array with distinct elements:
-        
-        Input Array:
-        [8351201 785850 4347372 6023624 9798537 ... 4876130 8844926 7363718 4526944 691754 9698228]
-        Dual Pivot Quick Sort:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Sorting Success
-        Time: 1440 msec.
-        Memory: 256 MB / 267 MB.
-        
-        Normal Quick Sort:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Sorting Success
-        Time: 1710 msec.
-        Memory: 242 MB / 263 MB.
-        
-        
 
 -   Problem 3
 
-    Execute the command `java cs6301.g16.SelectAlgorithm`.
-
-    The program implement 3 versions of the Select algorithm (finding k largest elements) by creating prority queue and recursion technique. Then we
-    test with an arbitrary length integer array and compare their performance.
-    
-    Example:
-
-        > java cs6301.g16.SelectAlgorithm 
-        Test 1:
-        array size=30000000
-        k=22222
-        Output:
-        test (a):
-        Kth element is: 29977778     Running time : 19730ms
-        test (b):
-        Kth element is: 29977778     Running time : 5184ms
-        test (c):
-        Kth element is: 29977778     Running time : 90ms
-        ------------------------------
-        Test 2:
-        array size=7000000
-        k=66
-        Output:
-        test (a):
-        Kth element is: 6999934     Running time : 2460ms
-        test (b):
-        Kth element is: 6999934     Running time : 1023ms
-        test (c):
-        Kth element is: 6999934     Running time : 30ms
-
-        
 
 -   Problem 4
 
-    Execute the command `java cs6301.g16.QuickSortVsMergeSort`.
+-   Problem 5
 
-    The program implement best version of Merge sort implemented before and quick sort that uses dual pivot partition. Compare
-    their performance with distinct or many duplicates array.
-    
+    Execute the command `java cs6301.g16.P5Driver`.
+
+    Follow the prump, specify the length of binary heap to be generated.
+
     Example:
 
-        > java cs6301.g16.QuickSortVsMergeSort 
-        ====================
-        Test with array with distinct elements:
-        
-        Input Array:
-        [6832021 9193702 945726 9186324 6356509 ... 2961776 6113391 8387073 860687 2591765 9370019]
-        Dual Pivot Quick Sort:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Sorting Success
-        Time: 1456 msec.
-        Memory: 143 MB / 161 MB.
-        
-        Merge Sort:
-        [1 2 3 4 5 ... 9999995 9999996 9999997 9999998 9999999 10000000]
-        Sorting Success
-        Time: 1490 msec.
-        Memory: 181 MB / 200 MB.
-        
-        
-        ====================
-        Test with array with duplicate elements:
-        
-        Input Array:
-        [3933021 586480 3150429 3605230 130723 ... 137510 3632490 4211770 1254549 1988895 3240681]
-        Dual Pivot Quick Sort:
-        [1 1 2 2 3 ... 4998655 4998656 4998657 4998658 4998658 4998658]
-        Sorting Success
-        Time: 1473 msec.
-        Memory: 289 MB / 315 MB.
-        
-        Merge Sort:
-        [1 1 2 2 3 ... 4998655 4998656 4998657 4998658 4998658 4998658]
-        Sorting Success
-        Time: 1602 msec.
-        Memory: 327 MB / 354 MB.
+        > java cs6301.g16.P5Driver
+        Enter length of array to be generated: 1000
+        Generating random array within 1000.
+        The array is The array is [450,984,997,276,6,915,23,433,591,409,...]
+
+        Sorting the array in ascending order.
+        Time: 3 msec.
+        Memory: 2 MB / 256 MB.
+
+        The array is The array is [0,1,3,4,4,5,6,9,10,11,...]
+
+        Sorting the array in descending order again.
+        Time: 1 msec.
+        Memory: 3 MB / 256 MB.
+
+        The array is The array is [999,998,997,996,994,993,990,989,987,985,...]
+
+        > java cs6301.g16.P5Driver
+        Enter length of array to be generated: 1000000
+        Generating random array within 1000000.
+        The array is The array is [358913,703852,330664,560970,526013,326989,601757,365320,399564,164915,...]
+
+        Sorting the array in ascending order.
+        Time: 866 msec.
+        Memory: 22 MB / 256 MB.
+
+        The array is The array is [0,0,0,0,2,2,3,3,3,5,...]
+
+        Sorting the array in descending order again.
+        Time: 596 msec.
+        Memory: 23 MB / 256 MB.
+
+        The array is The array is [999998,999996,999996,999995,999994,999993,999992,999992,999991,999989,...]
+
+
+
+
