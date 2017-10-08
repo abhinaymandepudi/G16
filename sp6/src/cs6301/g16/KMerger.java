@@ -25,7 +25,8 @@ public class KMerger<T extends Comparable<? super T>> {
 
     public List<T> merge(List<List<T>> kList) {
         PriorityQueue<ListWrapper<T>> queue = new PriorityQueue<>(k);
-        Stream<ListWrapper<T>> kListWrapper = kList.stream().map(ListWrapper::instanceOf);
+
+        Stream<ListWrapper<T>> kListWrapper = kList.stream().map(x -> new ListWrapper<>(x));
         List<T> m = new ArrayList<>(this.k * kList.get(0).size());
 
         kListWrapper.forEach(queue::offer);
@@ -74,11 +75,6 @@ public class KMerger<T extends Comparable<? super T>> {
             this.iterator = this.l.iterator();
             this.val = iterator.hasNext() ? iterator.next() : null;
         }
-
-        static <T extends Comparable<? super T>> ListWrapper instanceOf(List<T> l) {
-            return new ListWrapper<>(l);
-        }
-
 
         public T next() {
             T ret = val;
