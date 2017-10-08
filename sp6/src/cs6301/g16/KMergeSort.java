@@ -75,10 +75,6 @@ public class KMergeSort<T extends Comparable<? super T>> {
             KMerger<T> merger = new KMerger<>(k);
 
             merger.merge(A, B, p, step, r);
-
-//            mergeSortFour(B, A, p, q);
-//            mergeSortFour(B, A, q + 1, r);
-//            mergeFour(B, A, p, q, r);
         }
 
         return null;

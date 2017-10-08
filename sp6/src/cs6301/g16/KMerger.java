@@ -25,7 +25,7 @@ public class KMerger<T extends Comparable<? super T>> {
 
     public List<T> merge(List<List<T>> kList) {
         PriorityQueue<ListWrapper<T>> queue = new PriorityQueue<>(k);
-        Stream<ListWrapper<T>> kListWrapper = kList.stream().map(ListWrapper<T>::new);
+        Stream<ListWrapper<T>> kListWrapper = kList.stream().map(ListWrapper::new);
         List<T> m = new ArrayList<>(this.k * kList.get(0).size());
 
         kListWrapper.forEach(queue::offer);
@@ -137,19 +137,6 @@ public class KMerger<T extends Comparable<? super T>> {
 
     public static void main(String[] args) throws Exception {
         KMerger<Integer> merger = new KMerger<>(4);
-
-//        List<List<Integer>> lists = Arrays.asList(
-//                new ArrayList<>(Arrays.asList(1, 3, 5, 7, 9)),
-//                new ArrayList<>(Arrays.asList(3, 4, 5, 6, 7)),
-//                new ArrayList<>(Arrays.asList(2, 4, 6, 8, 10)),
-//                new ArrayList<>(Arrays.asList(4, 5, 7, 9, 12)),
-//                new ArrayList<>(Arrays.asList(100, 200, 300, 400))
-//        );
-
-
-//        System.out.println(merger.merge(lists));
-//        System.out.println(lists);
-
 
         Integer[] A = new Integer[]{1,4,7,11,2,5,8,13,3,9,19};
         Integer[] B = new Integer[20];
