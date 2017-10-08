@@ -38,8 +38,8 @@ Deliverable structure is as follow:
 Javadoc
 -------
 
-An online Javadoc (including private variables and methods) for `Num` class is 
-hosted at [Num](https://hanlin-he.github.io/G16/lp1/doc/cs6301/g16/Num.html).
+<!-- An online Javadoc (including private variables and methods) for `Num` class is 
+hosted at [Num](https://hanlin-he.github.io/G16/lp1/doc/cs6301/g16/Num.html). -->
 
 Compile
 -------
