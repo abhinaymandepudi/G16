@@ -1,7 +1,7 @@
-Short Project 5
+Short Project 6
 ================
 
-The problems set [click here](./sp5-quicksort-2017f.md)
+The problems set [click here](./sp6-pq-2017f.md)
 
 Group Members
 -------------
