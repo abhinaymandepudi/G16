@@ -1,13 +1,9 @@
 
 /* Ver 1.0: Starter code for Prim's MST algorithm */
 
-package cs6301.g16;
-
-import cs6301.g00.Graph;
-import cs6301.g00.Timer;
+package cs6301.g00;
 
 import java.util.Scanner;
-import java.lang.Comparable;
 import java.io.FileNotFoundException;
 import java.io.File;
 

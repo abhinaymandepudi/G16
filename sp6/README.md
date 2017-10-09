@@ -17,7 +17,6 @@ Deliverable structure is as follow:
 
     cs6301
     └── g16
-        ├── BinaryHeap.java             # Binary Heap implementation for p5.
         ├── HuffmanCoding.java          # Solution for Problem 2.
         ├── KMergeSort.java             # Solution for Problem 1.
         ├── KMerger.java                # Merger Helper class for K-way Merge.
