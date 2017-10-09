@@ -1,14 +1,33 @@
 package cs6301.g16;
 
-import cs6301.g00.BinaryHeap;
 import cs6301.g00.Timer;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.Scanner;
 
 public class P5Driver {
 
+
+    /**
+     * Helper function to print array
+     */
+    static void printArray(Integer[] arr) {
+        StringBuilder sb = new StringBuilder("The array is ");
+
+        if (arr.length <= 10) {
+            sb.append(Arrays.toString(arr));
+        } else {
+            sb.append("[");
+            for(int i=0; i<10; i++)
+                sb.append(arr[i]).append(", ");
+            sb.append("...]");
+        }
+
+        System.out.println(sb.toString());
+        System.out.println();
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -27,19 +46,7 @@ public class P5Driver {
             arr[i] = r.nextInt(size);
         }
 
-        {
-            StringBuilder sb = new StringBuilder("The array is [");
-
-            sb.append(arr[0]).append(",").append(arr[1]).append(",").append(arr[2]).append(",")
-                    .append(arr[3]).append(",").append(arr[4]).append(",").append(arr[5]).append(",")
-                    .append(arr[6]).append(",").append(arr[7]).append(",").append(arr[8]).append(",")
-                    .append(arr[9]).append(",").append("...]");
-
-            System.out.println("The array is " + sb.toString());
-
-            System.out.println();
-
-        }
+        printArray(arr);
 
         {
             System.out.println("Sorting the array in ascending order.");
@@ -49,16 +56,7 @@ public class P5Driver {
             System.out.println(t.end());
 
             System.out.println();
-            StringBuilder sb = new StringBuilder("The array is [");
-
-            sb.append(arr[0]).append(",").append(arr[1]).append(",").append(arr[2]).append(",")
-                    .append(arr[3]).append(",").append(arr[4]).append(",").append(arr[5]).append(",")
-                    .append(arr[6]).append(",").append(arr[7]).append(",").append(arr[8]).append(",")
-                    .append(arr[9]).append(",").append("...]");
-
-            System.out.println("The array is " + sb.toString());
-
-            System.out.println();
+            printArray(arr);
 
         }
 
@@ -70,15 +68,7 @@ public class P5Driver {
             System.out.println(t.end());
 
             System.out.println();
-
-            StringBuilder sb = new StringBuilder("The array is [");
-
-            sb.append(arr[0]).append(",").append(arr[1]).append(",").append(arr[2]).append(",")
-                    .append(arr[3]).append(",").append(arr[4]).append(",").append(arr[5]).append(",")
-                    .append(arr[6]).append(",").append(arr[7]).append(",").append(arr[8]).append(",")
-                    .append(arr[9]).append(",").append("...]");
-
-            System.out.println("The array is " + sb.toString());
+            printArray(arr);
         }
     }
 }
