@@ -1,5 +1,6 @@
 package cs6301.g16;
 
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class PrimeFactor {
@@ -7,6 +8,8 @@ public class PrimeFactor {
     public static void main(String[] args) {
         int n = 100;
         long[] primeList = {3, 7};
+
+        System.out.println("Input Prime List:"+ Arrays.toString(primeList));
 
         long[] thresholds = new long[primeList.length];
 

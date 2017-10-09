@@ -1,6 +1,6 @@
 // Ver 1.0:  Starter code for bounded size Binary Heap implementation
 
-package cs6301.g16;
+package cs6301.g00;
 
 import java.util.Arrays;
 import java.util.Comparator;

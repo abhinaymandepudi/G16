@@ -18,16 +18,12 @@ Deliverable structure is as follow:
     cs6301
     └── g16
         ├── BinaryHeap.java             # Binary Heap implementation for p5.
-        ├── HuffmanCoding.java
-        ├── Index.java
-        ├── IndexedHeap.java
+        ├── HuffmanCoding.java          # Solution for Problem 2.
         ├── KMergeSort.java             # Solution for Problem 1.
         ├── KMerger.java                # Merger Helper class for K-way Merge.
-        ├── KruskalMST.java
         ├── P5Driver.java               # Driver class for Problem 5.
-        ├── PerfectPower.java
-        ├── PrimMST.java
-        ├── PrimeFactor.java
+        ├── PerfectPower.java           # Solution for Problem 3-1 PerfectPower
+        ├── PrimeFactor.java            # Solution for Problem 3-2 PrimeFactor
         └── README.md
 
 Compile
@@ -39,11 +35,12 @@ To compile, run the following commands:
     javac cs6301/g16/KMergeSort.java
 
     # Problem 2
+    javac cs6301/g16/HuffmanCoding.java
 
     # Problem 3
-
-    # Problem 4
-
+    javac cs6301/g16/PerfectPower.java
+    javac cs6301/g16/PrimeFactor.java
+    
     # Problem 5
     javac cs6301/g16/P5Driver.java
   
@@ -122,11 +119,43 @@ Test Running
 
 -   Problem 2
 
+    Execute the command `java cs6301.g16.HuffmanCoding`.
+    
+    The program will generate huffman tree and perform huffman coding algorithm 
+    on the key-frequency pairs given in main function.
+
+    Example:
+
+        > java cs6301.g16.HuffmanCoding
+        Coding result:
+        key:a freq:0.20 code="00"
+        key:b freq:0.10 code="010"
+        key:c freq:0.15 code="011"
+        key:d freq:0.30 code="11"
+        key:e freq:0.25 code="10"
+        Weighted Average number of bits per character:2.25
 
 -   Problem 3
 
-
--   Problem 4
+    Execute the command `java cs6301.g16.PerfectPower`.
+        
+        The program will generate huffman tree and perform huffman coding algorithm 
+        on the key-frequency pairs given in main function.
+    
+        Example:
+    
+            > java cs6301.g16.PerfectPower
+            4 8 9 16 25 27 32 36 49 64 81 100 121 125 128 144 169 196 216 225 243 256 289 324 343 361 400 441 484 512 529 576 625 676 729 784 841 900 961 1000 1024 1089 1156 1225 1296 1331 1369 1444 1521 1600 1681 1728 1764 1849 1936 2025 2048 2116 2187 2197 2209 2304 2401 2500 2601 2704 2744 2809 2916 3025 3125 3136 3249 3364 3375 3481 3600 3721 3844 3969 4096 4225 4356 4489 4624 4761 4900 4913 5041 5184 5329 5476 5625 5776 5832 5929 6084 6241 6400 6561 
+    
+    Execute the command `java cs6301.g16.PrimeFactor`.
+    
+        The program will generate numbers with only prime factors given in main function.
+        
+        Example:
+        
+            > java cs6301.g16.PrimeFactor
+            Input Prime List:[3, 7]
+            3 7 9 21 27 49 63 81 147 189 243 343 441 567 729 1029 1323 1701 2187 2401 3087 3969 5103 6561 7203 9261 11907 15309 16807 19683 21609 27783 35721 45927 50421 59049 64827 83349 107163 117649 137781 151263 177147 194481 250047 321489 352947 413343 453789 531441 583443 750141 823543 964467 1058841 1240029 1361367 1594323 1750329 2250423 2470629 2893401 3176523 3720087 4084101 4782969 5250987 5764801 6751269 7411887 8680203 9529569 11160261 12252303 14348907 15752961 17294403 20253807 22235661 26040609 28588707 33480783 36756909 40353607 43046721 47258883 51883209 60761421 66706983 78121827 85766121 100442349 110270727 121060821 129140163 141776649 155649627 182284263 200120949 234365481 
 
 -   Problem 5
 

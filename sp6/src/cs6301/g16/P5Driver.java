@@ -1,5 +1,6 @@
 package cs6301.g16;
 
+import cs6301.g00.BinaryHeap;
 import cs6301.g00.Timer;
 
 import java.util.Comparator;
