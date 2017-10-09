@@ -1,6 +1,14 @@
-// Ver 1.0:  Starter code for bounded size Binary Heap implementation
+/*
+ * <h1>Fall 2017 Short Project 6</h1>
+ * <p>
+ * Helper Class BinaryHeap implementation
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-02
+ */
 
-package cs6301.g00;
+package cs6301.g16;
 
 import java.util.Arrays;
 import java.util.Comparator;
