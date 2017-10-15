@@ -7,7 +7,10 @@
  *
  */
 
-package cs6301.g00;
+package cs6301.g16;
+
+import cs6301.g00.ArrayIterator;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

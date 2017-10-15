@@ -11,9 +11,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.ArrayList;
 
-import cs6301.g00.Graph;
-import cs6301.g00.Graph.Vertex;
-import cs6301.g00.Graph.Edge;
+import cs6301.g16.Graph.Vertex;
+import cs6301.g16.Graph.Edge;
 import cs6301.g00.Timer;
 
 public class LP3 {
