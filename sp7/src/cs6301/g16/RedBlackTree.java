@@ -1,13 +1,15 @@
 
-/** Starter code for Red-Black Tree
+/**
+ * Starter code for Red-Black Tree
  */
-package cs6301.g00;
+package cs6301.g16;
 
 import java.util.Comparator;
 
 public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
     static class Entry<T> extends BST.Entry<T> {
         boolean isRed;
+
         Entry(T x, Entry<T> left, Entry<T> right) {
             super(x, left, right);
             isRed = true;
@@ -15,7 +17,7 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
     }
 
     RedBlackTree() {
-	super();
+        super();
     }
 }
 

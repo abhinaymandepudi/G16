@@ -1,8 +1,8 @@
-/** @author 
- *  Binary search tree (starter code)
+/**
+ * @author Binary search tree (starter code)
  **/
 
-package cs6301.g00;
+package cs6301.g16;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -15,31 +15,31 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
         Entry(T x, Entry<T> left, Entry<T> right) {
             this.element = x;
-	    this.left = left;
-	    this.right = right;
+            this.left = left;
+            this.right = right;
         }
     }
-    
+
     Entry<T> root;
     int size;
 
     public BST() {
-	root = null;
-	size = 0;
+        root = null;
+        size = 0;
     }
 
 
     /** TO DO: Is x contained in tree?
      */
     public boolean contains(T x) {
-	return false;
+        return false;
     }
 
     /** TO DO: Is there an element that is equal to x in the tree?
      *  Element in tree that is equal to x is returned, null otherwise.
      */
     public T get(T x) {
-	return null;
+        return null;
     }
 
     /** TO DO: Add x to tree. 
@@ -47,68 +47,68 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      *  Returns true if x is a new element added to tree.
      */
     public boolean add(T x) {
-	return true;
+        return true;
     }
 
     /** TO DO: Remove x from tree. 
      *  Return x if found, otherwise return null
      */
     public T remove(T x) {
-	return null;
+        return null;
     }
 
     /** TO DO: Iterate elements in sorted order of keys
      */
     public Iterator<T> iterator() {
-	return null;
+        return null;
     }
 
     public static void main(String[] args) {
-	BST<Integer> t = new BST<>();
+        BST<Integer> t = new BST<>();
         Scanner in = new Scanner(System.in);
-        while(in.hasNext()) {
+        while (in.hasNext()) {
             int x = in.nextInt();
-            if(x > 0) {
+            if (x > 0) {
                 System.out.print("Add " + x + " : ");
                 t.add(x);
                 t.printTree();
-            } else if(x < 0) {
+            } else if (x < 0) {
                 System.out.print("Remove " + x + " : ");
                 t.remove(-x);
                 t.printTree();
             } else {
                 Comparable[] arr = t.toArray();
                 System.out.print("Final: ");
-                for(int i=0; i<t.size; i++) {
+                for (int i = 0; i < t.size; i++) {
                     System.out.print(arr[i] + " ");
                 }
                 System.out.println();
                 return;
-            }           
+            }
         }
     }
 
 
     // TODO: Create an array with the elements using in-order traversal of tree
     public Comparable[] toArray() {
-	Comparable[] arr = new Comparable[size];
-	/* write code to place elements in array here */
-	return arr;
+        Comparable[] arr = new Comparable[size];
+    /* write code to place elements in array here */
+        return arr;
     }
 
     public void printTree() {
-	System.out.print("[" + size + "]");
-	printTree(root);
-	System.out.println();
+        System.out.print("[" + size + "]");
+        printTree(root);
+        System.out.println();
     }
 
     // Inorder traversal of tree
     void printTree(Entry<T> node) {
-	if(node != null) {
-	    printTree(node.left);
-	    System.out.print(" " + node.element);
-	    printTree(node.right);
-	}
+        if (node != null) {
+            printTree(node.left);
+            System.out.print(" " + node.element);
+            printTree(node.right);
+        }
     }
 
 }
