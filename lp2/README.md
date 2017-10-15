@@ -29,7 +29,8 @@ Deliverable structure is as follow:
         ├── GraphAlgorithm.java             # GraphAlgorithm class given, put it here for accessibility
         ├── LP2.java                        # Test entry for LP2
         ├── README.md                       # This file
-        └── TarjanSCC.java                  # Helper class implementing Tarjan SCC algorithm for strongly connected test
+        ├── TarjanSCC.java                  # Helper class implementing Tarjan SCC algorithm for strongly connected
+        └── TestEuler.java                  # Helper class to test the correctness of Euler class by specify test cases folder
 
 Compile
 -------
@@ -38,12 +39,48 @@ To compile, run the following commands:
 
 ```bash
 javac cs6301/g16/LP2.java
+javac cs6301/g16/TestEuler.java
 ```
 
 *ArrayIterator.java* and *Timer.java* is needed from package `cs6301.g00`.
 
 Test Running
 ------------
+
+- Find Euler Tour
+
+    Execute the command `java cs6301.g16.TestEuler <Folder for Testcases>`.
+
+    Running the test cases under a certain folder and check whether the Euler tour found is correct.
+    Be sure to enlarge stack size to avoid stack overflow for large test cases. (-Xss8g -Xms8g) 
+
+    ```
+    > java cs6301.g16.TestEuler <Folder for Testcases>
+      ===================
+      Testing t1.txt
+      Test Success
+      ===================
+      Testing t2.txt
+      Test Success
+      ===================
+      Testing t3.txt
+      Test Success
+      ===================
+      Testing t4.txt
+      Test Success
+      ===================
+      Testing t5.txt
+      Test Success
+      ===================
+      Testing t6.txt
+      Graph is not Eulerian
+      Reason: Graph is not strongly connected
+      ===================
+      Testing t7.txt
+      Graph is not Eulerian
+      Reason: inDegree = 2, outDegree = 1 at Vertex 2
+
+    ```
 
 - Find Euler Tour
 

@@ -202,8 +202,14 @@ public class Euler extends GraphAlgorithm<Euler.EulerVertex> {
             System.out.println("Error - explore vertex without sub tour");
             return;
         }
+
+        // Mark the sub-tour as explored by setting the tour to null
+        EulerVertex ev = getVertex(v);
+        List<Graph.Edge> curTour = ev.tour;
+        ev.tour = null;
+
         Graph.Vertex tmp = v;
-        for(Graph.Edge e:getVertex(v).tour) {
+        for(Graph.Edge e: curTour) {
             this.tour.add(e);
             tmp = e.otherEnd(tmp);
             if(getVertex(tmp).tour!=null && tmp!=v)
