@@ -33,10 +33,6 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             return element;
         }
 
-        public void setData(T theNewValue) {
-            element = theNewValue;
-        }
-
         public Entry<T> getLeft() {
             return left;
         }
@@ -45,39 +41,53 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             return right;
         }
 
-        public void setLeft(Entry<T> theNewLeft) {
-            left = theNewLeft;
-        }
-
-        public void setRight(Entry<T> theNewRight) {
-            right = theNewRight;
-        }
     }
 
     private Entry<T> root;
     private int size;
+    private Stack<Entry<T>> stack = new Stack<>();
 
     public BST() {   //Initial BST
         root = null;
         size = 0;
     }
 
+    public Entry<T> find(T x) {
+        stack.push(null);
+        return find(root, x);
+    }
+
+    public Entry<T> find(Entry<T> t, T x) {
+        if (t == null || t.element == x)
+            return t;
+        while (true) {
+            if (x.compareTo(t.element) < 0) {
+                if (t.getLeft() == null)
+                    break;
+                else {
+                    stack.push(t);
+                    t = t.left;
+                }
+            } else if (x.compareTo(t.element) == 0) {
+                break;
+            } else {
+                if (t.right == null)
+                    break;
+                else {
+                    stack.push(t);
+                    t = t.right;
+                }
+            }
+        }
+        return t;
+    }
 
     /**
      * TO DO: Is x contained in tree?
      */
     public boolean contains(T x) {
-        Entry<T> cur = root;
-        while (cur != null) {
-            if (cur.element == x) {
-                return true;
-            } else if (cur.element.compareTo(x) > 0) {
-                cur = cur.left;
-            } else {
-                cur = cur.right;
-            }
-        }
-        return false;
+        Entry<T> t = find(x);
+        return t != null && t.element == x;
     }
 
     /**
@@ -90,29 +100,40 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         return null;
     }
 
+    public void bypass(Entry<T> t) {
+        Entry<T> pt = stack.peek();
+        Entry<T> c = t.left == null ? t.right : t.left;
+        if (pt == null) {
+            root = c;
+        } else if (pt.left == t) {
+            pt.left = c;
+        } else {
+            pt.right = c;
+        }
+    }
+
     /**
      * TO DO: Add x to tree.
      * If tree contains a node with same key, replace element by x.
      * Returns true if x is a new element added to tree.
      */
     public boolean add(T x) {
-        int oldSize = size;
-        root = addHelper(root, x);
-        return oldSize != size;
-    }
-
-    private Entry<T> addHelper(Entry<T> n, T val) {
-        if (n == null) {
-            size++;
-            return new Entry<T>(val, null, null);
+        if (root == null) {
+            root = new Entry<>(x, null, null);
+            size = 1;
+            return true;
         }
-        int diff = val.compareTo(n.element);
-        if (diff < 0) {
-            n.setLeft(addHelper(n.getLeft(), val));  //Recur to left
-        } else if (diff > 0) {
-            n.setRight(addHelper(n.getRight(), val));   //Recur to right
+        Entry<T> t = find(x);
+        if (x == t.element) {
+            t.element = x;
+            return false;
+        } else if (x.compareTo(t.element) < 0) {
+            t.left = new Entry<>(x, null, null);
+        } else {
+            t.right = new Entry<>(x, null, null);
         }
-        return n;
+        size++;
+        return true;
     }
 
     /**
@@ -120,47 +141,43 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      * Return x if found, otherwise return null
      */
     public T remove(T x) {
-        int oldSize = size;
-        root = removeHelper(root, x);
-        if (size == oldSize)    //Not find x.
+        if (root == null)
             return null;
-        return x;    //Find x.
-    }
-
-    private Entry<T> removeHelper(Entry<T> n, T val) {
-        if (n != null) {
-            {
-                int diff = val.compareTo(n.getData());
-                if (diff < 0)
-                    n.setLeft(removeHelper(n.getLeft(), val));
-                else if (diff > 0)
-                    n.setRight(removeHelper(n.getRight(), val));
-                else //if value is found
-                {
-                    size--;
-                    if (n.getLeft() == null && n.getRight() == null) //If node is a leaf, set null.
-                        n = null;
-                    else if (n.getRight() == null)
-                        n = n.getLeft();
-                    else if (n.getLeft() == null)
-                        n = n.getRight();
-                    else //Node has two not null children, replace data with max of left subtree
-                    {
-                        n.setData(getMax(n.getLeft()));
-                        n.setLeft(removeHelper(n.getLeft(), n.getData()));
-                        size++;
-                    }
-                }
-            }
+        Entry<T> t = find(x);
+        if (t.element != x)
+            return null;
+        T result = t.element;
+        if (t.left == null || t.right == null)
+            bypass(t);
+        else {   //t has 2 children
+            stack.push(t);
+            Entry<T> minRight = find(t.right, t.element);
+            t.element = minRight.element;
+            bypass(minRight);
         }
-        return n;
+        size--;
+        return result;
+
     }
 
     //Get the maximum element of BST.
-    private T getMax(Entry<T> n) {
-        while (n.getRight() != null)
-            n = n.getRight();
-        return n.getData();
+    private T Max() {
+        if (root == null)
+            return null;
+        Entry<T> t = root;
+        while (t.getRight() != null)
+            t = t.getRight();
+        return t.getData();
+    }
+
+    //Get the minimum element of BST.
+    private T Min(Entry<T> n) {
+        if (root == null)
+            return null;
+        Entry<T> t = root;
+        while (t.getLeft() != null)
+            t = t.getLeft();
+        return t.getData();
     }
 
     /**
@@ -246,11 +263,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     //The helper function of toArray()
     private int toArrayHelper(Comparable[] arr, int i, Entry<T> node) {
-        if (node.left != null)
+        if (node.left != null) {
             i = toArrayHelper(arr, i, node.left);
+        }
         arr[i++] = node.element;
-        if (node.right != null)
+        if (node.right != null) {
             i = toArrayHelper(arr, i, node.right);
+        }
         return i;
     }
 
