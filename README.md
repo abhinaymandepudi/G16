@@ -24,3 +24,5 @@ Short Project
 4.  [Recursion](./sp4)
 
 5.  [Quick Sort](./sp5)
+
+6.  [Priority queues and their applications](./sp6)
