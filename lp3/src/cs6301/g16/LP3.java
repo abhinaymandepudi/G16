@@ -59,6 +59,7 @@ public class LP3 {
      *  The function should return the total weight of the MST it found.
      */  
     public static int directedMST(Graph g, Vertex start, List<Edge> dmst) {
-	return 0;
+        DMST dmstAlg = new DMST(g,start,dmst);
+	    return dmstAlg.findDirectedMST();
     }
 }

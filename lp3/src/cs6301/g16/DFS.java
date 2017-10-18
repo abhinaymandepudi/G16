@@ -42,8 +42,8 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         // Create array for storing vertex properties
     	// Extra space is allocated in array for nodes to be added later
         node = new DFSVertex[g.size()*2];
-        for(Graph.Vertex u: g) {
-            node[u.getName()] = new DFSVertex();
+        for(int i=0;i<g.size()*2;i++) {
+            node[i] = new DFSVertex();
         }
     }
 
@@ -98,11 +98,11 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
         	Graph.Edge edge = it.next();
             Graph.Vertex u = edge.otherEnd(v);
             if(!seen(u)) {
-                encounterUnseenVertex(v,u); // function extension point
+                encounterUnseenVertex(v,u,edge); // function extension point
                 dfsVisit(u, reverse);
             }
             else
-                encounterSeenVertex(v, u); // function extension point
+                encounterSeenVertex(v, u, edge); // function extension point
         }
         finishVisitVertex(v); // function extension point
     }
@@ -125,8 +125,8 @@ public class DFS extends GraphAlgorithm<DFS.DFSVertex> {
     void outerLoop(Graph.Vertex v){}
 
     void beforeVisitVertex(Graph.Vertex v){}
-    void encounterUnseenVertex(Graph.Vertex v, Graph.Vertex seenVertex){}
-    void encounterSeenVertex(Graph.Vertex v, Graph.Vertex unseenVertex){}
+    void encounterUnseenVertex(Graph.Vertex v, Graph.Vertex seenVertex, Graph.Edge e){}
+    void encounterSeenVertex(Graph.Vertex v, Graph.Vertex unseenVertex, Graph.Edge e){}
     void finishVisitVertex(Graph.Vertex v){};
 
     /**

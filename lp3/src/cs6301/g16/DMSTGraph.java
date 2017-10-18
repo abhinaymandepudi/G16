@@ -30,6 +30,7 @@ public class DMSTGraph extends Graph {
         List<DMSTEdge> xadj = new LinkedList<>();
         List<DMSTEdge> xrevAdj = new LinkedList<>();
         Set<DMSTVertex> shrunkenVSet = null;
+        Edge selectedEdge = null; // used to store the incoming edge in the MST
 
         DMSTVertex(int n, Set<DMSTVertex> vs, DMSTGraph g) {
             super(n);
@@ -37,6 +38,7 @@ public class DMSTGraph extends Graph {
             this.g = new WeakReference<DMSTGraph>(g);
         }
 
+        // isDisabled() method capable with mask
         boolean isDisabled() {
         	DMSTGraph graph = g.get();
         	if(graph!=null && graph.useMask())
@@ -45,12 +47,25 @@ public class DMSTGraph extends Graph {
         		return disabled;
         }
 
+        boolean isShrunkenVertex(){
+            return shrunkenVSet!=null;
+        }
+
+        // Getters & Setters
         void disable() {
             disabled = true;
         }
 
         void enable() {
             disabled = false;
+        }
+
+        public Edge getSelectedEdge() {
+            return selectedEdge;
+        }
+
+        public void setSelectedEdge(Edge selectedEdge) {
+            this.selectedEdge = selectedEdge;
         }
 
         @Override
@@ -117,6 +132,7 @@ public class DMSTGraph extends Graph {
             origEdge = e;
         }
 
+        // only zero edge is enabled
         boolean isDisabled() {
             DMSTVertex xfrom = (DMSTVertex) from;
             DMSTVertex xto = (DMSTVertex) to;
@@ -126,9 +142,13 @@ public class DMSTGraph extends Graph {
 
     private DMSTVertex[] xv; // vertices of graph
     private Set<DMSTVertex> maskVertices;
+    private int startName;
 
-	public DMSTGraph(Graph g) {
-        super(g);
+	public DMSTGraph(Graph g, Vertex start) {
+	    super(g);
+
+        setStartVertex(start);
+
         xv = new DMSTVertex[2 * g.size()]; // Extra space is allocated in array for
         // nodes to be added later
         for (Vertex u : g) {
@@ -147,8 +167,19 @@ public class DMSTGraph extends Graph {
             }
         }
     }
-	
-	/**
+
+    public Vertex getStartVertex(){
+	    Vertex s = null;
+	    if(0<=startName&&startName<xv.length)
+	        s = xv[startName];
+	    return s;
+    }
+
+    public void setStartVertex(Vertex start) {
+        this.startName = start.getName();
+    }
+
+    /**
 	 * Use mask on the graph
 	 */
 	public Set<DMSTVertex> getMaskVertices() {
@@ -171,8 +202,12 @@ public class DMSTGraph extends Graph {
     class XGraphIterator implements Iterator<Vertex> {
         Iterator<DMSTVertex> it;
         DMSTVertex xcur;
+        Vertex startVertex;
+        boolean first;
 
         XGraphIterator(DMSTGraph dmstG) {
+            first = true;
+            startVertex = dmstG.getStartVertex();
         	if(dmstG.useMask())
         		this.it = dmstG.getMaskVertices().iterator();
         	else
@@ -180,17 +215,24 @@ public class DMSTGraph extends Graph {
         }
 
         public boolean hasNext() {
+            if(first&&startVertex!=null)
+                return true;
             if (!it.hasNext()) {
                 return false;
             }
             xcur = it.next();
-            while (xcur.isDisabled() && it.hasNext()) {
+            while ((xcur.isDisabled()||xcur.name==startVertex.name) && it.hasNext()) {
                 xcur = it.next();
             }
-            return !xcur.isDisabled();
+            return !(xcur.isDisabled()||xcur.name==startVertex.name);
         }
 
         public Vertex next() {
+            if(first) {
+                first = false;
+                if(startVertex!=null)
+                    return startVertex;
+            }
             return xcur;
         }
     }
@@ -342,8 +384,10 @@ public class DMSTGraph extends Graph {
         System.out.println("\n==============\nInput Graph:");
         printGraph(g);
         
-        Graph dmstG = new DMSTGraph(g);
-        
+        Graph dmstG = new DMSTGraph(g,g.getVertex(3));
+        System.out.println("\n==============\nDMST Graph before decrease weight:");
+        printGraph(dmstG);
+
         ((DMSTGraph)dmstG).decreaseWeight();
         
         System.out.println("\n==============\nDMST Graph after decrease weight:");
