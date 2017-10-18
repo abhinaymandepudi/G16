@@ -1,3 +1,13 @@
+/**
+ * <h1>Fall 2017 Long Project 3</h1>
+ * <p>
+ * Helper class to find SCC in the graph
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-11
+ */
+
 package cs6301.g16;
 
 import java.util.HashSet;

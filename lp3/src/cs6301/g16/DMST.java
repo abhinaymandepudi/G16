@@ -1,6 +1,15 @@
+/**
+ * <h1>Fall 2017 Long Project 3</h1>
+ * <p>
+ * Implementation of the graph algorithm to find DMST in a directed graph
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-11
+ */
+
 package cs6301.g16;
 
-import java.io.File;
 import java.util.*;
 
 import cs6301.g16.DMSTGraph.DMSTEdge;
@@ -50,8 +59,6 @@ public class DMST extends DFS{
 	
 	public int findDirectedMST(){
 
-        dmstG.setStartVertex(startVertex);
-
         // shrink phase
         while (true){
             dmstG.decreaseWeight();
@@ -79,12 +86,20 @@ public class DMST extends DFS{
         dmst.clear();
         dmstG.setStartVertex(dmstG.getVertex(1));
         int weight = 0;
+        int nullCount = 0;
         for(Graph.Vertex v:dmstG){
             DMSTVertex dmstV = (DMSTVertex)v;
             Graph.Edge e = dmstV.getSelectedEdge();
             if(e!=null)
                 weight += e.weight;
+            else {
+                nullCount++;
+            }
+
             dmst.add(e);
+        }
+        if(nullCount!=1){
+            System.out.println("Error - No null edge in result. num of null - "+nullCount);
         }
 		return weight;
 	}

@@ -1,11 +1,13 @@
-
 /**
- * @author rbk
- * Ver 1.0: 2017/09/29
- * Example to extend Graph/Vertex/Edge classes to implement algorithms in which nodes and edges
- * need to be disabled during execution.  Design goal: be able to call other graph algorithms
- * without changing their codes to account for disabled elements.
- **/
+ * <h1>Fall 2017 Long Project 3</h1>
+ * <p>
+ * Helper class extends Graph to provide graph operation needed in the DMST algorithm.
+ * This class is a modification of XGraph class given.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-11
+ */
 
 package cs6301.g16;
 

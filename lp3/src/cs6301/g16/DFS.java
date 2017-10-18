@@ -1,11 +1,11 @@
 /**
- * <h1>Fall 2017 Short Project 3</h1>
+ * <h1>Fall 2017 Long Project 3</h1>
  * <p>
  * Helper class extends GraphAlgorithm to provide basic but extensible functionality of DFS.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
- * @since 2017-09-11
+ * @since 2017-10-11
  */
 
 package cs6301.g16;
