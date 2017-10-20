@@ -25,25 +25,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             this.element = x;
             this.left = left;
             this.right = right;
-        }
 
-        public T getData() {
-            return element;
         }
-
-        public Entry<T> getLeft() {
-            return left;
-        }
-
-        public Entry<T> getRight() {
-            return right;
-        }
-
     }
 
     private Entry<T> root;
     private int size;
-    private Deque<Entry<T>> stack = new ArrayDeque<>();  //Store ancestors.
+    private Deque<Entry<T>> stack;
 
     public BST() {   //Initial BST
         root = null;
@@ -52,10 +40,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     /**
      * Find x in tree.
+     *
      * @param x The element we find.
+     *
      * @return Node where search ends.
      */
     public Entry<T> find(T x) {
+        stack = new ArrayDeque<>();
         stack.push(null);
         return find(root, x);
     }
@@ -65,7 +56,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             return t;
         while (true) {
             if (x.compareTo(t.element) < 0) {
-                if (t.getLeft() == null)
+                if (t.left == null)
                     break;
                 else {
                     stack.push(t);
@@ -87,7 +78,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     /**
      * Whether there are element x in the tree.
+     *
      * @param x The element we find.
+     *
      * @return If find out,return true. Otherwise,return false.
      */
     public boolean contains(T x) {
@@ -96,12 +89,12 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * TO DO: Is there an element that is equal to x in the tree?
-     * Element in tree that is equal to x is returned, null otherwise.
+     * TO DO: Is there an element that is equal to x in the tree? Element in tree that is equal to x
+     * is returned, null otherwise.
      */
     public T get(T x) {
         Entry<T> t = find(x);
-        if (t!=null && t.element==x)
+        if (t != null && t.element == x)
             return t.element;
         return null;
     }
@@ -120,9 +113,8 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * TO DO: Add x to tree.
-     * If tree contains a node with same key, replace element by x.
-     * Returns true if x is a new element added to tree.
+     * TO DO: Add x to tree. If tree contains a node with same key, replace element by x. Returns
+     * true if x is a new element added to tree.
      */
     public boolean add(T x) {
         if (root == null) {
@@ -144,8 +136,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * TO DO: Remove x from tree.
-     * Return x if found, otherwise return null
+     * TO DO: Remove x from tree. Return x if found, otherwise return null
      */
     public T remove(T x) {
         if (root == null)
@@ -196,9 +187,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (root == null)
             return null;
         Entry<T> t = root;
-        while (t.getRight() != null)
-            t = t.getRight();
-        return t.getData();
+        while (t.left != null)
+            t = t.right;
+        return t.element;
     }
 
     //Get the minimum element of BST.
@@ -206,9 +197,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (root == null)
             return null;
         Entry<T> t = root;
-        while (t.getLeft() != null)
-            t = t.getLeft();
-        return t.getData();
+        while (t.left != null)
+            t = t.right;
+        return t.element;
     }
 
     /**
