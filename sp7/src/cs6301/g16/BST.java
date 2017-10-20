@@ -169,6 +169,30 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     }
 
+    protected Entry<T> rotateLeft(Entry<T> P) {
+        Entry<T> Q = P.right;
+        P.right = Q.left;
+        Q.left = P;
+        return Q;
+    }
+
+    protected Entry<T> rotateRight(Entry<T> P) {
+        Entry<T> Q = P.left;
+        P.left = Q.right;
+        Q.right = P;
+        return Q;
+    }
+
+    protected Entry<T> rotateLR(Entry<T> P) {
+        P.left = rotateLeft(P.left);
+        return rotateRight(P);
+    }
+
+    protected Entry<T> rotateRL(Entry<T> P) {
+        P.right = rotateRight(P.right);
+        return rotateLeft(P);
+    }
+
     //Get the maximum element of BST.
     private T Max() {
         if (root == null)
