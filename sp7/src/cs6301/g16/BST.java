@@ -13,9 +13,7 @@
 
 package cs6301.g16;
 
-import java.util.Iterator;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 
 public class BST<T extends Comparable<? super T>> implements Iterable<T> {
@@ -45,7 +43,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     private Entry<T> root;
     private int size;
-    private Stack<Entry<T>> stack = new Stack<>();  //Store ancestors.
+    private Deque<Entry<T>> stack = new ArrayDeque<>();  //Store ancestors.
 
     public BST() {   //Initial BST
         root = null;
