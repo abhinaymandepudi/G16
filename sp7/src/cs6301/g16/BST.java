@@ -123,10 +123,12 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      * @return Node where search ends.
      */
     private Entry<T> find(Entry<T> t, T x) {
-        if (t.isNil() || t.element == x)
-            return t;
-        while (true) {
 
+        if (t.isNil() || x.compareTo(t.element) == 0) {
+            stack.push(t);
+            return t;
+        }
+        while (true) {
             stack.push(t);
 
             if (x.compareTo(t.element) < 0) {
@@ -194,14 +196,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (t.left.isNil() || t.right.isNil())   //t has 0 or 1 child
             bypass(t);
         else {   //t has 2 children
-            stack.push(t);
+//            stack.push(t);
             Entry<T> minRight = find(t.right, t.element);
             t.element = minRight.element;
             bypass(minRight);
         }
         size--;
         return result;
-
     }
 
     /**
