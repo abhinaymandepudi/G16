@@ -412,7 +412,7 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
     void printTree(BST.Entry<T> node) {
         if (!node.isNil()) {
             printTree(node.left());
-            System.out.print(" " + node.element + " " + (((Entry<T>) node).isRed ? "r" : "b") + "(" + node.left().element + "," + node.right().element + ")");
+            System.out.print(" " + node.element);
             printTree(node.right());
         }
     }
