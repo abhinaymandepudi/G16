@@ -18,14 +18,32 @@ import java.util.*;
 
 public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     static class Entry<T> {
+        static Entry NIL = new Entry();
+
         T element;
         Entry<T> left, right;
+        boolean nil;
+
+        /**
+         * Constructor only used to create NIL.
+         */
+        Entry() {
+            this.element = null;
+            this.left = null;
+            this.right = null;
+            this.nil = true;
+        }
 
         Entry(T x, Entry<T> left, Entry<T> right) {
             this.element = x;
             this.left = left;
             this.right = right;
+            this.nil = false;
+        }
 
+        @SuppressWarnings("unchecked")
+        public Entry<T> getNIL() {
+            return (Entry<T>) NIL;
         }
     }
 
