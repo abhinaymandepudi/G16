@@ -54,7 +54,8 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         }
 
         /**
-         * Return {@code NIL} entry.
+         * Return {@code NIL} entry. Need to be override by subclass to get subclass {@code NIL}
+         * instance.
          *
          * @return {@code NIL} entry.
          */
