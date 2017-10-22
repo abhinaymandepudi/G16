@@ -1,10 +1,9 @@
-/*
+/**
  * <h1>Fall 2017 Short Project 7 - 1</h1>
  * <p>
- * Implement binary search trees (BST), with the following public methods:
- * contains, add, remove, iterator.  Concentrate on elegance of code
- * (especially, iterator), and reusability of code in extended BST classes
- * (AVL, Red Black, and, Splay Trees).
+ * Implement binary search trees (BST), with the following public methods: contains, add, remove,
+ * iterator.  Concentrate on elegance of code (especially, iterator), and reusability of code in
+ * extended BST classes (AVL, Red Black, and, Splay Trees).
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
@@ -18,6 +17,10 @@ import java.util.*;
 
 public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     static class Entry<T> {
+
+        /**
+         * Static {@code Entry} instance of {@code NIL}.
+         */
         static Entry NIL = new Entry();
 
         T element;
@@ -25,7 +28,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         boolean nil;
 
         /**
-         * Constructor only used to create NIL.
+         * Internal constructor only used to create NIL.
          */
         Entry() {
             this.element = null;
@@ -34,16 +37,29 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             this.nil = true;
         }
 
-        Entry(T x, Entry<T> left, Entry<T> right) {
+        /**
+         * Public constructor to create an {@code Entry}. Normally, when a new node is created,
+         * should call: {@code new Entry(x, null, null)}, and {@code NIL} node will automatically
+         * substitute the {@code null} pointer.
+         *
+         * @param x     Element to be stored in current entry.
+         * @param left  Left child of current entry.
+         * @param right Right child of current entry.
+         */
+        public Entry(T x, Entry<T> left, Entry<T> right) {
             this.element = x;
-            this.left = left;
-            this.right = right;
+            this.left = left == null ? getNIL() : left;
+            this.right = right == null ? getNIL() : right;
             this.nil = false;
         }
 
         @SuppressWarnings("unchecked")
-        public Entry<T> getNIL() {
+        private static <T> Entry<T> getNIL() {
             return (Entry<T>) NIL;
+        }
+
+        public boolean isNil() {
+            return nil;
         }
     }
 
@@ -52,7 +68,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     private Deque<Entry<T>> stack;
 
     public BST() {   //Initial BST
-        root = null;
+        root = Entry.getNIL();
         size = 0;
     }
 
@@ -65,16 +81,16 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public Entry<T> find(T x) {
         stack = new ArrayDeque<>();
-        stack.push(null);
+        stack.push(Entry.getNIL());
         return find(root, x);
     }
 
     public Entry<T> find(Entry<T> t, T x) {
-        if (t == null || t.element == x)
+        if (t.isNil() || t.element == x)
             return t;
         while (true) {
             if (x.compareTo(t.element) < 0) {
-                if (t.left == null)
+                if (t.left.isNil())
                     break;
                 else {
                     stack.push(t);
@@ -83,7 +99,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             } else if (x.compareTo(t.element) == 0) {
                 break;
             } else {
-                if (t.right == null)
+                if (t.right.isNil())
                     break;
                 else {
                     stack.push(t);
@@ -103,7 +119,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public boolean contains(T x) {
         Entry<T> t = find(x);
-        return t != null && t.element == x;
+        return !t.isNil() && t.element == x;
     }
 
     /**
@@ -112,7 +128,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public T get(T x) {
         Entry<T> t = find(x);
-        if (t != null && t.element == x)
+        if (!t.isNil() && t.element == x)
             return t.element;
         return null;
     }
@@ -120,8 +136,8 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     //Call when t has at most one child.
     public void bypass(Entry<T> t) {
         Entry<T> pt = stack.peek(); //Get ancestor of t.
-        Entry<T> c = t.left == null ? t.right : t.left;
-        if (pt == null) {   //pt is root.
+        Entry<T> c = t.left.isNil() ? t.right : t.left;
+        if (pt.isNil()) {   //pt is root.
             root = c;
         } else if (pt.left == t) {
             pt.left = c;
@@ -135,7 +151,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      * true if x is a new element added to tree.
      */
     public boolean add(T x) {
-        if (root == null) {
+        if (root.isNil()) {
             root = new Entry<>(x, null, null);
             size = 1;
             return true;
@@ -157,13 +173,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      * TO DO: Remove x from tree. Return x if found, otherwise return null
      */
     public T remove(T x) {
-        if (root == null)
+        if (root.isNil())
             return null;
         Entry<T> t = find(x);
         if (t.element != x)
             return null;
         T result = t.element;
-        if (t.left == null || t.right == null)   //t has 0 or 1 child
+        if (t.left.isNil() || t.right.isNil())   //t has 0 or 1 child
             bypass(t);
         else {   //t has 2 children
             stack.push(t);
@@ -176,6 +192,14 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     }
 
+    /**
+     * Single left rotate based on {@code Entry P}, which is the top most element of the rotation.
+     * The rotation is {@code protected} so that subclass can access the function.
+     *
+     * @param P The top most entry of the rotation.
+     *
+     * @return New top most entry after the rotation.
+     */
     protected Entry<T> rotateLeft(Entry<T> P) {
         Entry<T> Q = P.right;
         P.right = Q.left;
@@ -200,28 +224,38 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         return rotateLeft(P);
     }
 
-    //Get the maximum element of BST.
-    private T Max() {
-        if (root == null)
+    /**
+     * Get the maximum element of BST.
+     *
+     * @return The maximum element of BST.
+     */
+    public T max() {
+        if (root.isNil())
             return null;
         Entry<T> t = root;
-        while (t.left != null)
-            t = t.right;
-        return t.element;
-    }
-
-    //Get the minimum element of BST.
-    private T Min(Entry<T> n) {
-        if (root == null)
-            return null;
-        Entry<T> t = root;
-        while (t.left != null)
+        while (t.left.isNil())
             t = t.right;
         return t.element;
     }
 
     /**
-     * TO DO: Iterate elements in sorted order of keys
+     * Get the minimum element of BST.
+     *
+     * @return The minimum element of BST.
+     */
+    public T min() {
+        if (root.isNil())
+            return null;
+        Entry<T> t = root;
+        while (t.left.isNil())
+            t = t.right;
+        return t.element;
+    }
+
+    /**
+     * Generate iterator of the BST.
+     *
+     * @return {@code Iterator} of the BST.
      */
     public Iterator<T> iterator() {
         return new InOrderItr();
@@ -229,7 +263,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
 
     private class InOrderItr implements Iterator<T> {
-        private final Stack<Entry<T>> stackTwo = new Stack<>();
+        private final Deque<Entry<T>> stackTwo = new ArrayDeque<>();
         Entry<T> current = null;
 
         public InOrderItr() {
@@ -238,12 +272,12 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            return !stackTwo.isEmpty() || current != null;
+            return !stackTwo.isEmpty() || !current.isNil();
         }
 
         @Override
         public T next() {
-            while (current != null) {
+            while (!current.isNil()) {
                 stackTwo.push(current);
                 current = current.left;
             }
@@ -296,18 +330,18 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     public Comparable[] toArray() {
     /* write code to place elements in array here */
         Comparable[] arr = new Comparable[size];
-        if (root != null)
+        if (!root.isNil())
             toArrayHelper(arr, 0, root);
         return arr;
     }
 
     //The helper function of toArray()
     private int toArrayHelper(Comparable[] arr, int i, Entry<T> node) {
-        if (node.left != null) {
+        if (!node.left.isNil()) {
             i = toArrayHelper(arr, i, node.left);
         }
         arr[i++] = node.element;
-        if (node.right != null) {
+        if (!node.right.isNil()) {
             i = toArrayHelper(arr, i, node.right);
         }
         return i;
@@ -322,7 +356,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     // Inorder traversal of tree
     void printTree(Entry<T> node) {
-        if (node != null) {
+        if (!node.isNil()) {
             printTree(node.left);
             System.out.print(" " + node.element);
             printTree(node.right);
