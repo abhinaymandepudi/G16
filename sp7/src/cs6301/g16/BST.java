@@ -155,6 +155,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     //Call when t has at most one child.
     protected void bypass(Entry<T> t) {
+        stack.pop();
         Entry<T> pt = stack.peek(); //Get ancestor of t.
         Entry<T> c = t.left.isNil() ? t.right : t.left;
         if (pt.isNil()) {   //pt is root.
@@ -164,6 +165,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         } else {
             pt.right = c;
         }
+        stack.push(c);
     }
 
     /**
