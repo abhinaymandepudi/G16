@@ -164,7 +164,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             return true;
         }
         Entry<T> t = find(x);
-        if (x == t.element) {
+        if (x.compareTo(t.element)==0) {
             t.element = x; // If duplicate,replace to the new one.
             return false;
         } else {
@@ -213,7 +213,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public boolean contains(T x) {
         Entry<T> t = find(x);
-        return !t.isNil() && t.element == x;
+        return !t.isNil() && t.element.compareTo(x)==0;
     }
 
     /**
@@ -222,7 +222,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public T get(T x) {
         Entry<T> t = find(x);
-        if (!t.isNil() && t.element == x)
+        if (!t.isNil() && t.element.compareTo(x)==0)
             return t.element;
         return null;
     }

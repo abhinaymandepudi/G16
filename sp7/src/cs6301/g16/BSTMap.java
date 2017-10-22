@@ -7,23 +7,98 @@
 
 package cs6301.g16;
 
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class BSTMap<K extends Comparable<? super K>, V> implements Iterable<K> {
-    BSTMap() {
+
+    public enum BSTMapType{ BST, AVL, RB, SPLAY}
+
+    private static class BSTMapElement<K extends Comparable<? super K>, V> implements Comparable<BSTMapElement<K,V>>{
+        K key;
+        V value;
+        BSTMapElement(K key, V value){
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public int compareTo(BSTMapElement<K, V> o) {
+            return this.key.compareTo(o.key);
+        }
+    }
+
+    // BST tree object used by map
+    BST<BSTMapElement<K,V>> bst;
+
+    // Constructor
+    BSTMap(){
+        this(BSTMapType.BST);
+    }
+
+    BSTMap(BSTMapType type){
+        super();
+        switch (type){
+            case BST: bst = new BST<>(); break;
+            case AVL: bst = new AVLTree<>(); break;
+            case RB: bst = new RedBlackTree<>(); break;
+            case SPLAY: bst = new SplayTree<>(); break;
+            default: bst = new BST<>(); break;
+        }
     }
 
     public V get(K key) {
-        return null;
+        BSTMapElement<K,V> keyElement = new BSTMapElement<>(key,null); // key element for search
+        BSTMapElement<K,V> valueElement = bst.get(keyElement);
+        if(valueElement!=null)
+            return valueElement.value;
+        else
+            return null;
     }
 
     public boolean put(K key, V value) {
-        return false;
+        return bst.add(new BSTMapElement<>(key,value));
+    }
+
+    // Map Iterator
+    private class BSTMapIterator implements Iterator<K> {
+        Iterator<BSTMapElement<K,V>> it;
+
+        public BSTMapIterator(BST<BSTMapElement<K,V>> bst) {
+            it = bst.iterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return it.hasNext();
+        }
+
+        @Override
+        public K next() {
+            return it.next().key;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Unsupported operation for in-order iterator.");
+        }
+
     }
 
     // Iterate over the keys stored in the map, in order
     public Iterator<K> iterator() {
-        return null;
+        return new BSTMapIterator(bst);
+    }
+
+    /**
+     * Main function for testing
+     */
+    public static void main(String[] args){
+        BSTMap<Integer,String> map = new BSTMap<>(); // using BST Tree
+        map.put(3,"C");
+        map.put(1,"A");
+        map.put(2,"B");
+        for(Integer key : map){
+            System.out.println(key+"-"+map.get(key));
+        }
     }
 }
