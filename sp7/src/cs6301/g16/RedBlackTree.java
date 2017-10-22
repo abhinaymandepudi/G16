@@ -20,19 +20,21 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             isRed = false;
         }
 
-        Entry(T x, Entry<T> left, Entry<T> right) {
+        public Entry(T x, Entry<T> left, Entry<T> right) {
             super(x, left, right);
             isRed = true;
         }
 
-        Entry<T> left() {
-            assert left instanceof Entry;
-            return (Entry<T>) left;
+        @Override
+        public Entry<T> left() {
+            assert super.left() instanceof RedBlackTree.Entry;
+            return (Entry<T>) super.left();
         }
 
-        Entry<T> right() {
-            assert right instanceof Entry;
-            return (Entry<T>) right;
+        @Override
+        public Entry<T> right() {
+            assert super.right() instanceof Entry;
+            return (Entry<T>) super.right();
         }
 
         public boolean isRed() {
@@ -60,10 +62,12 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
          * otherwise.
          */
         Entry<T> siblingOf(Entry<T> t) {
-            if (t == left)
-                return (Entry<T>) right;
-            if (t == right)
-                return (Entry<T>) left;
+            if (isNil())
+                return null;
+            if (t == left())
+                return right();
+            if (t == right())
+                return left();
             return null;
         }
 
@@ -105,9 +109,10 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
      */
     @Override
     public BST.Entry<T> newEntry(T x) {
+        Entry<T> t = new Entry<T>();
         if (x == null)
-            return new Entry<T>().getNIL();
-        return new Entry<>(x, null, null);
+            return t.getNIL();
+        return new Entry<>(x, t.getNIL(), t.getNIL());
     }
 
     RedBlackTree() {
@@ -162,7 +167,7 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
         while (t.isRed()) {
 
             // if t is root or p_t is root or p_t is Black then return
-            if (root == t || root == p_t || !p_t.isRed)
+            if (root == t || root == p_t || p_t.isBlack())
                 return;
 
             // Case 1: if u_t is colored Red
@@ -190,14 +195,15 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             if (g_t.left() == p_t && p_t.left() == t) {
 
                 // Rotate [R] at g_t
-                if (peek().isNil())
-                    root = rotateRight(g_t);
-                else {
-                    if (g_t == peek().left())
-                        peek().left = rotateRight(g_t);
-                    else // if (g_t == peek().right)
-                        peek().right = rotateRight(g_t);
-                }
+                rotateRight(g_t, peek());
+//                if (peek().isNil())
+//                    root = rotateRight(g_t);
+//                else {
+//                    if (g_t == peek().left())
+//                        peek().setLeft(rotateRight(g_t));
+//                    else // if (g_t == peek().right)
+//                        peek().setRight(rotateRight(g_t));
+//                }
 
                 // Recolor p_t to Black and g_t to Red
                 p_t.setBlack();
@@ -211,14 +217,15 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             if (g_t.right() == p_t && p_t.right() == t) {
 
                 // Rotate [R] at g_t
-                if (peek().isNil())
-                    root = rotateLeft(g_t);
-                else {
-                    if (g_t == peek().left())
-                        peek().left = rotateLeft(g_t);
-                    else // if (g_t == peek().right)
-                        peek().right = rotateLeft(g_t);
-                }
+                rotateLeft(g_t, peek());
+//                if (peek().isNil())
+//                    root = rotateLeft(g_t);
+//                else {
+//                    if (g_t == peek().left())
+//                        peek().setLeft(rotateLeft(g_t));
+//                    else // if (g_t == peek().right)
+//                        peek().setRight(rotateLeft(g_t));
+//                }
 
                 // Recolor p_t to Black and g_t to Red
                 p_t.setBlack();
@@ -232,7 +239,9 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             // Case 3(a): g_t -> p_t -> t is LR
             if (g_t.left() == p_t && p_t.right() == t) {
                 // Rotate [L] at p_t and apply Case 2a
-                g_t.left = rotateLeft(p_t);
+
+                rotateLeft(p_t, g_t);
+//                g_t.setLeft(rotateLeft(p_t));
 
                 // Switch reference of t and p_t to restore the g_t -> p_t -> t sequence.
                 Entry<T> tmp = t;
@@ -248,7 +257,8 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             // Case 3(b): g_t -> p_t -> t is RL
             if (g_t.right() == p_t && p_t.left() == t) {
                 // Rotate [L] at p_t and apply Case 2a
-                g_t.right = rotateRight(p_t);
+                rotateRight(p_t, g_t);
+//                g_t.setRight(rotateRight(p_t));
 
                 // Switch reference of t and p_t to restore the g_t -> p_t -> t sequence.
                 Entry<T> tmp = t;
@@ -298,9 +308,47 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             }
 
             // Case 3: s_t is Black, with Red child rc, and p_t -> s_t -> rc is RR (or LL):
+            Entry<T> p_t = pop();
             // RR case:
-            if (s_t.isBlack() && s_t.right().isRed())
-                ;
+//            if (s_t.isBlack() && s_t.right().isRed() && p_t.right() == s_t) {
+//                // Rotate [L] at p_t
+//                if (peek() == root)
+//                    root = rotateLeft(p_t);
+//                else {
+//                    if (peek().left() == p_t)
+//                        peek().setLeft(rotateLeft(p_t));
+//                    else // if (p_t == peek().right)
+//                        peek().setRight(rotateLeft(p_t));
+//                }
+//
+//                // Exchange colors of p_t and s_t
+//                s_t.setRed();
+//                p_t.setBlack();
+//
+//                // Recolor rc to Black and return
+//                s_t.right().setBlack();
+//            }
+//            // LL case:
+//            if (s_t.isBlack() && s_t.left().isRed() && p_t.left() == s_t) {
+//                // Rotate [R] at p_t
+//                if (peek() == root)
+//                    root = rotateRight(p_t);
+//                else {
+//                    if (peek().left() == p_t)
+//                        peek().setLeft(rotateRight(p_t));
+//                    else // if (p_t == peek().right)
+//                        peek().setRight(rotateRight(p_t));
+//                }
+//
+//                // Exchange colors of p_t and s_t
+//                s_t.setRed();
+//                p_t.setBlack();
+//
+//                // Recolor rc to Black and return
+//                s_t.right().setBlack();
+//            }
+
+            // Case 4: s_t is Black, with Red child rc, and p_t → s_t → rc is RL (or LR):
         }
     }
 
@@ -339,10 +387,9 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
     @Override
     void printTree(BST.Entry<T> node) {
         if (!node.isNil()) {
-            printTree(node.left);
-            System.out.print(" " + node.element);
-            // + " " + (((Entry<T>) node).isRed ? "r" : "b") + "(" + node.left.element + "," + node.right.element  + ")");
-            printTree(node.right);
+            printTree(node.left());
+            System.out.print(" " + node.element + " " + (((Entry<T>) node).isRed ? "r" : "b") + "(" + node.left().element + "," + node.right().element + ")");
+            printTree(node.right());
         }
     }
 }
