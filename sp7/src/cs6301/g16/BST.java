@@ -24,13 +24,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         static Entry NIL = new Entry();
 
         T element;
-        Entry<T> left, right;
+        private Entry<T> left, right;
         boolean nil;
 
         /**
          * Internal constructor only used to create NIL.
          */
-        Entry() {
+        protected Entry() {
             this.element = null;
             this.left = null;
             this.right = null;
@@ -53,6 +53,23 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             this.nil = false;
         }
 
+        public Entry<T> left() {
+            return left;
+        }
+
+        public void setLeft(Entry<T> left) {
+            this.left = left;
+        }
+
+        public Entry<T> right() {
+            return right;
+        }
+
+        public void setRight(Entry<T> right) {
+            this.right = right;
+        }
+
+
         /**
          * Return {@code NIL} entry. Need to be override by subclass to get subclass {@code NIL}
          * instance.
@@ -74,12 +91,12 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         }
     }
 
-    private Entry<T> root;
-    private int size;
-    private Deque<Entry<T>> stack;
+    protected Entry<T> root;
+    protected int size;
+    protected Deque<Entry<T>> stack;
 
     public BST() {   //Initial BST
-        root = new Entry<T>().getNIL(); // To access static, first create a new. (WEIRD)
+        root = newEntry(null);
         size = 0;
     }
 
@@ -90,9 +107,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      *
      * @return Node where search ends.
      */
-    public Entry<T> find(T x) {
+    private Entry<T> find(T x) {
         stack = new ArrayDeque<>();
-        stack.push(new Entry<T>().getNIL());
+        stack.push(newEntry(null));
         return find(root, x);
     }
 
@@ -105,77 +122,29 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      *
      * @return Node where search ends.
      */
-    public Entry<T> find(Entry<T> t, T x) {
+    private Entry<T> find(Entry<T> t, T x) {
         if (t.isNil() || t.element == x)
             return t;
         while (true) {
+
+            stack.push(t);
+
             if (x.compareTo(t.element) < 0) {
                 if (t.left.isNil())
                     break;
-                else {
-                    stack.push(t);
+                else
                     t = t.left;
-                }
             } else if (x.compareTo(t.element) == 0) {
                 break;
             } else {
                 if (t.right.isNil())
                     break;
-                else {
-                    stack.push(t);
+                else
                     t = t.right;
-                }
             }
         }
+
         return t;
-    }
-
-    /**
-     * Whether there are element x in the tree.
-     *
-     * @param x The element we find.
-     *
-     * @return If find out,return true. Otherwise,return false.
-     */
-    public boolean contains(T x) {
-        Entry<T> t = find(x);
-        return !t.isNil() && t.element == x;
-    }
-
-    /**
-     * TO DO: Is there an element that is equal to x in the tree? Element in tree that is equal to x
-     * is returned, null otherwise.
-     */
-    public T get(T x) {
-        Entry<T> t = find(x);
-        if (!t.isNil() && t.element == x)
-            return t.element;
-        return null;
-    }
-
-    //Call when t has at most one child.
-    protected void bypass(Entry<T> t) {
-        Entry<T> pt = stack.peek(); //Get ancestor of t.
-        Entry<T> c = t.left.isNil() ? t.right : t.left;
-        if (pt.isNil()) {   //pt is root.
-            root = c;
-        } else if (pt.left == t) {
-            pt.left = c;
-        } else {
-            pt.right = c;
-        }
-    }
-
-    /**
-     * Generate new {@code Entry} with element {@code x}. Need to be override by subclass to create
-     * new sub-{@code Entry}.
-     *
-     * @param x Element in the new entry.
-     *
-     * @return New {@code Entry} instance.
-     */
-    public Entry<T> newEntry(T x) {
-        return new Entry<>(x, null, null);
     }
 
     /**
@@ -196,10 +165,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (x == t.element) {
             t.element = x; // If duplicate,replace to the new one.
             return false;
-        } else if (x.compareTo(t.element) < 0) {
-            t.left = newEntry(x);
         } else {
-            t.right = newEntry(x);
+            Entry<T> newEntry = newEntry(x);
+            if (x.compareTo(t.element) < 0)
+                t.left = newEntry;
+            else
+                t.right = newEntry;
+            stack.push(newEntry);
         }
         size++;
         return true;
@@ -233,35 +205,26 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * Single left rotate based on {@code Entry P}, which is the top most element of the rotation.
-     * The rotation is {@code protected} so that subclass can access the function.
+     * Whether there are element x in the tree.
      *
-     * @param P The top most entry of the rotation.
+     * @param x The element we find.
      *
-     * @return New top most entry after the rotation.
+     * @return If find out,return true. Otherwise,return false.
      */
-    protected Entry<T> rotateLeft(Entry<T> P) {
-        Entry<T> Q = P.right;
-        P.right = Q.left;
-        Q.left = P;
-        return Q;
+    public boolean contains(T x) {
+        Entry<T> t = find(x);
+        return !t.isNil() && t.element == x;
     }
 
-    protected Entry<T> rotateRight(Entry<T> P) {
-        Entry<T> Q = P.left;
-        P.left = Q.right;
-        Q.right = P;
-        return Q;
-    }
-
-    protected Entry<T> rotateLR(Entry<T> P) {
-        P.left = rotateLeft(P.left);
-        return rotateRight(P);
-    }
-
-    protected Entry<T> rotateRL(Entry<T> P) {
-        P.right = rotateRight(P.right);
-        return rotateLeft(P);
+    /**
+     * TO DO: Is there an element that is equal to x in the tree? Element in tree that is equal to x
+     * is returned, null otherwise.
+     */
+    public T get(T x) {
+        Entry<T> t = find(x);
+        if (!t.isNil() && t.element == x)
+            return t.element;
+        return null;
     }
 
     /**
@@ -291,6 +254,87 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             t = t.right;
         return t.element;
     }
+
+    //Call when t has at most one child.
+    private void bypass(Entry<T> t) {
+        stack.pop();
+        Entry<T> pt = stack.peek(); //Get ancestor of t.
+        Entry<T> c = t.left.isNil() ? t.right : t.left;
+        if (pt.isNil()) {   //pt is root.
+            root = c;
+        } else if (pt.left == t) {
+            pt.left = c;
+        } else {
+            pt.right = c;
+        }
+        stack.push(c);
+    }
+
+    /**
+     * Generate new {@code Entry} with element {@code x}. Need to be override by subclass to create
+     * new sub-{@code Entry}.
+     *
+     * @param x Element in the new entry.
+     *
+     * @return New {@code Entry} instance.
+     */
+    protected Entry<T> newEntry(T x) {
+        if (x == null)
+            return new Entry<T>().getNIL();
+        return new Entry<>(x, null, null);
+    }
+
+    /**
+     * Single left rotate based on {@code Entry P}, which is the top most element of the rotation.
+     * The rotation is {@code protected} so that subclass can access the function.
+     *
+     * @param Pivot  The top most entry of the rotation.
+     * @param Parent Parent node of entry.
+     *
+     * @return New top most entry after the rotation.
+     */
+    protected void rotateLeft(Entry<T> Pivot, Entry<T> Parent) {
+
+        Entry<T> Q = Pivot.right;
+        Pivot.right = Q.left;
+        Q.left = Pivot;
+
+        if (Parent.isNil())
+            root = Q;
+        else {
+            if (Parent.left() == Pivot)
+                Parent.setLeft(Q);
+            else // if (p_t == peek().right)
+                Parent.setRight(Q);
+        }
+    }
+
+    protected void rotateRight(Entry<T> Pivot, Entry<T> Parent) {
+
+        Entry<T> Q = Pivot.left;
+        Pivot.left = Q.right;
+        Q.right = Pivot;
+
+        if (Parent.isNil())
+            root = Q;
+        else {
+            if (Parent.left() == Pivot)
+                Parent.setLeft(Q);
+            else // if (p_t == peek().right)
+                Parent.setRight(Q);
+        }
+    }
+
+    protected void rotateLR(Entry<T> Pivot, Entry<T> Parent) {
+        rotateLeft(Pivot.left(), Pivot);
+        rotateRight(Parent, Pivot);
+    }
+
+    protected void rotateRL(Entry<T> Pivot, Entry<T> Parent) {
+        rotateRight(Pivot.right(), Pivot);
+        rotateLeft(Parent, Pivot);
+    }
+
 
     /**
      * Generate iterator of the BST.
@@ -333,7 +377,6 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     }
 
-
     public static void main(String[] args) {
         BST<Integer> t = new BST<>();
         Scanner in = new Scanner(System.in);
@@ -366,7 +409,6 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         }
     }
 
-
     public Comparable[] toArray() {
     /* write code to place elements in array here */
         Comparable[] arr = new Comparable[size];
@@ -386,7 +428,6 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         }
         return i;
     }
-
 
     public void printTree() {
         System.out.print("[" + size + "]");
