@@ -258,13 +258,20 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
     }
 
     @Override
-    public T remove(T x) {
-        T result = super.remove(x);
+    protected void bypass(BST.Entry<T> t) {
+        Entry<T> x = peek();
+        super.bypass(t);
 
         Entry<T> c = pop();
 
-        fix(c);
+        if (x.isBlack())
+            fix(c);
 
+    }
+
+    @Override
+    public T remove(T x) {
+        T result = super.remove(x);
         return result;
     }
 
@@ -406,6 +413,7 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             printTree(node.right());
         }
     }
+
 }
 
 /*
