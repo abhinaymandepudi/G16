@@ -325,14 +325,14 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         }
     }
 
-    protected Entry<T> rotateLR(Entry<T> P) {
-        P.left = rotateLeft(P.left);
-        return rotateRight(P);
+    protected void rotateLR(Entry<T> Pivot, Entry<T> Parent) {
+        rotateLeft(Pivot.left(), Pivot);
+        rotateRight(Parent, Pivot);
     }
 
-    protected Entry<T> rotateRL(Entry<T> P) {
-        P.right = rotateRight(P.right);
-        return rotateLeft(P);
+    protected void rotateRL(Entry<T> Pivot, Entry<T> Parent) {
+        rotateRight(Pivot.right(), Pivot);
+        rotateLeft(Parent, Pivot);
     }
 
 
