@@ -166,29 +166,15 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * Generate new {@code Entry} with element {@code x}. Use internal function {@code Entry<T>
-     * newEntry(T x, Entry<T> left, Entry<T> right)}.
+     * Generate new {@code Entry} with element {@code x}. Need to be override by subclass to create
+     * new sub-{@code Entry}.
      *
      * @param x Element in the new entry.
      *
      * @return New {@code Entry} instance.
      */
     public Entry<T> newEntry(T x) {
-        return newEntry(x, null, null);
-    }
-
-    /**
-     * Generate new {@code Entry} of current BST {@code Entry} type. Need to override by subclass to
-     * create new sub-{@code Entry}.
-     *
-     * @param x     Element in the new entry.
-     * @param left  Left child in the new entry.
-     * @param right Right child in the new entry.
-     *
-     * @return New {@code Entry} instance.
-     */
-    protected Entry<T> newEntry(T x, Entry<T> left, Entry<T> right) {
-        return new Entry<>(x, left, right);
+        return new Entry<>(x, null, null);
     }
 
     /**
