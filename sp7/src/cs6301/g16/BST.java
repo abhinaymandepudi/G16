@@ -75,7 +75,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     private Entry<T> root;
-    private int size;
+    protected int size;
     private Deque<Entry<T>> stack;
 
     public BST() {   //Initial BST
