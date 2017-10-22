@@ -403,6 +403,9 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
         while (itr.hasNext()) {
             System.out.print(itr.next() + " ");
         }
+
+        System.out.println();
+        System.out.println(t.isValid() ? "t is valid RedBlackTree." : "t is not a valid RedBlackTree.");
     }
 
     @Override
@@ -414,6 +417,37 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
         }
     }
 
+    @Override
+    boolean isValid() {
+        if (!super.isValid())
+            return false;
+
+        assert root instanceof Entry;
+        if (((Entry) root).isRed())
+            return false;
+
+        return isValid(root, 0) > 0;
+    }
+
+    protected int isValid(BST.Entry<T> x, int n) {
+        assert x instanceof Entry;
+
+        Entry<T> s = (Entry<T>) x;
+        if (s.isNil())
+            return s.isBlack() ? n : -1;
+
+        if (s.isRed)
+            if (s.left().isRed || s.right().isRed)
+                return -1;
+
+        int l = isValid(s.left(), (s.isRed ? 0 : 1) + n);
+        int r = isValid(s.right(), (s.isRed ? 0 : 1) + n);
+
+        if (l == r)
+            return r;
+        else
+            return -1;
+    }
 }
 
 /*

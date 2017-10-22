@@ -405,6 +405,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         while (itr.hasNext()) {
             System.out.print(itr.next() + " ");
         }
+
+        System.out.println();
+        System.out.println(t.isValid() ? "t is valid BST." : "t is not a valid BST.");
     }
 
     public Comparable[] toArray() {
@@ -440,6 +443,20 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             System.out.print(" " + node.element);
             printTree(node.right);
         }
+    }
+
+    boolean isValid() {
+        return isValid(root);
+    }
+
+    private boolean isValid(Entry<T> x) {
+        if (x.isNil())
+            return true;
+        if (!x.left().isNil() && x.element.compareTo(x.left().element) < 0)
+            return false;
+        if (!x.right().isNil() && x.element.compareTo(x.right().element) > 0)
+            return false;
+        return isValid(x.left()) && isValid(x.right());
     }
 
 }
