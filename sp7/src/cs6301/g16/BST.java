@@ -74,12 +74,12 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         }
     }
 
-    private Entry<T> root;
+    protected Entry<T> root;
     protected int size;
-    private Deque<Entry<T>> stack;
+    protected Deque<Entry<T>> stack;
 
     public BST() {   //Initial BST
-        root = new Entry<T>().getNIL(); // To access static, first create a new. (WEIRD)
+        root = newEntry(null);
         size = 0;
     }
 
@@ -92,7 +92,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public Entry<T> find(T x) {
         stack = new ArrayDeque<>();
-        stack.push(new Entry<T>().getNIL());
+        stack.push(newEntry(null));
         return find(root, x);
     }
 
@@ -109,24 +109,24 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (t.isNil() || t.element == x)
             return t;
         while (true) {
+
+            stack.push(t);
+
             if (x.compareTo(t.element) < 0) {
                 if (t.left.isNil())
                     break;
-                else {
-                    stack.push(t);
+                else
                     t = t.left;
-                }
             } else if (x.compareTo(t.element) == 0) {
                 break;
             } else {
                 if (t.right.isNil())
                     break;
-                else {
-                    stack.push(t);
+                else
                     t = t.right;
-                }
             }
         }
+
         return t;
     }
 
@@ -175,6 +175,8 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      * @return New {@code Entry} instance.
      */
     public Entry<T> newEntry(T x) {
+        if (x == null)
+            return new Entry<T>().getNIL();
         return new Entry<>(x, null, null);
     }
 
@@ -196,10 +198,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (x == t.element) {
             t.element = x; // If duplicate,replace to the new one.
             return false;
-        } else if (x.compareTo(t.element) < 0) {
-            t.left = newEntry(x);
         } else {
-            t.right = newEntry(x);
+            Entry<T> newEntry = newEntry(x);
+            if (x.compareTo(t.element) < 0)
+                t.left = newEntry;
+            else
+                t.right = newEntry;
+            stack.push(newEntry);
         }
         size++;
         return true;
