@@ -196,7 +196,6 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (t.left.isNil() || t.right.isNil())   //t has 0 or 1 child
             bypass(t);
         else {   //t has 2 children
-//            stack.push(t);
             Entry<T> minRight = find(t.right, t.element);
             t.element = minRight.element;
             bypass(minRight);
@@ -291,8 +290,6 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      *
      * @param Pivot  The top most entry of the rotation.
      * @param Parent Parent node of entry.
-     *
-     * @return New top most entry after the rotation.
      */
     protected void rotateLeft(Entry<T> Pivot, Entry<T> Parent) {
 
