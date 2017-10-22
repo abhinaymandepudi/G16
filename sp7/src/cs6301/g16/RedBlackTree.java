@@ -20,7 +20,13 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             isRed = false;
         }
 
-        @Override @SuppressWarnings("unchecked")
+        /**
+         * Override super class to return a {@code RedBlackTree.Entry.NIL}.
+         *
+         * @return {@code RedBlackTree.Entry.NIL}.
+         */
+        @Override
+        @SuppressWarnings("unchecked")
         public Entry<T> getNIL() {
             return (Entry<T>) NIL;
         }
@@ -29,6 +35,18 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             super(x, left, right);
             isRed = true;
         }
+    }
+
+    /**
+     * Override super class to generate a new {@code RedBlackTree.Entry<T>} instance.
+     *
+     * @param x Element in the new entry.
+     *
+     * @return New {@code RedBlackTree.Entry<T>} instance.
+     */
+    @Override
+    public BST.Entry<T> newEntry(T x) {
+        return new Entry<>(x, null, null);
     }
 
     RedBlackTree() {
