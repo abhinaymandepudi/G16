@@ -53,6 +53,16 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
         super();
     }
 
+    @Override
+    public boolean add(T x) {
+        boolean added = super.add(x);
+
+        if (!added)
+            return false;
+
+        return true;
+    }
+
     public static void main(String[] args) {
         BST<Integer> t = new RedBlackTree<>();
         Scanner in = new Scanner(System.in);
@@ -89,7 +99,7 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
     void printTree(BST.Entry<T> node) {
         if (!node.isNil()) {
             printTree(node.left);
-            System.out.print(" " + node.element + " " + node.getClass());
+            System.out.print(" " + node.element);
             printTree(node.right);
         }
     }
