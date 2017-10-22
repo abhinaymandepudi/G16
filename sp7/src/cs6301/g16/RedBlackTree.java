@@ -310,8 +310,9 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             // Case 3: s_t is Black, with Red child rc, and p_t -> s_t -> rc is RR (or LL):
             Entry<T> p_t = pop();
             // RR case:
-//            if (s_t.isBlack() && s_t.right().isRed() && p_t.right() == s_t) {
-//                // Rotate [L] at p_t
+            if (s_t.isBlack() && s_t.right().isRed() && p_t.right() == s_t) {
+                // Rotate [L] at p_t
+                rotateLeft(p_t, peek());
 //                if (peek() == root)
 //                    root = rotateLeft(p_t);
 //                else {
@@ -320,17 +321,19 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
 //                    else // if (p_t == peek().right)
 //                        peek().setRight(rotateLeft(p_t));
 //                }
-//
-//                // Exchange colors of p_t and s_t
-//                s_t.setRed();
-//                p_t.setBlack();
-//
-//                // Recolor rc to Black and return
-//                s_t.right().setBlack();
-//            }
-//            // LL case:
-//            if (s_t.isBlack() && s_t.left().isRed() && p_t.left() == s_t) {
-//                // Rotate [R] at p_t
+
+                // Exchange colors of p_t and s_t
+                s_t.setRed();
+                p_t.setBlack();
+
+                // Recolor rc to Black and return
+                s_t.right().setBlack();
+                return;
+            }
+            // LL case:
+            if (s_t.isBlack() && s_t.left().isRed() && p_t.left() == s_t) {
+                // Rotate [R] at p_t
+                rotateRight(p_t, peek());
 //                if (peek() == root)
 //                    root = rotateRight(p_t);
 //                else {
@@ -339,16 +342,43 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
 //                    else // if (p_t == peek().right)
 //                        peek().setRight(rotateRight(p_t));
 //                }
-//
-//                // Exchange colors of p_t and s_t
-//                s_t.setRed();
-//                p_t.setBlack();
-//
-//                // Recolor rc to Black and return
-//                s_t.right().setBlack();
-//            }
+
+                // Exchange colors of p_t and s_t
+                s_t.setRed();
+                p_t.setBlack();
+
+                // Recolor rc to Black and return
+                s_t.right().setBlack();
+                return;
+            }
 
             // Case 4: s_t is Black, with Red child rc, and p_t → s_t → rc is RL (or LR):
+            // RL
+            if (s_t.isBlack() && s_t.left().isRed() && p_t.right() == s_t) {
+                // Rotate [L] at p_t
+                rotateRight(p_t, peek());
+
+                // Exchange colors of p_t and s_t
+                s_t.setRed();
+                p_t.setBlack();
+
+                // Recolor rc to Black and return
+                s_t.right().setBlack();
+                return;
+            }
+            // LR case:
+            if (s_t.isBlack() && s_t.right().isRed() && p_t.left() == s_t) {
+                // Rotate [R] at p_t
+                rotateLR(p_t, peek());
+
+                // Exchange colors of p_t and s_t
+                s_t.setRed();
+                p_t.setBlack();
+
+                // Recolor rc to Black and return
+                s_t.right().setBlack();
+                return;
+            }
         }
     }
 
