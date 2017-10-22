@@ -56,12 +56,10 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         /**
          * Return {@code NIL} entry.
          *
-         * @param <T> Type of NIL node.
-         *
          * @return {@code NIL} entry.
          */
         @SuppressWarnings("unchecked")
-        private static <T> Entry<T> getNIL() {
+        protected Entry<T> getNIL() {
             return (Entry<T>) NIL;
         }
 
@@ -80,7 +78,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     private Deque<Entry<T>> stack;
 
     public BST() {   //Initial BST
-        root = Entry.getNIL();
+        root = new Entry<T>().getNIL(); // To access static, first create a new. (WEIRD)
         size = 0;
     }
 
@@ -93,7 +91,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public Entry<T> find(T x) {
         stack = new ArrayDeque<>();
-        stack.push(Entry.getNIL());
+        stack.push(new Entry<T>().getNIL());
         return find(root, x);
     }
 
