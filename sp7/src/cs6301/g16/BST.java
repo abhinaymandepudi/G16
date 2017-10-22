@@ -53,11 +53,23 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             this.nil = false;
         }
 
+        /**
+         * Return {@code NIL} entry.
+         *
+         * @param <T> Type of NIL node.
+         *
+         * @return {@code NIL} entry.
+         */
         @SuppressWarnings("unchecked")
         private static <T> Entry<T> getNIL() {
             return (Entry<T>) NIL;
         }
 
+        /**
+         * Return whether current node is {@code NIL}.
+         *
+         * @return {@code True} if current node is {@code NIL}, and {@code False} otherwise.
+         */
         public boolean isNil() {
             return nil;
         }
@@ -73,9 +85,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * Find x in tree.
+     * Find {@code x} in tree.
      *
-     * @param x The element we find.
+     * @param x The element to find.
      *
      * @return Node where search ends.
      */
@@ -85,6 +97,15 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         return find(root, x);
     }
 
+    /**
+     * Helper function used by {@code Entry<T> find(T x)} with additional parameter specifying the
+     * subtree to find.
+     *
+     * @param t Root the the subtree to find {@code x}.
+     * @param x The element to find.
+     *
+     * @return Node where search ends.
+     */
     public Entry<T> find(Entry<T> t, T x) {
         if (t.isNil() || t.element == x)
             return t;
@@ -134,7 +155,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     //Call when t has at most one child.
-    public void bypass(Entry<T> t) {
+    protected void bypass(Entry<T> t) {
         Entry<T> pt = stack.peek(); //Get ancestor of t.
         Entry<T> c = t.left.isNil() ? t.right : t.left;
         if (pt.isNil()) {   //pt is root.
@@ -147,8 +168,12 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * TO DO: Add x to tree. If tree contains a node with same key, replace element by x. Returns
-     * true if x is a new element added to tree.
+     * Add x to tree. If tree contains a node with same key, replace element by x. Returns true if x
+     * is a new element added to tree.
+     *
+     * @param x Element to be added.
+     *
+     * @return {@code True} if the element was successfully added to BST, {@code False} otherwise.
      */
     public boolean add(T x) {
         if (root.isNil()) {
@@ -170,7 +195,11 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
-     * TO DO: Remove x from tree. Return x if found, otherwise return null
+     * Remove x from tree. Return x if found, otherwise return null
+     *
+     * @param x Element to be deleted.
+     *
+     * @return The element being deleted.
      */
     public T remove(T x) {
         if (root.isNil())
