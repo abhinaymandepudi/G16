@@ -166,6 +166,32 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     }
 
     /**
+     * Generate new {@code Entry} with element {@code x}. Use internal function {@code Entry<T>
+     * newEntry(T x, Entry<T> left, Entry<T> right)}.
+     *
+     * @param x Element in the new entry.
+     *
+     * @return New {@code Entry} instance.
+     */
+    public Entry<T> newEntry(T x) {
+        return newEntry(x, null, null);
+    }
+
+    /**
+     * Generate new {@code Entry} of current BST {@code Entry} type. Need to override by subclass to
+     * create new sub-{@code Entry}.
+     *
+     * @param x     Element in the new entry.
+     * @param left  Left child in the new entry.
+     * @param right Right child in the new entry.
+     *
+     * @return New {@code Entry} instance.
+     */
+    protected Entry<T> newEntry(T x, Entry<T> left, Entry<T> right) {
+        return new Entry<>(x, left, right);
+    }
+
+    /**
      * Add x to tree. If tree contains a node with same key, replace element by x. Returns true if x
      * is a new element added to tree.
      *
@@ -175,7 +201,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
      */
     public boolean add(T x) {
         if (root.isNil()) {
-            root = new Entry<>(x, null, null);
+            root = newEntry(x);
             size = 1;
             return true;
         }
@@ -184,9 +210,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             t.element = x; // If duplicate,replace to the new one.
             return false;
         } else if (x.compareTo(t.element) < 0) {
-            t.left = new Entry<>(x, null, null);
+            t.left = newEntry(x);
         } else {
-            t.right = new Entry<>(x, null, null);
+            t.right = newEntry(x);
         }
         size++;
         return true;
