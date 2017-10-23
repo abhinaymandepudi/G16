@@ -1,10 +1,16 @@
-
 /**
- * Starter code for Red-Black Tree
+ * <h1>Fall 2017 Short Project 7 - 3</h1>
+ * <p>
+ * Extend BST to Red Black Trees (RedBlacktree). Important: elegance of code, code reuse from BST,
+ * and implementation of single pass algorithms.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-15
  */
+
 package cs6301.g16;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -25,6 +31,11 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             isRed = true;
         }
 
+        /**
+         * Override getter to convert {@code BST.Entry} to {@code RedBlackTree.Entry}.
+         *
+         * @return Left child.
+         */
         @Override
         public Entry<T> left() {
             assert super.left() instanceof RedBlackTree.Entry;
@@ -241,7 +252,6 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             if (g_t.right() == p_t && p_t.left() == t) {
                 // Rotate [L] at p_t and apply Case 2a
                 rotateRight(p_t, g_t);
-//                g_t.setRight(rotateRight(p_t));
 
                 // Switch reference of t and p_t to restore the g_t -> p_t -> t sequence.
                 Entry<T> tmp = t;
@@ -266,17 +276,9 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
 
         if (x.isBlack())
             fix(c);
-
-    }
-
-    @Override
-    public T remove(T x) {
-        T result = super.remove(x);
-        return result;
     }
 
     private void fix(Entry<T> t) {
-//        Entry<T> s_t = peek().siblingOf(t);
         while (root != t) {
             Entry<T> s_t = peek().siblingOf(t);
 
@@ -316,14 +318,6 @@ public class RedBlackTree<T extends Comparable<? super T>> extends BST<T> {
             if (s_t.isBlack() && s_t.left().isRed() && p_t.left() == s_t) {
                 // Rotate [R] at p_t
                 rotateRight(p_t, peek());
-//                if (peek() == root)
-//                    root = rotateRight(p_t);
-//                else {
-//                    if (peek().left() == p_t)
-//                        peek().setLeft(rotateRight(p_t));
-//                    else // if (p_t == peek().right)
-//                        peek().setRight(rotateRight(p_t));
-//                }
 
                 // Exchange colors of p_t and s_t
                 s_t.setRed();
