@@ -1,9 +1,13 @@
 
 /**
- * @author Binary search tree map (starter code)
- * Implement this class using one of the BST implementations: BST, AVLTree, RedBlackTree, or, SplayTree.
- * Do not use TreeMap or any of Java's maps.
- **/
+ * <h1>Fall 2017 Short Project 7 - 5</h1>
+ * <p>
+ * Implement BSTMap (like a TreeMap), on top of one of the BST classes.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-22
+ */
 
 package cs6301.g16;
 
