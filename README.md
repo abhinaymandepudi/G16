@@ -26,3 +26,5 @@ Short Project
 5.  [Quick Sort](./sp5)
 
 6.  [Priority queues and their applications](./sp6)
+
+7.  [Binary search trees](./sp7)
