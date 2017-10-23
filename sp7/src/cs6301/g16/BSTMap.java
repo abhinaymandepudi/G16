@@ -98,7 +98,7 @@ public class BSTMap<K extends Comparable<? super K>, V> implements Iterable<K> {
      */
     public static void main(String[] args){
 
-        BSTMap<Integer,String> map = new BSTMap<>(); // using BST Tree
+        BSTMap<Integer,String> map = new BSTMap<>(BSTMapType.SPLAY); // using Splay Tree
 
         System.out.println("map.put(3,\"C\")");
         map.put(3,"C");

@@ -1,6 +1,13 @@
 /**
- * Starter code for Splay Tree
+ * <h1>Fall 2017 Short Project 7 - 3</h1>
+ * <p>
+ * Splay Tree implementation extends BST.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-15
  */
+
 package cs6301.g16;
 
 import java.util.Comparator;
@@ -116,6 +123,9 @@ public class SplayTree<T extends Comparable<? super T>> extends BST<T> {
         t.add(3); System.out.println("t.add(3)"); t.printTree();
         t.add(-1); System.out.println("t.add(-1)"); t.printTree();
         System.out.println("t.min() = "+t.min()); t.printTree();
+        System.out.println("t.contains(1) = "+t.contains(1)); t.printTree();
+        System.out.println("t.remove(1) = "+t.remove(1)); t.printTree();
+        System.out.println("t.remove(3) = "+t.remove(1)); t.printTree();
     }
 
     @Override
