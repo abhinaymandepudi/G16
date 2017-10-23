@@ -42,8 +42,11 @@ public class AVLTree<T extends Comparable<? super T>> extends BST<T> {
     }
 
     @Override
-    public Entry<T> newEntry(T x) {
-        return new AVLTree.Entry<T>(x, null, null);
+    public BST.Entry<T> newEntry(T x) {
+        Entry<T> t = new Entry<T>();
+        if (x == null)
+            return t.getNIL();
+        return new Entry<>(x, t.getNIL(), t.getNIL());
     }
 
     /**

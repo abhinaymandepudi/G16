@@ -286,9 +286,9 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         else if(t.left.isNil()&&t.right.isNil()) {
             if(!pt.isNil()){
                 if(pt.left == t)
-                    pt.left = Entry.NIL;
+                    pt.left = newEntry(null);
                 else if(pt.right == t)
-                    pt.right = Entry.NIL;
+                    pt.right = newEntry(null);
             }
         }
         else if (pt.left == t) {
