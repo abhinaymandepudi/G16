@@ -197,15 +197,19 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (root.isNil())
             return null;
         Entry<T> t = find(x);
-        if (t.element != x)
+        if (t.element.compareTo(x)!=0)
             return null;
         T result = t.element;
         if (t.left.isNil() || t.right.isNil())   //t has 0 or 1 child
             bypass(t);
         else {   //t has 2 children
+            int stackSize = stack.size();
             Entry<T> minRight = find(t.right, t.element);
+            int afterStackSize = stack.size();
             t.element = minRight.element;
             bypass(minRight);
+            for(int i=0;i<afterStackSize-stackSize-1;i++)
+                stack.pop();
         }
         size--;
         return result;
@@ -272,15 +276,26 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
     protected void bypass(Entry<T> t) {
         stack.pop();
         Entry<T> pt = stack.peek(); //Get ancestor of t.
+
         Entry<T> c = t.left.isNil() ? t.right : t.left;
+
+
         if (pt.isNil()) {   //pt is root.
             root = c;
-        } else if (pt.left == t) {
+        }
+        else if(t.left.isNil()&&t.right.isNil()) {
+            if(!pt.isNil()){
+                if(pt.left == t)
+                    pt.left = Entry.NIL;
+                else if(pt.right == t)
+                    pt.right = Entry.NIL;
+            }
+        }
+        else if (pt.left == t) {
             pt.left = c;
         } else {
             pt.right = c;
         }
-        stack.push(c);
     }
 
     /**
