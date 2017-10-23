@@ -93,12 +93,27 @@ public class BSTMap<K extends Comparable<? super K>, V> implements Iterable<K> {
      * Main function for testing
      */
     public static void main(String[] args){
+
         BSTMap<Integer,String> map = new BSTMap<>(); // using BST Tree
+
+        System.out.println("map.put(3,\"C\")");
         map.put(3,"C");
+        System.out.println("map.put(1,\"A\")");
         map.put(1,"A");
+        System.out.println("map.put(2,\"B\")");
         map.put(2,"B");
+
+        System.out.println("Iterate Through Map:");
         for(Integer key : map){
             System.out.println(key+"-"+map.get(key));
         }
+
+        System.out.println("map.put(3,\"CC\")");
+        map.put(3,"CC");
+        System.out.println(3+"-"+map.get(3));
+
+        System.out.println("Get a key doesn't exist:");
+        System.out.println("map.get(0) = "+map.get(0));
+
     }
 }
