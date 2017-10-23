@@ -13,8 +13,8 @@ Project Structure
 
 Deliverable structure is as follow:
 
-  cs6301
-  └── g16
+    cs6301
+    └── g16
       ├── AVLTree.java
       ├── BST.java
       ├── BSTMap.java
