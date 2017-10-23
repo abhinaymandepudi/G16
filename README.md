@@ -1,5 +1,5 @@
-G16
-===
+Group 16
+========
 
 Course Number: CS6301.502
 
@@ -11,6 +11,8 @@ Long Project
 1.  [Integer arithmetic with arbitrarily large numbers](./lp1)
 
 2.  [Euler tours in directed graphs](./lp2)
+
+3.  [Optimal branchings (directed MST) in directed graphs](./lp3)
 
 Short Project
 -------------
