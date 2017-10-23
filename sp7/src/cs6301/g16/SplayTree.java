@@ -115,6 +115,7 @@ public class SplayTree<T extends Comparable<? super T>> extends BST<T> {
         t.get(2); System.out.println("t.get(2)"); t.printTree();
         t.add(3); System.out.println("t.add(3)"); t.printTree();
         t.add(-1); System.out.println("t.add(-1)"); t.printTree();
+        System.out.println("t.min() = "+t.min()); t.printTree();
     }
 
     @Override

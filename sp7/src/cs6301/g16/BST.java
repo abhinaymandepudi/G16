@@ -94,7 +94,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         public String toString() {
             if(isNil())
                 return "Nil";
-            return super.toString()+"["+element.toString()+"]";
+            return element.toString();
         }
     }
 
@@ -244,7 +244,7 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             return null;
         Entry<T> t = root;
         stack.push(t);
-        while (t.left.isNil()) {
+        while (!t.right.isNil()) {
             t = t.right;
             stack.push(t);
         }
@@ -261,8 +261,8 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
             return null;
         Entry<T> t = root;
         stack.push(t);
-        while (t.left.isNil()) {
-            t = t.right;
+        while (!t.left.isNil()) {
+            t = t.left;
             stack.push(t);
         }
         return t.element;
