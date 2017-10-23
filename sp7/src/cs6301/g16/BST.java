@@ -89,6 +89,13 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         public boolean isNil() {
             return nil;
         }
+
+        @Override
+        public String toString() {
+            if(isNil())
+                return "Nil";
+            return super.toString()+"["+element.toString()+"]";
+        }
     }
 
     protected Entry<T> root;
@@ -236,8 +243,11 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (root.isNil())
             return null;
         Entry<T> t = root;
-        while (t.left.isNil())
+        stack.push(t);
+        while (t.left.isNil()) {
             t = t.right;
+            stack.push(t);
+        }
         return t.element;
     }
 
@@ -250,8 +260,11 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
         if (root.isNil())
             return null;
         Entry<T> t = root;
-        while (t.left.isNil())
+        stack.push(t);
+        while (t.left.isNil()) {
             t = t.right;
+            stack.push(t);
+        }
         return t.element;
     }
 
@@ -325,14 +338,25 @@ public class BST<T extends Comparable<? super T>> implements Iterable<T> {
 
     protected void rotateLR(Entry<T> Pivot, Entry<T> Parent) {
         rotateLeft(Pivot.left(), Pivot);
-        rotateRight(Parent, Pivot);
+        rotateRight(Pivot, Parent);
+    }
+
+    protected void rotateLL(Entry<T> Pivot, Entry<T> Parent) {
+        Entry<T> rightTmp = Pivot.right;
+        rotateLeft(Pivot, Parent);
+        rotateLeft(rightTmp, Parent);
     }
 
     protected void rotateRL(Entry<T> Pivot, Entry<T> Parent) {
         rotateRight(Pivot.right(), Pivot);
-        rotateLeft(Parent, Pivot);
+        rotateLeft(Pivot, Parent);
     }
 
+    protected void rotateRR(Entry<T> Pivot, Entry<T> Parent) {
+        Entry<T> leftTmp = Pivot.left;
+        rotateRight(Pivot, Parent);
+        rotateRight(leftTmp, Parent);
+    }
 
     /**
      * Generate iterator of the BST.
