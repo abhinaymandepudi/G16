@@ -34,7 +34,7 @@ public class Permutation<T> {
 
     private void permute(int c) {
         if (c == 0) {
-            permutation.add(Arrays.copyOf(A, length));
+            permutation.add(Arrays.copyOf(A, k));
             return;
         }
 
@@ -56,9 +56,17 @@ public class Permutation<T> {
     }
 
     public static void main(String[] args) {
-        Integer[] A = new Integer[]{1, 2, 3, 4};
+        int n = Integer.parseInt(args[0]);
+        int k = Integer.parseInt(args[1]);
 
-        Permutation<Integer> pA3 = new Permutation<>(A, 3);
+        Integer[] A = new Integer[n];
+
+        for (int i = 0; i < n; i++)
+            A[i] = i;
+
+        Permutation<Integer> pA3 = new Permutation<>(A, k);
+
+        System.out.println(pA3.permutation.size());
 
         pA3.printPermutation();
     }
