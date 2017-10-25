@@ -64,10 +64,10 @@ public class Permutation<T> {
         for (int i = 0; i < n; i++)
             A[i] = i;
 
-        Permutation<Integer> pA3 = new Permutation<>(A, k);
+        Permutation<Integer> nPk = new Permutation<>(A, k);
 
-        System.out.println(pA3.permutation.size());
+        System.out.println(nPk.permutation.size());
 
-        pA3.printPermutation();
+        nPk.printPermutation();
     }
 }
