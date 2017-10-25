@@ -1,0 +1,53 @@
+package cs6301.g16;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Permutation<T> {
+
+    private final T[] A;
+    private final int length;
+    private final int k;
+    private List<T[]> permutation;
+
+    public Permutation(T[] arr, int k) {
+        this.A = arr;
+        this.length = arr.length;
+        this.k = k;
+        this.permutation = new ArrayList<>();
+
+        permute(k);
+    }
+
+    private void permute(int c) {
+        if (c == 0) {
+            permutation.add(Arrays.copyOf(A, length));
+            return;
+        }
+
+        int d = k - c;
+        permute(c - 1);
+
+        for (int i = d + 1; i <= length - 1; i++) {
+            T tmp = A[d];
+            A[d] = A[i];
+            A[i] = tmp;
+            permute(c - 1);
+            A[i] = A[d];
+            A[d] = tmp;
+        }
+    }
+
+    public void printPermutation() {
+        permutation.forEach(x -> System.out.println(Arrays.toString(x)));
+    }
+
+    public static void main(String[] args) {
+        Integer[] A = new Integer[]{1, 2, 3, 4};
+
+        Permutation<Integer> pA3 = new Permutation<>(A, 3);
+
+        pA3.printPermutation();
+    }
+}
