@@ -4,6 +4,8 @@
  * Implement permutation and combination algorithms nPk and nCk. Use a VERBOSE flag to decide if the
  * output is just the number of permutations or combinations visited (VERBOSE = 0), or, a complete
  * listing.
+ * <p>
+ * Basic permutation implementation.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
@@ -49,6 +51,10 @@ public class Permutation<T> {
             A[i] = A[d];
             A[d] = tmp;
         }
+    }
+
+    public int size() {
+        return permutation.size();
     }
 
     public void printPermutation() {
