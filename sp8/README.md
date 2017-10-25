@@ -29,123 +29,139 @@ Compile
 To compile, run the following commands:
 
     # P7
-    javac cs6301/g16/SplayTree.java
+    javac cs6301/g16/P7Driver.java
+    
+    # P8
+    javac cs6301/g16/P8Driver.java
+
+    # P9
+    javac cs6301/g16/P9Driver.java
+
+
 
 
 Test Running
 ------------
 
--   BST
+-   P7
 
-        > java cs6301.g16.BST
-        1 3 5 7 9 2 4 6 8 10 -3 -6 -3 0
-        
-        Output:
-        Add 1 : [1] 1
-        Add 3 : [2] 1 3
-        Add 5 : [3] 1 3 5
-        Add 7 : [4] 1 3 5 7
-        Add 9 : [5] 1 3 5 7 9
-        Add 2 : [6] 1 2 3 5 7 9
-        Add 4 : [7] 1 2 3 4 5 7 9
-        Add 6 : [8] 1 2 3 4 5 6 7 9
-        Add 8 : [9] 1 2 3 4 5 6 7 8 9
-        Add 10 : [10] 1 2 3 4 5 6 7 8 9 10
-        Remove -3 : [9] 1 2 4 5 6 7 8 9 10
-        Remove -6 : [8] 1 2 4 5 7 8 9 10
-        Remove -3 : [8] 1 2 4 5 7 8 9 10
-        Final: 1 2 4 5 7 8 9 10 
+    Specifying `n` and `k` with auto-generated `[0 ... n-1]` sequence, execute
+    commands: `java cs6301.g16.Permutation <n> <k>` and `java
+    cs6301.g16.Combination <n> <k>`. Program would first output total number of
+    permutations/combinations, and then list all answers.
 
-
--   AVL Tree
-
-        > java cs6301.g16.AVLTree
-        Test 1.Test add(),remove(),toArray()
-        4
-        Add 4 : [1] 4
-        3
-        Add 3 : [2] 3 4
-        7
-        Add 7 : [3] 3 4 7
+        > java cs6301.g16.Permutation 3 2
         6
-        Add 6 : [4] 3 4 6 7
-        9
-        Add 9 : [5] 3 4 6 7 9
-        1
-        Add 1 : [6] 1 3 4 6 7 9
-        -6
-        Remove -6 : [5] 1 3 4 7 9
-        2
-        Add 2 : [6] 1 2 3 4 7 9
-        -1
-        Remove -1 : [5] 2 3 4 7 9
-        5
-        Add 5 : [6] 2 3 4 5 7 9
-        0
-        Final: 2 3 4 5 7 9 
-        Test 2.Test Iterator()
-        2 3 4 5 7 9 
-        Is a balance tree? false
+        [0, 1]
+        [0, 2]
+        [1, 0]
+        [1, 2]
+        [2, 1]
+        [2, 0]
 
+        > java cs6301.g16.Combination 3 2
+        3
+        [0, 1]
+        [0, 2]
+        [1, 2]
 
--   BST Map
+    To specify sequence manually, execute the driver program as follow:
 
-        > java cs6301.g16.BSTMap
-        map.put(3,"C")
-        map.put(1,"A")
-        map.put(2,"B")
-        Iterate Through Map:
-        1-A
-        2-B
-        3-C
-        map.put(3,"CC")
-        3-CC
-        Get a key doesn't exist:
-        map.get(0) = null
+        > java cs6301.g16.P7Driver
+        Enter VERBOSE, k and length followed by the integer sequence to compute
+        permutation and combination.
+        For example: 1 3 5 0 1 2 3 4
+        Indicating VERBOSE = 1, k = 3, and the array with length 5 is {0, 1, 2, 3, 4}.
+        1 2 5 11 22 33 44 55
+        Total number of permutations: 20
+        Total number of combinations: 10
 
+        List of permutations:
+        [11, 22]
+        [11, 33]
+        [11, 44]
+        [11, 55]
+        [22, 11]
+        [22, 33]
+        [22, 44]
+        [22, 55]
+        [33, 22]
+        [33, 11]
+        [33, 44]
+        [33, 55]
+        [44, 22]
+        [44, 33]
+        [44, 11]
+        [44, 55]
+        [55, 22]
+        [55, 33]
+        [55, 44]
+        [55, 11]
 
--   Red Black Tree
+        List of combinations:
+        [11, 22]
+        [11, 33]
+        [11, 44]
+        [11, 55]
+        [22, 33]
+        [22, 44]
+        [22, 55]
+        [33, 44]
+        [33, 55]
+        [44, 55]
 
-        > java cs6301.g16.RedBlackTree
-        Test 1.Test add(),remove(),toArray()
-        1 3 5 7 9 2 4 6 8 10 -3 -6 -3 0
-        Add 1 : [1] 1
-        Add 3 : [2] 1 3
-        Add 5 : [3] 1 3 5
-        Add 7 : [4] 1 3 5 7
-        Add 9 : [5] 1 3 5 7 9
-        Add 2 : [6] 1 2 3 5 7 9
-        Add 4 : [7] 1 2 3 4 5 7 9
-        Add 6 : [8] 1 2 3 4 5 6 7 9
-        Add 8 : [9] 1 2 3 4 5 6 7 8 9
-        Add 10 : [10] 1 2 3 4 5 6 7 8 9 10
-        Remove -3 : [9] 1 2 4 5 6 7 8 9 10
-        Remove -6 : [8] 1 2 4 5 7 8 9 10
-        Remove -3 : [8] 1 2 4 5 7 8 9 10
-        Final: 1 2 4 5 7 8 9 10
-        Test 2.Test Iterator()
-        1 2 4 5 7 8 9 10
-        t is valid RedBlackTree.
+-   P8
 
+    Directly execute `KnuthL` class with length of array, the program would
+    generate array `[0 ... n-1]` and output all permutations in lexicographic
+    order.
 
--   Splay Tree
+        > java cs6301.g16.KnuthL 3
+        [0, 1, 2]
+        [0, 2, 1]
+        [1, 0, 2]
+        [1, 2, 0]
+        [2, 0, 1]
+        [2, 1, 0]
 
-        > java cs6301.g16.SplayTree
-        t.add(1)
-        [1] (1)
-        t.add(2)
-        [2] 1 (2)
-        t.get(1)
-        [2] (1) 2
-        t.add(5)
-        [3] 1 2 (5)
-        t.get(2)
-        [3] 1 (2) 5
-        t.add(3)
-        [4] 1 2 (3) 5
-        t.add(-1)
-        [5] -1 1 2 (3) 5
-        t.min() = -1
-        [5] (-1) 1 2 3 5
-        t.contains(1) = true
-        [5] -1 (1) 2 3 5
+    Or execute the driver program to specify the array.
+
+        > java cs6301.g16.P8Driver
+        Enter length followed by the integer sequence to compute lexicographic permutation.
+        For example: 5 0 1 2 3 4
+        Indicating the array with length 5 is {0, 1, 2, 3, 4}.
+        5 2 3 3 3 3
+        Lexicographic order permutations are:
+        [2, 3, 3, 3, 3]
+        [3, 2, 3, 3, 3]
+        [3, 3, 2, 3, 3]
+        [3, 3, 3, 2, 3]
+        [3, 3, 3, 3, 2]
+
+-   P9
+
+    Directly execute `Heap` class with length of array, the progran would
+    generate array `[0 ... n-1]` and output all `n!` permutations.
+
+        > java cs6301.g16.Heap 3
+        [0, 1, 2]
+        [1, 0, 2]
+        [2, 0, 1]
+        [0, 2, 1]
+        [1, 2, 0]
+        [2, 1, 0]
+
+    Or execute the driver program to specify the array.
+
+        > java cs6301.g16.P9Driver
+        Enter length followed by the integer sequence to compute lexicographic permutation.
+        For example: 5 0 1 2 3 4
+        Indicating the array with length 5 is {0, 1, 2, 3, 4}.
+        3 100 200 300
+        All n! = 6 permutations are:
+        [100, 200, 300]
+        [200, 100, 300]
+        [300, 100, 200]
+        [100, 300, 200]
+        [200, 300, 100]
+        [300, 200, 100]
