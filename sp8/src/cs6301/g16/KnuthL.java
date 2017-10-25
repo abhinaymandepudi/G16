@@ -19,17 +19,17 @@ import java.util.List;
 public class KnuthL {
 
     static <T extends Comparable<? super T>> List<T[]> permute(T[] x) {
-        final int lasti = x.length - 1;
+        final int lastIndex = x.length - 1;
         List<T[]> ret = new ArrayList<>();
         ret.add(Arrays.copyOf(x, x.length));
 
         while (!isDescendOrder(x)) {
-            int j = lasti - 1;
+            int j = lastIndex - 1;
             while (x[j].compareTo(x[j + 1]) >= 0) j--;
-            int k = lasti;
+            int k = lastIndex;
             while (x[j].compareTo(x[k]) >= 0) k--;
             swap(x, j, k);
-            reverse(x, j + 1, lasti);
+            reverse(x, j + 1, lastIndex);
 
             ret.add(Arrays.copyOf(x, x.length));
         }
