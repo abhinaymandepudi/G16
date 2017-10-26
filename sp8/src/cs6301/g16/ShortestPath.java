@@ -1,5 +1,7 @@
 package cs6301.g16;
 
+import cs6301.g00.Graph;
+
 import java.util.*;
 
 public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
