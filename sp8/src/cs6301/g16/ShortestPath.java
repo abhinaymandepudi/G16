@@ -101,11 +101,10 @@ public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
     }
 
 
-    private boolean relax(Graph.Edge e) {
-        Graph.Vertex u = e.from;
-        Graph.Vertex v = e.to;
-        if (distance(v) > distance(u) + e.weight) {
-            getVertex(v).distance = distance(u) + e.weight;
+    private boolean relax(Graph.Vertex u, Graph.Edge e) {
+        Graph.Vertex v = e.otherEnd(u);
+        if (distance(v) > distance(u) + e.getWeight()) {
+            getVertex(v).distance = distance(u) + e.getWeight();
             getVertex(v).parent = u;
             return true;
         }
@@ -119,8 +118,8 @@ public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
         reinitialize(s);
         while (!topoOrder.isEmpty()) {
             Graph.Vertex u = topoOrder.poll();
-            for (Graph.Edge e : u.adj) {
-                relax(e);
+            for (Graph.Edge e : u) {
+                relax(u, e);
             }
         }
         printPath(s);
