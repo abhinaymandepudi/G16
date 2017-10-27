@@ -3,7 +3,6 @@ package cs6301.g16;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Comparator;
 import java.util.LinkedList;
 
 import cs6301.g00.Graph;
@@ -12,171 +11,168 @@ import cs6301.g00.Graph.Vertex;
 
 public class Dijkstra extends GraphAlgorithm<Dijkstra.DJVertex> {
 
-	static class DJVertex implements Index, Comparable<DJVertex> {
-		Integer dis;
-		Edge pe;
-		boolean seen;
+    static class DJVertex implements Index, Comparable<DJVertex> {
+        Integer dis;
+        Edge pe;
+        boolean seen;
 
-		private int index;
-		private Vertex v;
+        private int index;
+        private Vertex v;
 
-		DJVertex(Vertex v) {
-			super();
-			this.v = v;
-			index = v.getName();
-			reset();
-		}
+        DJVertex(Vertex v) {
+            super();
+            this.v = v;
+            index = v.getName();
+            reset();
+        }
 
-		void reset() {
-			dis = Integer.MAX_VALUE;
-			pe = null;
-			seen = false;
-		}
+        void reset() {
+            dis = Integer.MAX_VALUE;
+            pe = null;
+            seen = false;
+        }
 
-		Vertex getParent() {
-			if (pe == null)
-				return null;
-			else
-				return pe.otherEnd(v);
-		}
+        Vertex getParent() {
+            if (pe == null)
+                return null;
+            else
+                return pe.otherEnd(v);
+        }
 
-		@Override
-		public void putIndex(int index) {
-			this.index = index;
-		}
+        @Override
+        public void putIndex(int index) {
+            this.index = index;
+        }
 
-		@Override
-		public int getIndex() {
-			return this.index;
-		}
+        @Override
+        public int getIndex() {
+            return this.index;
+        }
 
-		@Override
-		public int compareTo(DJVertex otherVertex) {
-			return this.dis.compareTo(otherVertex.dis);
-		}
-		
-		@Override
-		public String toString(){
-			return v.toString()+" "+dis+" "+index;
-		}
+        @Override
+        public int compareTo(DJVertex otherVertex) {
+            return this.dis.compareTo(otherVertex.dis);
+        }
 
-	}
+        @Override
+        public String toString() {
+            return v.toString() + " " + dis + " " + index;
+        }
 
-	private Vertex start;
-	private boolean negWeight;
+    }
 
-	public Dijkstra(Graph g) {
-		super(g);
-		node = new DJVertex[g.size()];
-		for (Vertex v : g) {
-			node[v.getName()] = new DJVertex(v);
-		}
-		start = null;
-	}
+    private Vertex start;
+    private boolean negWeight;
 
-	private void runDJ(Vertex s) throws Exception {
-			IndexedHeap<DJVertex> q = new IndexedHeap<DJVertex>(new DJVertex[g.size()], new Comparator<DJVertex>() {
-				@Override
-				public int compare(DJVertex v1, DJVertex v2) {
-					return v1.compareTo(v2);
-				}
-			}, g.size());
-			
-			for (int i = 0; i < node.length; i++) {
-				node[i].reset();
-				q.insert(node[i]);
-			}
-			negWeight = false;
+    public Dijkstra(Graph g) {
+        super(g);
+        node = new DJVertex[g.size()];
+        for (Vertex v : g) {
+            node[v.getName()] = new DJVertex(v);
+        }
+        start = null;
+    }
 
-			DJVertex ds = getVertex(s);
-			ds.dis = 0;
-			q.decreaseKey(ds);
+    private void runDJ(Vertex s) throws Exception {
+        IndexedHeap<DJVertex> q = new IndexedHeap<>(new DJVertex[g.size()], DJVertex::compareTo, g.size());
 
-			while (!q.isEmpty()) {
-				DJVertex du = q.remove();
-				Vertex u = du.v;
-				du.seen = true;
-				for (Edge e : u) {
-					if (e.getWeight() < 0) {
-						negWeight = true;
-						start = s;
-						return;
-					}
-					Vertex v = e.otherEnd(u);
-					DJVertex dv = getVertex(v);
-					if(dv.dis>du.dis+e.getWeight()){
-						dv.dis = du.dis+e.getWeight();
-						dv.pe = e;
-						q.decreaseKey(dv);
-					}
-				}
-			}
-			
-			start = s;
-	}
+        for (int i = 0; i < node.length; i++) {
+            node[i].reset();
+            q.insert(node[i]);
+        }
+        negWeight = false;
 
-	public boolean dijkstra(Vertex s, Vertex u, List<Edge> path) throws Exception {
-		path.clear();
+        DJVertex ds = getVertex(s);
+        ds.dis = 0;
+        q.decreaseKey(ds);
 
-		if (start != null && !start.equals(s)) {
-			start = null;
-		}
+        while (!q.isEmpty()) {
+            DJVertex du = q.remove();
+            Vertex u = du.v;
+            du.seen = true;
+            for (Edge e : u) {
+                if (e.getWeight() < 0) {
+                    negWeight = true;
+                    start = s;
+                    return;
+                }
+                Vertex v = e.otherEnd(u);
+                DJVertex dv = getVertex(v);
+                if ((long) dv.dis > (long) du.dis + (long) e.getWeight()) {
+                    // cast to long because inf is represent as integer.max_value
+                    // keep using int might encounter integer overflow
+                    dv.dis = du.dis + e.getWeight();
+                    dv.pe = e;
+                    q.decreaseKey(dv);
+                }
+            }
+        }
 
-		if (start == null) {
-			runDJ(s);
-		}
+        start = s;
+    }
 
-		if (negWeight) {
-			System.out.printf("Negtive weight edge detected!\n");
-			return false;
-		} else {
-			Vertex v = u;
-			while (!v.equals(s)) {
-				DJVertex bv = getVertex(v);
-				if (bv.pe == null) {
-					System.out.printf("No path from %s to %s!\n", s, u);
-					return false;
-				}
-				path.add(bv.pe);
-				v = bv.getParent();
-			}
-			Collections.reverse(path);
-			return true;
-		}
+    public boolean dijkstra(Vertex s, Vertex u, List<Edge> path) throws Exception {
+        path.clear();
 
-	}
-	
-	public static void main(String[] args) throws Exception {
-		
-		Scanner in = new Scanner("5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4");
-		Graph g = Graph.readDirectedGraph(in);
-		List<Edge> shortestPath = new LinkedList<>();
-		Dijkstra dj = new Dijkstra(g);
-		
-		System.out.println("Shortest Path from 1 to 5:");
-		if(dj.dijkstra(g.getVertex(1),g.getVertex(5),shortestPath))
-			System.out.println(shortestPath);
-		System.out.println();
-		
-		System.out.println("Shortest Path from 2 to 5:");
-		if(dj.dijkstra(g.getVertex(2),g.getVertex(5),shortestPath))
-			System.out.println(shortestPath);
-		System.out.println();
-		
-		System.out.println("Shortest Path from 2 to 1:");
-		if(dj.dijkstra(g.getVertex(2),g.getVertex(1),shortestPath))
-			System.out.println(shortestPath);
-		System.out.println();
-		
-		System.out.println("Change to graph with negtive weight\n");
-		
-		in = new Scanner("3 3	1 2 -1	2 3 -1	3 1 -1");
-		g = Graph.readDirectedGraph(in);
-		dj = new Dijkstra(g);
-		System.out.println("Shortest Path from 1 to 2:");
-		if(dj.dijkstra(g.getVertex(1),g.getVertex(2),shortestPath))
-			System.out.println(shortestPath);
-		System.out.println();
-	}
+        if (start != null && !start.equals(s)) {
+            start = null;
+        }
+
+        if (start == null) {
+            runDJ(s);
+        }
+
+        if (negWeight) {
+            System.out.printf("Negative weight edge detected!\n");
+            return false;
+        } else {
+            Vertex v = u;
+            while (!v.equals(s)) {
+                DJVertex bv = getVertex(v);
+                if (bv.pe == null) {
+                    System.out.printf("No path from %s to %s!\n", s, u);
+                    return false;
+                }
+                path.add(bv.pe);
+                v = bv.getParent();
+            }
+            Collections.reverse(path);
+            return true;
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner in = new Scanner("5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4");
+        Graph g = Graph.readDirectedGraph(in);
+        List<Edge> shortestPath = new LinkedList<>();
+        Dijkstra dj = new Dijkstra(g);
+
+        System.out.println("Shortest Path from 1 to 5:");
+        if (dj.dijkstra(g.getVertex(1), g.getVertex(5), shortestPath))
+            System.out.println(shortestPath);
+        System.out.println();
+
+        System.out.println("Shortest Path from 2 to 5:");
+        if (dj.dijkstra(g.getVertex(2), g.getVertex(5), shortestPath))
+            System.out.println(shortestPath);
+        System.out.println();
+
+        System.out.println("Shortest Path from 2 to 1:");
+        if (dj.dijkstra(g.getVertex(2), g.getVertex(1), shortestPath))
+            System.out.println(shortestPath);
+        System.out.println();
+
+        System.out.println("Change to graph with negative weight edge\n");
+
+        in = new Scanner("3 3	1 2 1	2 3 -1	3 1 1");
+        g = Graph.readDirectedGraph(in);
+        dj = new Dijkstra(g);
+        System.out.println("Shortest Path from 1 to 2:");
+        if (dj.dijkstra(g.getVertex(1), g.getVertex(2), shortestPath))
+            System.out.println(shortestPath);
+        System.out.println();
+    }
 
 }
