@@ -1,5 +1,5 @@
 /*
- * <h1>Fall 2017 Short Project 6</h1>
+ * <h1>Fall 2017 Short Project 8</h1>
  * <p>
  * Helper Class BinaryHeap implementation
  *

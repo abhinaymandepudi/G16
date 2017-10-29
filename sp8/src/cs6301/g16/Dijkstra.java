@@ -1,3 +1,14 @@
+/**
+ * <h1>Fall 2017 Short Project 8 - 3</h1>
+ * <p>
+ * Implement Dijkstra Shortest path algorithm with Indexed Heap.
+ * <p>
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-25
+ */
+
 package cs6301.g16;
 
 import java.util.Collections;
@@ -144,6 +155,7 @@ public class Dijkstra extends GraphAlgorithm<Dijkstra.DJVertex> {
 
     public static void main(String[] args) throws Exception {
 
+        System.out.println("Graph: 5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4");
         Scanner in = new Scanner("5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4");
         Graph g = Graph.readDirectedGraph(in);
         List<Edge> shortestPath = new LinkedList<>();
@@ -165,6 +177,7 @@ public class Dijkstra extends GraphAlgorithm<Dijkstra.DJVertex> {
         System.out.println();
 
         System.out.println("Change to graph with negative weight edge\n");
+        System.out.println("Graph: 3 3	1 2 1	2 3 -1	3 1 1");
 
         in = new Scanner("3 3	1 2 1	2 3 -1	3 1 1");
         g = Graph.readDirectedGraph(in);

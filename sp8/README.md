@@ -15,33 +15,117 @@ Deliverable structure is as follow:
 
     cs6301
     └── g16
+        ├── BellmanFord.java            # Bellman Ford algorithm for problem 4.
+        ├── BinaryHeap.java             # Binary Heap for implementing Indexed heap.
         ├── Combination.java            # Basic combination implementation.
+        ├── DAGShortestPath.java        # BFS implementation and Dag shortest path for problem 1 & 2.
+        ├── DFS.java                    # DFS class from previous homework.
+        ├── Dijkstra.java               # Dijkstra algorithm for problem 3.
+        ├── GraphAlgorithm.java         # Sample code, put here for easily extends.
         ├── Heap.java                   # Heap's algorithm implementation.
+        ├── Index.java                  # Index interface for IndexedHeap.
+        ├── IndexedHeap.java            # IndexedHeap for Dijkstra algorithm.
         ├── KnuthL.java                 # Knuth L algorithm implementation.
         ├── P7Driver.java               # Driver program for problem 7.
         ├── P8Driver.java               # Driver program for problem 8.
         ├── P9Driver.java               # Driver program for problem 9.
-        └── Permutation.java            # Basic permutation implementation.
+        ├── Permutation.java            # Basic permutation implementation.
+        └── TestDAG.java                # TestDAG from previous project.
 
 Compile
 -------
 
 To compile, run the following commands:
-
+    
+    # BellmanFord
+    javac cs6301/g16/BellmanFord.java
+        
+    # Dijkstra
+    javac cs6301/g16/Dijkstra.java
+        
+    # DAGShortestPath
+    javac cs6301/g16/DAGShortestPath.java
+        
     # P7
     javac cs6301/g16/P7Driver.java
-    
+        
     # P8
     javac cs6301/g16/P8Driver.java
-
+        
     # P9
     javac cs6301/g16/P9Driver.java
 
 
-
-
 Test Running
 ------------
+
+-   BellmanFord
+
+    Run BellmanFord Algorithm on certain tests specified in main function: 
+
+        > java cs6301.g16.BellmanFord
+        Graph: 5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4
+        Shortest Path from 1 to 5:
+        [(1,2), (2,3), (3,5)]
+        
+        Shortest Path from 2 to 5:
+        [(2,3), (3,5)]
+        
+        Shortest Path from 2 to 1:
+        No path from 2 to 1!
+        
+        Change to graph with negative cycle
+        
+        Graph: 3 3	1 2 -1	2 3 -1	3 1 -1
+        Shortest Path from 1 to 2:
+        Negtive cycle detected!
+        
+-   DAGShortestPath
+
+    Run DAG shortest path algorithm on given graph and start point: 
+
+        > java cs6301.g16.DAGShortestpath
+        6 10
+        1 2 11
+        2 3 8
+        4 3 -15
+        5 4 10
+        5 2 4
+        5 1 8
+        5 6 7
+        6 4 6
+        2 6 -5
+        6 3 2
+        Enter the name of start point:
+        1
+        BFS order: 
+        1 2 3 6 4 
+        Shortest path start from 1
+        1-->2
+        4-->3
+        6-->4
+        2-->6
+
+-   Dijkstra
+
+    Run Dijkstra shortest path algorithm against test cases specified in main function: 
+
+        > java cs6301.g16.DAGShortestpath
+        Graph: 5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4
+        Shortest Path from 1 to 5:
+        [(1,2), (2,3), (3,5)]
+        
+        Shortest Path from 2 to 5:
+        [(2,3), (3,5)]
+        
+        Shortest Path from 2 to 1:
+        No path from 2 to 1!
+        
+        Change to graph with negative weight edge
+        
+        Graph: 3 3	1 2 1	2 3 -1	3 1 1
+        Shortest Path from 1 to 2:
+        Negative weight edge detected!
 
 -   P7
 

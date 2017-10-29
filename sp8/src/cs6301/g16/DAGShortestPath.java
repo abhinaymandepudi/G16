@@ -1,10 +1,21 @@
+/**
+ * <h1>Fall 2017 Short Project 8 - 1\2</h1>
+ * <p>
+ * Implement BFS and DAG Shortest path algorithm
+ * <p>
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-25
+ */
+
 package cs6301.g16;
 
 import cs6301.g00.Graph;
 
 import java.util.*;
 
-public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
+public class DAGShortestPath extends GraphAlgorithm<DAGShortestPath.BFSVertex> {
     private static final int INFINITY = Integer.MAX_VALUE;
 
     // Class to store information about a vertex in this algorithm
@@ -22,7 +33,7 @@ public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
 
     private Graph.Vertex src;
 
-    public ShortestPath(Graph g, Graph.Vertex s) {
+    public DAGShortestPath(Graph g, Graph.Vertex s) {
         super(g);
         this.src = s;
         node = new BFSVertex[g.size()];
@@ -89,7 +100,7 @@ public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
      * Q2: Implement DAG shortest paths:
      * public void dagShortestPaths() { ... }
      * Implement this algorithm without duplicating the DFS code for
-     * finding topological order into the ShortestPath class.
+     * finding topological order into the DAGShortestPath class.
      * Reuse your DFS code from previous projects.
      */
 
@@ -142,7 +153,7 @@ public class ShortestPath extends GraphAlgorithm<ShortestPath.BFSVertex> {
         Graph g = Graph.readDirectedGraph(in);
         System.out.println("Enter the name of start point:");
         int startPoint = in.nextInt();
-        ShortestPath sp = new ShortestPath(g, g.getVertex(startPoint));
+        DAGShortestPath sp = new DAGShortestPath(g, g.getVertex(startPoint));
         //Test Q1
         sp.bfs();
         //Test Q2
