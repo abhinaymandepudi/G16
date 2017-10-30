@@ -13,7 +13,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
     static class Entry<T> {
         T element;
-        Entry[] next;
+        Entry<T>[] next;
         int level;
 
         Entry(T ele, int lev) {
@@ -25,7 +25,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
     private Entry<T> head;
     private Entry<T> tail;
-    private Entry[] prev;
+    private Entry<T>[] prev;
     private int size;
 
 
@@ -41,11 +41,10 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     //helper function
-    private Entry[] find(T x) {
-        Entry p = head;
+    private Entry<T>[] find(T x) {
+        Entry<T> p = head;
         for (int i = maxLevel - 1; i >= 0; i--) {
-            while (p.next[i].element != null &&
-                    x.compareTo((T) p.next[i].element) > 0) {
+            while (p.next[i].element != null && x.compareTo(p.next[i].element) > 0) {
                 p = p.next[i];
             }
             prev[i] = p;
@@ -75,7 +74,7 @@ public class SkipList<T extends Comparable<? super T>> {
             prev[0].next[0].element = x;
         } else {
             int lev = chooseLevel(maxLevel);
-            Entry n = new Entry<>(x, lev);
+            Entry<T> n = new Entry<>(x, lev);
             for (int i = 0; i <= lev; i++) {
                 n.next[i] = prev[i].next[i];
                 prev[i].next[i] = n;
@@ -135,7 +134,7 @@ public class SkipList<T extends Comparable<? super T>> {
     // Remove x from list.  Removed element is returned. Return null if x not in list
     public T remove(T x) {
         prev = find(x);
-        Entry n = prev[0].next[0];
+        Entry<T> n = prev[0].next[0];
         if (n.element != x)
             return null;
         else {
@@ -148,7 +147,7 @@ public class SkipList<T extends Comparable<? super T>> {
             }
         }
         size--;
-        return (T) n.element;
+        return n.element;
     }
 
     // Return the number of elements in the list
@@ -161,10 +160,10 @@ public class SkipList<T extends Comparable<? super T>> {
         System.out.println("----------START----------");
         while (node != null && node.element != null) {
             for (int i = 0; i < node.level + 1; i++) {
-                System.out.print(node.element);
+                System.out.print(node.element + "\t");
             }
             for (int j = node.level + 1; j < maxLevel; j++) {
-                System.out.print("-");
+                System.out.print("|\t");
             }
             System.out.println();
             node = node.next[0];
@@ -173,7 +172,7 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     public static void main(String[] args) {
-        SkipList skipList = new SkipList();
+        SkipList<Integer> skipList = new SkipList<>();
         skipList.add(3);
         skipList.add(6);
         skipList.add(5);
@@ -185,6 +184,12 @@ public class SkipList<T extends Comparable<? super T>> {
         skipList.remove(3);
         skipList.remove(5);
         skipList.printList();//remove没成功！！
+
+        SkipList<Integer> sk2 = new SkipList<>();
+        for (int i = 0; i < 100; i++)
+            sk2.add(i);
+
+        sk2.printList();
     }
 }
 
