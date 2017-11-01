@@ -171,9 +171,37 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     // Iterate through the elements of list in sorted order
+
+    static class SkipListIterator<T extends Comparable<? super T>> implements Iterator<T> {
+        Entry<T> curEntry;
+        Entry<T> tailEntry;
+
+        SkipListIterator(SkipList<T> sk){
+            curEntry = sk.head.next[0];
+            tailEntry = sk.tail;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return curEntry != tailEntry;
+        }
+
+        @Override
+        public T next() {
+            T tmp = curEntry.element;
+            curEntry = curEntry.next[0];
+            return tmp;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
     public Iterator<T> iterator() {
-        return null;
-    }// TODO: 2017/10/30  
+        return new SkipListIterator<>(this);
+    }
 
     // Return last element of list
     public T last() {
@@ -258,7 +286,7 @@ public class SkipList<T extends Comparable<? super T>> {
     public static void main(String[] args) {
 
         SkipList<Integer> sk2 = new SkipList<>();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 100; i++)
             sk2.add(i);
         sk2.add(3);
         sk2.add(5);
@@ -270,6 +298,15 @@ public class SkipList<T extends Comparable<? super T>> {
         sk2.printList();
         for(int i=0;i<sk2.size;i++)
         System.out.println("Test get("+i+"): "+sk2.get(i));
+
+        // Test Iterator
+        System.out.println("\nTest Iterator:");
+        Iterator<Integer> it = sk2.iterator();
+        while (it.hasNext()){
+            System.out.print(it.next());
+            if(it.hasNext())
+                System.out.print(", ");
+        }
     }
 }
 
