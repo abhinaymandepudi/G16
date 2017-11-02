@@ -10,25 +10,25 @@ import java.util.Random;
 
 public class SkipList<T extends Comparable<? super T>> {
 
+    static private int maxLevel = 32;
+
     static class Entry<T> {
         T element;
-        Entry<T>[] next;
         int level;
+        Entry<T>[] next;
         int[] span;
 
         Entry(T ele, int lev) {
             element = ele;
             level = lev;
-            next = new Entry[lev + 1];
-            span = new int[lev + 1];
+            next = new Entry[lev];
+            span = new int[lev];
         }
     }
 
     private Entry<T> head;
     private Entry<T> tail;
     private int size;
-    private int maxLevel = 32;
-
 
     // Constructor
     public SkipList() {
@@ -55,8 +55,8 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     private int chooseLevel(int lev) {
-        int i = 0;
-        while (i < lev) {
+        int i = 1;
+        while (i < lev) { // largest level is lev
             Random random = new Random();
             boolean b = random.nextBoolean();
             if (b) {
@@ -79,7 +79,7 @@ public class SkipList<T extends Comparable<? super T>> {
             Entry<T> n = new Entry<>(x, lev);
             prev[0].span[0] = 1;  //lowest level condition
             n.span[0] = 1;
-            for (int i = 0; i <= lev; i++) {
+            for (int i = 0; i < lev; i++) {
                 n.next[i] = prev[i].next[i];
                 prev[i].next[i] = n;
                 if (i >= 1) {
@@ -90,7 +90,7 @@ public class SkipList<T extends Comparable<? super T>> {
             }
 
             //update the higher level span cross the new node
-            for (int i = lev + 1; i < prev.length; i++) {
+            for (int i = lev; i < prev.length; i++) {
                 prev[i].span[i]++;
             }
             size++;
@@ -139,16 +139,12 @@ public class SkipList<T extends Comparable<? super T>> {
 
     // Return element at index n of list.  First element is at index 0.
     public T get(int n) {
-        int maxSpan = head.span[maxLevel - 1];
+        if (n >= size || n<0)
+            throw new IndexOutOfBoundsException();
+
         int currSpan = 0;
         Entry<T> node = head;
-        while (node.next[maxLevel - 1] != tail) {
-            node = node.next[maxLevel - 1];
-            maxSpan += node.span[maxLevel - 1];
-        }
-        if (n > maxSpan - 2)
-            return null;
-        node = head;//reset
+
         for (int i = maxLevel - 1; i >= 0; i--) {
             while(currSpan + node.span[i] - 1 < n){
                 currSpan += node.span[i];
@@ -212,7 +208,7 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     // Reorganize the elements of the list into a perfect skip list
-    public void rebuild() {// TODO: 2017/10/30
+    public void rebuild() {
 
     }
 
@@ -252,10 +248,10 @@ public class SkipList<T extends Comparable<? super T>> {
 
         System.out.println("----------START----------");
         while (node != null && node.element != null) {
-            for (int i = 0; i < node.level + 1; i++) {
+            for (int i = 0; i < node.level; i++) {
                 System.out.print(node.element + "\t");
             }
-            for (int j = node.level + 1; j < maxLevel; j++) {
+            for (int j = node.level; j < maxLevel; j++) {
                 System.out.print("|\t");
             }
             System.out.println();
@@ -273,7 +269,7 @@ public class SkipList<T extends Comparable<? super T>> {
         System.out.println();
         while (node != null && node.element != null) {
             System.out.print(node.element+": ");
-            for (int i = 0; i < node.level + 1; i++) {
+            for (int i = 0; i < node.level; i++) {
                 System.out.print(node.span[i] + " ");
             }
             System.out.println();
