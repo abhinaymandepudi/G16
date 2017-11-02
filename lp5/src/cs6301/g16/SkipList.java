@@ -9,7 +9,6 @@ import java.util.Random;
 // Skeleton for skip list implementation.
 
 public class SkipList<T extends Comparable<? super T>> {
-    private static int maxLevel = 32;
 
     static class Entry<T> {
         T element;
@@ -27,8 +26,8 @@ public class SkipList<T extends Comparable<? super T>> {
 
     private Entry<T> head;
     private Entry<T> tail;
-    private Entry<T>[] prev;
     private int size;
+    private int maxLevel = 32;
 
 
     // Constructor
@@ -39,13 +38,13 @@ public class SkipList<T extends Comparable<? super T>> {
             head.next[i] = tail;
             head.span[i] = 1;
         }
-        prev = new Entry[maxLevel];
         size = 0;
     }
 
     //helper function
     private Entry<T>[] find(T x) {
         Entry<T> p = head;
+        Entry<T>[] prev = new Entry[maxLevel];
         for (int i = maxLevel - 1; i >= 0; i--) {
             while (p.next[i].element != null && x.compareTo(p.next[i].element) > 0) {
                 p = p.next[i];
@@ -71,8 +70,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
     // Add x to list. If x already exists, replace it. Returns true if new node is added to list
     public boolean add(T x) {
-        prev = new Entry[maxLevel];
-        prev = find(x);
+        Entry<T>[] prev = find(x);
         int newPrevSpan;
         if (prev[0].next[0] != null && prev[0].next[0].element == x) {
             prev[0].next[0].element = x;
@@ -120,7 +118,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
     // Does list contain x?
     public boolean contains(T x) {
-        prev = find(x);
+        Entry<T>[] prev = find(x);
         return prev[0].next[0].element == x;
     }
 
@@ -214,13 +212,13 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     // Reorganize the elements of the list into a perfect skip list
-    public void rebuild() {// TODO: 2017/10/30  
+    public void rebuild() {// TODO: 2017/10/30
 
     }
 
     // Remove x from list.  Removed element is returned. Return null if x not in list
     public T remove(T x) {
-        prev = find(x);
+        Entry<T>[] prev = find(x);
         Entry<T> n = prev[0].next[0];
         if (n.element != x)   // no such element in skiplist
             return null;
