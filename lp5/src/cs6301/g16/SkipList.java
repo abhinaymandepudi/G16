@@ -72,7 +72,7 @@ public class SkipList<T extends Comparable<? super T>> {
     public boolean add(T x) {
         Entry<T>[] prev = find(x);
         int newPrevSpan;
-        if (prev[0].next[0] != null && prev[0].next[0].element == x) {
+        if (prev[0].next[0].element == x) {
             prev[0].next[0].element = x;
         } else {
             int lev = chooseLevel(maxLevel);
@@ -104,7 +104,7 @@ public class SkipList<T extends Comparable<? super T>> {
             return 0;
         Entry<T> node = a;
         int dis = 0;
-        while (node != null && node != b) {
+        while (node != tail && node != b) {
             node = node.next[0];
             dis++;
         }
