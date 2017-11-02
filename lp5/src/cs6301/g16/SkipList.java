@@ -171,6 +171,60 @@ public class SkipList<T extends Comparable<? super T>> {
         return size == 0;
     }
 
+    // Helper
+    private int getNewLevel(int idx) {
+        int position = idx+1;
+        int i;
+        for (i = 32; i >= 0; i--) {
+            if (position % (int) Math.pow(2, i) == 0)
+                break;
+        }
+        return i+1;
+    }
+
+    public void rebuild() {
+        if (size == 0)
+            return;
+
+        // preparation
+        int newMaxLevel = (int) (Math.log(size) / Math.log(2))+1;
+        Entry<T>[] prev = new Entry[newMaxLevel];
+        for (int i = 0; i < prev.length; i++)
+            prev[i] = head;
+
+        Entry<T> curEntry = head.next[0];
+        Entry<T> nextEntry = curEntry.next[0];
+
+        // reset header
+        for (int l = 0; l < maxLevel; l++) {
+            head.span[l] = 1;
+            head.next[l] = tail;
+        }
+
+        for (int i = 0; i < size; i++) {
+            int newLevel = getNewLevel(i);
+            curEntry.next = new Entry[newLevel];
+            curEntry.span = new int[newLevel];
+            curEntry.level = newLevel;
+
+            // connect prev of level l to current node and set new level l prev to node
+            for (int l = 0; l < newLevel; l++) {
+                // set all next of current entry to tail
+                curEntry.next[l] = tail;
+                curEntry.span[l] = (int)Math.pow(2,l);
+                prev[l].next[l] = curEntry;
+                prev[l] = curEntry;
+            }
+
+            // move entry pointers
+            curEntry = nextEntry;
+            nextEntry = nextEntry.next[0];
+        }
+        // now nextEntry is tail, curEntry is the last entry
+        for(int i = 0; i<curEntry.level;i++)
+            curEntry.span[i] = 1;
+    }
+
     // Iterate through the elements of list in sorted order
 
     static class SkipListIterator<T extends Comparable<? super T>> implements Iterator<T> {
@@ -306,6 +360,10 @@ public class SkipList<T extends Comparable<? super T>> {
             if (it.hasNext())
                 System.out.print(", ");
         }
+        System.out.println();
+
+        sk2.rebuild();
+        sk2.printList();
     }
 }
 
