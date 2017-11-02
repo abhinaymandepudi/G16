@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class SkipList<T extends Comparable<? super T>> {
 
-    static private int maxLevel = 32;
+    private int maxLevel = 32;
 
     static class Entry<T> {
         T element;
@@ -32,7 +32,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
     // Constructor
     public SkipList() {
-        head = new Entry<>(null, maxLevel);   //positive negative infinity?
+        head = new Entry<>(null, maxLevel);
         tail = new Entry<>(null, maxLevel);
         for (int i = 0; i < maxLevel; i++) {
             head.next[i] = tail;
@@ -72,8 +72,9 @@ public class SkipList<T extends Comparable<? super T>> {
     public boolean add(T x) {
         Entry<T>[] prev = find(x);
         int newPrevSpan;
-        if (prev[0].next[0].element == x) {
+        if (prev[0].next[0].element != null && prev[0].next[0].element.compareTo(x) == 0) {
             prev[0].next[0].element = x;
+            return false;
         } else {
             int lev = chooseLevel(maxLevel);
             Entry<T> n = new Entry<>(x, lev);
@@ -104,16 +105,22 @@ public class SkipList<T extends Comparable<? super T>> {
             return 0;
         Entry<T> node = a;
         int dis = 0;
-        while (node != tail && node != b) {
-            node = node.next[0];
-            dis++;
+        while (node != b) {
+            for (int i = node.level-1; i >= 0; i--) {
+                if (node.next[i] != tail && node.next[i].element.compareTo(b.element) <= 0) {
+                    dis += node.span[i];
+                    node = node.next[i];
+                    break;
+                }
+            }
         }
+
         return dis;
     }
 
     // Find smallest element that is greater or equal to x
     public T ceiling(T x) {
-            return find(x)[0].next[0].element;
+        return find(x)[0].next[0].element;
     }
 
     // Does list contain x?
@@ -139,18 +146,18 @@ public class SkipList<T extends Comparable<? super T>> {
 
     // Return element at index n of list.  First element is at index 0.
     public T get(int n) {
-        if (n >= size || n<0)
+        if (n >= size || n < 0)
             throw new IndexOutOfBoundsException();
 
         int currSpan = 0;
         Entry<T> node = head;
 
         for (int i = maxLevel - 1; i >= 0; i--) {
-            while(currSpan + node.span[i] - 1 < n){
+            while (currSpan + node.span[i] - 1 < n) {
                 currSpan += node.span[i];
                 node = node.next[i];
             }
-            if (currSpan + node.span[i] - 1 == n){
+            if (currSpan + node.span[i] - 1 == n) {
                 node = node.next[i];
                 break;
             }
@@ -170,7 +177,7 @@ public class SkipList<T extends Comparable<? super T>> {
         Entry<T> curEntry;
         Entry<T> tailEntry;
 
-        SkipListIterator(SkipList<T> sk){
+        SkipListIterator(SkipList<T> sk) {
             curEntry = sk.head.next[0];
             tailEntry = sk.tail;
         }
@@ -201,16 +208,14 @@ public class SkipList<T extends Comparable<? super T>> {
     public T last() {
         Entry<T> node = head;
         for (int i = maxLevel - 1; i >= 0; i--) {
-            while (node.next[i] != null)
+            while (node.next[i].element != null)
                 node = node.next[i];
         }
         return node.element;
     }
 
     // Reorganize the elements of the list into a perfect skip list
-    public void rebuild() {
 
-    }
 
     // Remove x from list.  Removed element is returned. Return null if x not in list
     public T remove(T x) {
@@ -268,7 +273,7 @@ public class SkipList<T extends Comparable<? super T>> {
         Entry node = head.next[0];
         System.out.println();
         while (node != null && node.element != null) {
-            System.out.print(node.element+": ");
+            System.out.print(node.element + ": ");
             for (int i = 0; i < node.level; i++) {
                 System.out.print(node.span[i] + " ");
             }
@@ -290,15 +295,15 @@ public class SkipList<T extends Comparable<? super T>> {
         sk2.remove(3);
         sk2.printSpan();
         sk2.printList();
-        for(int i=0;i<sk2.size;i++)
-        System.out.println("Test get("+i+"): "+sk2.get(i));
+        for (int i = 0; i < sk2.size; i++)
+            System.out.println("Test get(" + i + "): " + sk2.get(i));
 
         // Test Iterator
         System.out.println("\nTest Iterator:");
         Iterator<Integer> it = sk2.iterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             System.out.print(it.next());
-            if(it.hasNext())
+            if (it.hasNext())
                 System.out.print(", ");
         }
     }
