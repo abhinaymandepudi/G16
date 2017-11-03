@@ -1,7 +1,7 @@
 /**
  * <h1>Fall 2017 Long Project 5</h1>
  * <p>
- * Helper class extends GraphAlgorithm to provide basic but extensible functionality of DFS.
+ * SkipList implementation.
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
  * @version 1.0
@@ -23,6 +23,7 @@ public class SkipList<T extends Comparable<? super T>> {
         Entry<T>[] next;
         int[] span;
 
+        @SuppressWarnings("unchecked")
         Entry(T ele, int lev) {
             element = ele;
             level = lev;
@@ -47,6 +48,7 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     //helper function
+    @SuppressWarnings("unchecked")
     private Entry<T>[] find(T x) {
         Entry<T> p = head;
         Entry<T>[] prev = new Entry[maxLevel];
@@ -231,6 +233,7 @@ public class SkipList<T extends Comparable<? super T>> {
     }
 
     // Reorganize the elements of the list into a perfect skip list
+    @SuppressWarnings("unchecked")
     public void rebuild() {
         if (size == 0)
             return;
