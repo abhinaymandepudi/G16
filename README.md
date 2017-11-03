@@ -16,7 +16,7 @@ Long Project
 
 4.  Counting and enumeration problems in graphs
 
-5.  [SkipList](.lp5)
+5.  [SkipList](./lp5)
 
 Short Project
 -------------
