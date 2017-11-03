@@ -1,16 +1,21 @@
+/**
+ * <h1>Fall 2017 Long Project 5</h1>
+ * <p>
+ * Helper class extends GraphAlgorithm to provide basic but extensible functionality of DFS.
+ *
+ * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
+ * @version 1.0
+ * @since 2017-10-26
+ */
 
-// Change this to your group number
 package cs6301.g16;
-
 
 import java.util.Iterator;
 import java.util.Random;
 
-// Skeleton for skip list implementation.
-
 public class SkipList<T extends Comparable<? super T>> {
 
-    private int maxLevel = 32;
+    private static int maxLevel = 32;
 
     static class Entry<T> {
         T element;
@@ -218,7 +223,7 @@ public class SkipList<T extends Comparable<? super T>> {
     private int getNewLevel(int idx) {
         int position = idx + 1;
         int i;
-        for (i = 32; i >= 0; i--) {
+        for (i = maxLevel - 1; i >= 0; i--) {
             if (position % (int) Math.pow(2, i) == 0)
                 break;
         }
@@ -241,7 +246,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
         // reset header
         for (int l = 0; l < maxLevel; l++) {
-            head.span[l] = size+1;
+            head.span[l] = size + 1;
             head.next[l] = tail;
         }
 
@@ -251,7 +256,7 @@ public class SkipList<T extends Comparable<? super T>> {
             curEntry.span = new int[newLevel];
             curEntry.level = newLevel;
 
-            head.span[newLevel-1] = (int) Math.pow(2, newLevel-1);
+            head.span[newLevel - 1] = (int) Math.pow(2, newLevel - 1);
 
             // connect prev of level l to current node and set new level l prev to node
             for (int l = 0; l < newLevel; l++) {
@@ -279,8 +284,8 @@ public class SkipList<T extends Comparable<? super T>> {
             return null;
         else {
 
-            for (int i = 0; i <= maxLevel; i++) {
-                if (prev[i].next[i].element == x) {
+            for (int i = 0; i < maxLevel; i++) {
+                if (prev[i].next[i] != tail && prev[i].next[i].element.compareTo(x) == 0) {
                     prev[i].next[i] = n.next[i];
                     prev[i].span[i] = prev[i].span[i] + n.span[i] - 1;   //Update previous span
                 } else {
@@ -341,12 +346,16 @@ public class SkipList<T extends Comparable<? super T>> {
         SkipList<Integer> sk2 = new SkipList<>();
         for (int i = 0; i < 100; i++)
             sk2.add(i);
+        sk2.remove(0);
         sk2.add(3);
         sk2.add(5);
         sk2.add(7);
         sk2.add(1);
         sk2.add(9);
         sk2.remove(3);
+        sk2.remove(3);
+        sk2.remove(99);
+        sk2.add(3);
         sk2.printSpan();
         sk2.printList();
         for (int i = 0; i < sk2.size; i++)
@@ -378,6 +387,33 @@ public class SkipList<T extends Comparable<? super T>> {
                 System.out.print(", ");
         }
         System.out.println();
+
+//        System.out.println("\n\nTest Large data set ==================\n\n");
+//        for(int i = (int)Math.pow(2,25); i>=0; i--){
+//            sk2.add(i);
+//        }
+//        System.out.println("size:"+sk2.size());
+//        System.out.println("first:"+sk2.first());
+//        System.out.println("last:"+sk2.last());
+//        for (int i = 0; i < sk2.size; i++) {
+//            int value = sk2.get(i);
+//            if(value!=i) {
+//                System.out.println("Error for get");
+//                return;
+//            }
+//        }
+//        System.out.println("rebuild");
+//        sk2.rebuild();
+//        System.out.println("rebuild done");
+//        System.out.println("test get");
+//        for (int i = 0; i < sk2.size; i++) {
+//            int value = sk2.get(i);
+//            if(value!=i) {
+//                System.out.println("Error for get");
+//                return;
+//            }
+//        }
+//        System.out.println("test get done");
     }
 }
 
