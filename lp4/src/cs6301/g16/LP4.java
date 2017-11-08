@@ -8,6 +8,8 @@ package cs6301.g16;
 import cs6301.g16.Graph.Vertex;
 import cs6301.g16.Graph.Edge;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
 
@@ -24,7 +26,10 @@ public class LP4 {
 
     // Part a. Return number of topological orders of g
     public long countTopologicalOrders() {
-        // To do
+        TopologicalPermutation alg = new TopologicalPermutation(g);
+        List<List<Vertex>> permutations = new LinkedList<>();
+        if(alg.findPermutation(permutations,new ArrayList<>()))
+            return permutations.size();
         return 0;
     }
 
@@ -32,7 +37,17 @@ public class LP4 {
     // Part b. Print all topological orders of g, one per line, and 
     //	return number of topological orders of g
     public long enumerateTopologicalOrders() {
-        // To do
+        TopologicalPermutation alg = new TopologicalPermutation(g);
+        List<List<Vertex>> permutations = new LinkedList<>();
+        if(alg.findPermutation(permutations,new ArrayList<>())) {
+            for(List<Vertex> topOrder : permutations){
+                for(Vertex v : topOrder){
+                    System.out.print(v+" ");
+                }
+                System.out.println();
+            }
+            return permutations.size();
+        }
         return 0;
     }
 
