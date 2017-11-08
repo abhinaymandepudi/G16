@@ -4,6 +4,8 @@
 
 package cs6301.g16;
 
+import cs6301.g00.Timer;
+
 public class LP4a {
     static int VERBOSE = 0;
 
