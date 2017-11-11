@@ -1,7 +1,7 @@
 /**
- * <h1>Fall 2017 Short Project 8 - 4</h1>
+ * <h1>Fall 2017 Long Project 4</h1>
  * <p>
- * Implement BellmanFord Shortest Path
+ * Extend BellmanFord Shortest Path to print all shortest path between 2 vertices
  * <p>
  *
  * @author Binhan Wang (bxw161330) / Hanlin He (hxh160630) / Zheng Gao (zxg170430)
@@ -20,7 +20,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
 
     static class BFVertex {
         int dis, count;
-        Edge pe; // edge connect to parent
+        List<Edge> pe; // edge connect to parent
         boolean seen;
 
         private Vertex v;
@@ -34,7 +34,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         void reset() {
             dis = Integer.MAX_VALUE;
             count = 0;
-            pe = null;
+            pe = new LinkedList<>();
             seen = false;
         }
 
@@ -42,7 +42,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
             if (pe == null)
                 return null;
             else
-                return pe.otherEnd(v);
+                return pe.get(0).otherEnd(v);
         }
     }
 
@@ -85,11 +85,17 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
                 BFVertex bv = getVertex(v);
                 if (bv.dis > bu.dis + e.weight) {
                     bv.dis = bu.dis + e.weight;
-                    bv.pe = e;
+
+                    bv.pe.clear();
+                    bv.pe.add(e);
+
                     if (!bv.seen) {
                         q.add(v);
                         bv.seen = true;
                     }
+                }
+                else if (bv.dis == bu.dis + e.weight){
+                    bv.pe.add(e);
                 }
             }
         }
@@ -97,8 +103,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         start = s;
     }
 
-    public boolean bellmanFord(Vertex s, Vertex u, List<Edge> path) {
-        path.clear();
+    public boolean bellmanFord(Vertex s, Vertex u) {
 
         if (start != null && !start.equals(s)) {
             start = null;
@@ -112,55 +117,56 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
             System.out.printf("Negative cycle detected!\n");
             return false;
         } else {
-            Vertex v = u;
-            while (!v.equals(s)) {
-                BFVertex bv = getVertex(v);
-                if (bv.pe == null) {
-                    System.out.printf("No path from %s to %s!\n", s, u);
-                    return false;
-                }
-                path.add(bv.pe);
-                v = bv.getParent();
-            }
-            Collections.reverse(path);
+            printAllShortestPaths(s, u, new StringBuilder());
             return true;
         }
 
     }
 
+    private void printAllShortestPaths(Vertex s,Vertex u, StringBuilder path){
+        path.append(u.toString());
+
+        if(u.getName()==s.getName()){
+            System.out.println(path.reverse().toString());
+        }
+        else{
+            BFVertex bu = getVertex(u);
+            if(bu.pe.isEmpty()){
+                System.out.println("No path");
+            }
+            else {
+                path.append(" ");
+                for(Edge e:bu.pe){
+                    Vertex p = e.otherEnd(u);
+                    printAllShortestPaths(s, p, new StringBuilder(path));
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
-        System.out.println("Graph: 5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4");
-        Scanner in = new Scanner("5 10	1 2 8	1 3 18	1 4 19	1 5 17	2 3 4	2 4 8	2 5 6	3 4 3	3 5 1	4 5 4");
+        System.out.println("Graph:\n    5 6 \n" +
+                "    1 2 2\n" +
+                "    1 3 3\n" +
+                "    2 4 5\n" +
+                "    3 4 4\n" +
+                "    4 5 1\n" +
+                "    5 1 -7\n" +
+                "    1 5\n");
+        Scanner in = new Scanner("5 6 \n" +
+                "    1 2 2\n" +
+                "    1 3 3\n" +
+                "    2 4 5\n" +
+                "    3 4 4\n" +
+                "    4 5 1\n" +
+                "    5 1 -7\n" +
+                "    1 5");
         Graph g = Graph.readDirectedGraph(in);
-        List<Edge> shortestPath = new LinkedList<>();
+        List<List<Edge>> shortestPath = new LinkedList<>();
         BellmanFord bf = new BellmanFord(g);
 
-        System.out.println("Shortest Path from 1 to 5:");
-        if (bf.bellmanFord(g.getVertex(1), g.getVertex(5), shortestPath))
-            System.out.println(shortestPath);
-        System.out.println();
-
-        System.out.println("Shortest Path from 2 to 5:");
-        if (bf.bellmanFord(g.getVertex(2), g.getVertex(5), shortestPath))
-            System.out.println(shortestPath);
-        System.out.println();
-
-        System.out.println("Shortest Path from 2 to 1:");
-        if (bf.bellmanFord(g.getVertex(2), g.getVertex(1), shortestPath))
-            System.out.println(shortestPath);
-        System.out.println();
-
-        System.out.println("Change to graph with negative cycle\n");
-        System.out.println("Graph: 3 3	1 2 -1	2 3 -1	3 1 -1");
-
-        in = new Scanner("3 3	1 2 -1	2 3 -1	3 1 -1");
-        g = Graph.readDirectedGraph(in);
-        bf = new BellmanFord(g);
-        System.out.println("Shortest Path from 1 to 2:");
-        if (bf.bellmanFord(g.getVertex(1), g.getVertex(2), shortestPath))
-            System.out.println(shortestPath);
-        System.out.println();
+        bf.bellmanFord(g.getVertex(1), g.getVertex(5));
     }
 
 }
