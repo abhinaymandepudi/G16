@@ -93,8 +93,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
                         q.add(v);
                         bv.seen = true;
                     }
-                }
-                else if (bv.dis == bu.dis + e.weight){
+                } else if (bv.dis == bu.dis + e.weight) {
                     bv.pe.add(e);
                 }
             }
@@ -103,7 +102,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         start = s;
     }
 
-    public boolean bellmanFord(Vertex s, Vertex u) {
+    public boolean bellmanFord(Vertex s, Vertex u, List<List<Vertex>> paths) {
 
         if (start != null && !start.equals(s)) {
             start = null;
@@ -114,34 +113,52 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         }
 
         if (negCycle) {
-            System.out.printf("Negative cycle detected!\n");
+            System.out.println("Non-positive cycle in graph.  Unable to solve problem");
             return false;
         } else {
-            printAllShortestPaths(s, u, new StringBuilder());
-            return true;
+            paths.clear();
+            boolean result = printAllShortestPaths(s, u, new LinkedList<>(), paths);
+            if (!result) {
+                System.out.println("Non-positive cycle in graph.  Unable to solve problem");
+            }
+            return result;
         }
-
     }
 
-    private void printAllShortestPaths(Vertex s,Vertex u, StringBuilder path){
-        path.append(u.toString());
+    public static void printAllShortestPath(List<List<Vertex>> paths) {
 
-        if(u.getName()==s.getName()){
-            System.out.println(path.reverse().toString());
+        for (List<Vertex> path : paths) {
+            for (Vertex v : path)
+                System.out.print(v + " ");
+            System.out.println();
         }
-        else{
+    }
+
+    private boolean printAllShortestPaths(Vertex s, Vertex u, List<Vertex> path, List<List<Vertex>> paths) {
+
+        path.add(0, u);
+        if (path.size() > g.size())
+            return false;
+
+        if (u.getName() == s.getName()) {
+            paths.add(new LinkedList<>(path));
+
+        } else {
             BFVertex bu = getVertex(u);
-            if(bu.pe.isEmpty()){
+            if (bu.pe.isEmpty()) {
                 System.out.println("No path");
-            }
-            else {
-                path.append(" ");
-                for(Edge e:bu.pe){
+                return false;
+            } else {
+                for (Edge e : bu.pe) {
                     Vertex p = e.otherEnd(u);
-                    printAllShortestPaths(s, p, new StringBuilder(path));
+                    if (!printAllShortestPaths(s, p, path, paths))
+                        return false;
                 }
             }
         }
+
+        path.remove(0);
+        return true;
     }
 
     public static void main(String[] args) {
@@ -166,7 +183,11 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         List<List<Edge>> shortestPath = new LinkedList<>();
         BellmanFord bf = new BellmanFord(g);
 
-        bf.bellmanFord(g.getVertex(1), g.getVertex(5));
+        List<List<Vertex>> paths = new LinkedList<>();
+
+        bf.bellmanFord(g.getVertex(1), g.getVertex(5), paths);
+
+        printAllShortestPath(paths);
     }
 
 }

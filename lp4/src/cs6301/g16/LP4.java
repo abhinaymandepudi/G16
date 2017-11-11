@@ -55,8 +55,10 @@ public class LP4 {
     // Part c. Return the number of shortest paths from s to t
     // 	Return -1 if the graph has a negative or zero cycle
     public long countShortestPaths(Vertex t) {
-        // To do
-        return 0;
+        BellmanFord bf = new BellmanFord(g);
+        List<List<Vertex>> paths = new LinkedList<>();
+        bf.bellmanFord(s,t,paths);
+        return paths.size();
     }
 
 
