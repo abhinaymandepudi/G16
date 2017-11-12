@@ -24,7 +24,10 @@ public class LP4e {
         if (VERBOSE > 0) {
             LP4.printGraph(g, null, g.getVertex(source), null, maxEdges);
         }
-        System.out.println(result + "\n" + t.end());
+        if (result == -1)
+            System.out.println("Infinity" + "\n" + t.end());
+        else
+            System.out.println(result + "\n" + t.end());
     }
 }
 

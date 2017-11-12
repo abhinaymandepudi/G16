@@ -28,7 +28,7 @@ public class LP4 {
     public long countTopologicalOrders() {
         TopologicalPermutation alg = new TopologicalPermutation(g);
         List<List<Vertex>> permutations = new LinkedList<>();
-        if(alg.findPermutation(permutations,new ArrayList<>()))
+        if (alg.findPermutation(permutations, new ArrayList<>()))
             return permutations.size();
         return 0;
     }
@@ -39,10 +39,10 @@ public class LP4 {
     public long enumerateTopologicalOrders() {
         TopologicalPermutation alg = new TopologicalPermutation(g);
         List<List<Vertex>> permutations = new LinkedList<>();
-        if(alg.findPermutation(permutations,new ArrayList<>())) {
-            for(List<Vertex> topOrder : permutations){
-                for(Vertex v : topOrder){
-                    System.out.print(v+" ");
+        if (alg.findPermutation(permutations, new ArrayList<>())) {
+            for (List<Vertex> topOrder : permutations) {
+                for (Vertex v : topOrder) {
+                    System.out.print(v + " ");
                 }
                 System.out.println();
             }
@@ -57,8 +57,11 @@ public class LP4 {
     public long countShortestPaths(Vertex t) {
         BellmanFord bf = new BellmanFord(g);
         List<List<Vertex>> paths = new LinkedList<>();
-        bf.bellmanFord(s,t,paths);
-        return paths.size();
+        boolean result = bf.computeShortestPaths(s, t, paths);
+        if (result)
+            return paths.size();
+        System.out.println("Non-positive cycle in graph or target vertex not reachable.  Unable to solve problem.");
+        return 0;
     }
 
 
@@ -66,15 +69,24 @@ public class LP4 {
     //	return number of shortest paths from s to t.
     //	Return -1 if the graph has a negative or zero cycle.
     public long enumerateShortestPaths(Vertex t) {
-        // To do
+        BellmanFord bf = new BellmanFord(g);
+        List<List<Vertex>> paths = new LinkedList<>();
+        boolean result = bf.computeShortestPaths(s, t, paths);
+        if (result) {
+            BellmanFord.printAllShortestPath(paths);
+            return paths.size();
+        }
+        System.out.println("Non-positive cycle in graph or target vertex not reachable.  Unable to solve problem.");
         return 0;
     }
 
 
     // Part e. Return weight of shortest path from s to t using at most k edges
     public int constrainedShortestPath(Vertex t, int k) {
-        // To do
-        return 0;
+        BellmanFord bf = new BellmanFord(g);
+        List<Vertex> path = new LinkedList<>();
+        int result = bf.computeShortestPaths(s, t, k, path);
+        return result;
     }
 
 

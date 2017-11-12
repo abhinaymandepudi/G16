@@ -19,7 +19,7 @@ import java.util.*;
 public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
 
     static class BFVertex {
-        int dis, count;
+        int dis, count, edgeCount;
         List<Edge> pe; // edge connect to parent
         boolean seen;
 
@@ -34,6 +34,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         void reset() {
             dis = Integer.MAX_VALUE;
             count = 0;
+            edgeCount = 0;
             pe = new LinkedList<>();
             seen = false;
         }
@@ -65,14 +66,14 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         }
         negCycle = false;
 
-        Queue<Vertex> q = new LinkedList<>();
+        Queue<Vertex> vertexQueue = new LinkedList<>();
         BFVertex bs = getVertex(s);
         bs.dis = 0;
         bs.seen = true;
-        q.add(s);
+        vertexQueue.offer(s);
 
-        while (!q.isEmpty()) {
-            Vertex u = q.remove();
+        while (!vertexQueue.isEmpty()) {
+            Vertex u = vertexQueue.poll();
             BFVertex bu = getVertex(u);
             bu.seen = false;
             bu.count += 1;
@@ -85,16 +86,20 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
                 BFVertex bv = getVertex(v);
                 if (bv.dis > bu.dis + e.weight) {
                     bv.dis = bu.dis + e.weight;
+                    bv.edgeCount = bu.edgeCount + 1;
 
                     bv.pe.clear();
                     bv.pe.add(e);
 
                     if (!bv.seen) {
-                        q.add(v);
+                        vertexQueue.offer(v);
                         bv.seen = true;
                     }
                 } else if (bv.dis == bu.dis + e.weight) {
                     bv.pe.add(e);
+
+                    if (bu.edgeCount + 1 < bv.edgeCount)
+                        bv.edgeCount = bu.edgeCount + 1;
                 }
             }
         }
@@ -102,39 +107,48 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         start = s;
     }
 
-    public boolean bellmanFord(Vertex s, Vertex u, List<List<Vertex>> paths) {
+    /**
+     * Compute all possible shortest paths from {@code s} to {@code u}, store in {@code paths} and
+     * return {@code true} if correct paths found and {@code false} if <ul> <li>non-positive circle
+     * found,</li> <li>{@code u} is not reachable from {@code v}.</li> </ul>
+     *
+     * @param s     Start vertex.
+     * @param u     Target vertex.
+     * @param paths List to store shortest paths from {@code s} to {@code u}.
+     *
+     * @return {@code true} if correct paths found and {@code false} otherwise.
+     */
+    public boolean computeShortestPaths(Vertex s, Vertex u, List<List<Vertex>> paths) {
 
         if (start != null && !start.equals(s)) {
             start = null;
         }
 
+        // Use Bellman Ford algorithm to compute all shortest paths from s.
         if (start == null) {
             runBF(s);
         }
 
-        if (negCycle) {
-            System.out.println("Non-positive cycle in graph.  Unable to solve problem");
+        if (negCycle)
             return false;
-        } else {
-            paths.clear();
-            boolean result = printAllShortestPaths(s, u, new LinkedList<>(), paths);
-            if (!result) {
-                System.out.println("Non-positive cycle in graph.  Unable to solve problem");
-            }
-            return result;
-        }
+
+        paths.clear();
+
+        // Enumerate all shortest paths from s to u.
+        return enumerateShortestPaths(s, u, new LinkedList<>(), paths);
     }
 
-    public static void printAllShortestPath(List<List<Vertex>> paths) {
-
-        for (List<Vertex> path : paths) {
-            for (Vertex v : path)
-                System.out.print(v + " ");
-            System.out.println();
-        }
-    }
-
-    private boolean printAllShortestPaths(Vertex s, Vertex u, List<Vertex> path, List<List<Vertex>> paths) {
+    /**
+     * Enumerate all shortest paths from {@code s} to {@code u}.
+     *
+     * @param s     Start vertex.
+     * @param u     Target vertex.
+     * @param path  Path to build recursively.
+     * @param paths List to store shortest paths from {@code s} to {@code u}.
+     *
+     * @return {@code true} if correct paths found and {@code false} otherwise.
+     */
+    private boolean enumerateShortestPaths(Vertex s, Vertex u, List<Vertex> path, List<List<Vertex>> paths) {
 
         path.add(0, u);
         if (path.size() > g.size())
@@ -146,12 +160,12 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         } else {
             BFVertex bu = getVertex(u);
             if (bu.pe.isEmpty()) {
-                System.out.println("No path");
+                // No path from s to u.
                 return false;
             } else {
                 for (Edge e : bu.pe) {
                     Vertex p = e.otherEnd(u);
-                    if (!printAllShortestPaths(s, p, path, paths))
+                    if (!enumerateShortestPaths(s, p, path, paths)) // Non-positive cycle
                         return false;
                 }
             }
@@ -159,6 +173,58 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
 
         path.remove(0);
         return true;
+    }
+
+    /**
+     * Compute shortest paths from {@code s} to {@code u} with specified maximum edge, store in
+     * {@code paths} and return {@code true} if correct paths found and {@code false} if
+     *
+     * @param s     Start vertex.
+     * @param u     Target vertex.
+     * @param k     Maximum number of vertices in shortest path.
+     * @param paths List of vertices to store shortest path from {@code s} to {@code u}.
+     *
+     * @return The length of shortest path with specific maximum number of edges.
+     */
+    public int computeShortestPaths(Vertex s, Vertex u, int k, List<Vertex> paths) {
+
+        if (start != null && !start.equals(s)) {
+            start = null;
+        }
+
+        // Use Bellman Ford algorithm to compute all shortest paths from s.
+        if (start == null) {
+            runBF(s);
+        }
+
+        if (negCycle)
+            return -1;
+
+        BFVertex bu = getVertex(u);
+        if (bu.edgeCount <= k)
+            return bu.dis;
+
+        int min = Integer.MAX_VALUE;
+        for (Edge e : u.revAdj) {
+            Vertex p = e.otherEnd(u);
+            BFVertex bp = getVertex(p);
+            if (bp.edgeCount < k) {
+                int ndist = bp.dis + e.weight;
+                if (min > ndist)
+                    min = ndist;
+            }
+        }
+
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+
+    public static void printAllShortestPath(List<List<Vertex>> paths) {
+
+        for (List<Vertex> path : paths) {
+            for (Vertex v : path)
+                System.out.print(v + " ");
+            System.out.println();
+        }
     }
 
     public static void main(String[] args) {
@@ -185,7 +251,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
 
         List<List<Vertex>> paths = new LinkedList<>();
 
-        bf.bellmanFord(g.getVertex(1), g.getVertex(5), paths);
+        bf.computeShortestPaths(g.getVertex(1), g.getVertex(5), paths);
 
         printAllShortestPath(paths);
     }
