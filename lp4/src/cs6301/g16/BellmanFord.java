@@ -38,13 +38,6 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
             pe = new LinkedList<>();
             seen = false;
         }
-
-        Vertex getParent() {
-            if (pe == null)
-                return null;
-            else
-                return pe.get(0).otherEnd(v);
-        }
     }
 
     private boolean negCycle;
