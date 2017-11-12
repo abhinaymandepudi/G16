@@ -146,6 +146,31 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         return enumerateShortestPaths(s, u, new LinkedList<>(), paths);
     }
 
+
+    public void computeShortestPaths(Vertex s, List<List<Vertex>> paths) {
+
+        if (start != null && !start.equals(s)) {
+            start = null;
+        }
+
+        // Use Bellman Ford algorithm to compute all shortest paths from s.
+        if (start == null) {
+            runBF(s);
+        }
+
+        if (negCycle)
+            return;
+
+        paths.clear();
+
+        // Enumerate all shortest paths from s to u.
+
+        for(Vertex u : g) {
+            if(u!=s)
+                enumerateShortestPaths(s, u, new LinkedList<>(), paths);
+        }
+    }
+
     /**
      * Enumerate all shortest paths from {@code s} to {@code u}.
      *

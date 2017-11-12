@@ -8,12 +8,36 @@ package cs6301.g16;
 import cs6301.g16.Graph.Vertex;
 import cs6301.g16.Graph.Edge;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 public class LP4 {
+
+    static class RewardPathPair implements Comparable<RewardPathPair>{
+
+        List<Vertex> path;
+        Integer reward;
+        Vertex lastVertex;
+
+        RewardPathPair(List<Vertex> path, HashMap<Vertex, Integer> rewardMap){
+            this.path = path;
+            reward = 0;
+            for(Vertex v: path){
+                reward += rewardMap.get(v);
+            }
+            lastVertex = ((LinkedList<Vertex>) path).getLast();
+        }
+
+        @Override
+        public int compareTo(RewardPathPair o) {
+            return reward.compareTo(o.reward);
+        }
+
+        @Override
+        public String toString() {
+            return reward+"-"+path;
+        }
+    }
+
     Graph g;
     Vertex s;
 
@@ -95,7 +119,47 @@ public class LP4 {
     // tour is empty list passed as a parameter, for output tour
     // Return total reward for tour
     public int reward(HashMap<Vertex, Integer> vertexRewardMap, List<Vertex> tour) {
-        // To do
+
+        BellmanFord bf = new BellmanFord(g);
+        List<List<Vertex>> paths = new LinkedList<>();
+        bf.computeShortestPaths(s, paths);
+
+        BellmanFord.printAllShortestPath(paths);
+
+        PriorityQueue<RewardPathPair> pq = new PriorityQueue<>(Comparator.reverseOrder());
+
+        for(List<Vertex> path: paths){
+            pq.add(new RewardPathPair(path,vertexRewardMap));
+        }
+
+        System.out.println(pq);
+
+        XGraph xg = new XGraph(g);
+
+        while(!pq.isEmpty()){
+            RewardPathPair pair = pq.poll();
+            System.out.println(pair);
+
+            BFS bfs = new BFS(xg,xg.getVertex(pair.lastVertex));
+
+            for(Vertex v: pair.path){
+                xg.getVertex(v).disable();
+            }
+
+            xg.getVertex(pair.lastVertex).disabled = false;
+            xg.getVertex(pair.path.get(0)).disabled = false;
+
+            bfs.bfs();
+
+            if(bfs.seen(s)){
+                return pair.reward;
+            }
+
+            for(Vertex v: pair.path){
+                xg.getVertex(v).disabled = false;
+            }
+        }
+
         return 0;
     }
 
