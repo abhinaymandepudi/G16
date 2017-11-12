@@ -52,38 +52,52 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
         start = null;
     }
 
+    /**
+     * Bellman-Ford algorithm to compute shortest path from {@code s}. After execution, the shortest
+     * distance of each vertex was computed and store in {@code v.dis}.
+     *
+     * @param s Source vertex.
+     */
     private void runBF(Vertex s) {
 
-        for (int i = 0; i < node.length; i++) {
-            node[i].reset();
+        // Initialize all vertices.
+        for (BFVertex n : node) {
+            n.reset();
         }
         negCycle = false;
 
         Queue<Vertex> vertexQueue = new LinkedList<>();
+
+        // Put source into queue.
         BFVertex bs = getVertex(s);
         bs.dis = 0;
         bs.seen = true;
         vertexQueue.offer(s);
 
-        while (!vertexQueue.isEmpty()) {
+        while (!vertexQueue.isEmpty()) { // still vertices and edges to be relaxed.
             Vertex u = vertexQueue.poll();
             BFVertex bu = getVertex(u);
-            bu.seen = false;
-            bu.count += 1;
+            bu.seen = false; // since removed from queue, switch flag.
+            bu.count += 1; // increase operation count on bu
+
+            // count >= |V| ==> negative circle.
             if (bu.count >= g.size()) {
                 negCycle = true;
                 break;
             }
+
             for (Edge e : u) {
                 Vertex v = e.otherEnd(u);
                 BFVertex bv = getVertex(v);
-                if (bv.dis > bu.dis + e.weight) {
-                    bv.dis = bu.dis + e.weight;
-                    bv.edgeCount = bu.edgeCount + 1;
+                if (bv.dis > bu.dis + e.weight) { // tense edges found
+                    bv.dis = bu.dis + e.weight; // relax edges
+                    bv.edgeCount = bu.edgeCount + 1; // update edge count to v
 
+                    // replace existing parent vertices list.
                     bv.pe.clear();
                     bv.pe.add(e);
 
+                    // add v to queue if v was not already in queue.
                     if (!bv.seen) {
                         vertexQueue.offer(v);
                         bv.seen = true;
@@ -91,6 +105,7 @@ public class BellmanFord extends GraphAlgorithm<BellmanFord.BFVertex> {
                 } else if (bv.dis == bu.dis + e.weight) {
                     bv.pe.add(e);
 
+                    // update minimum edge count to v
                     if (bu.edgeCount + 1 < bv.edgeCount)
                         bv.edgeCount = bu.edgeCount + 1;
                 }
