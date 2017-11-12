@@ -12,16 +12,16 @@ import java.util.*;
 
 public class LP4 {
 
-    static class RewardPathPair implements Comparable<RewardPathPair>{
+    static class RewardPathPair implements Comparable<RewardPathPair> {
 
         List<Vertex> path;
         Integer reward;
         Vertex lastVertex;
 
-        RewardPathPair(List<Vertex> path, HashMap<Vertex, Integer> rewardMap){
+        RewardPathPair(List<Vertex> path, HashMap<Vertex, Integer> rewardMap) {
             this.path = path;
             reward = 0;
-            for(Vertex v: path){
+            for (Vertex v : path) {
                 reward += rewardMap.get(v);
             }
             lastVertex = ((LinkedList<Vertex>) path).getLast();
@@ -34,7 +34,7 @@ public class LP4 {
 
         @Override
         public String toString() {
-            return reward+"-"+path;
+            return reward + "-" + path;
         }
     }
 
@@ -124,25 +124,20 @@ public class LP4 {
         List<List<Vertex>> paths = new LinkedList<>();
         bf.computeShortestPaths(s, paths);
 
-        BellmanFord.printAllShortestPath(paths);
-
         PriorityQueue<RewardPathPair> pq = new PriorityQueue<>(Comparator.reverseOrder());
 
-        for(List<Vertex> path: paths){
-            pq.add(new RewardPathPair(path,vertexRewardMap));
+        for (List<Vertex> path : paths) {
+            pq.add(new RewardPathPair(path, vertexRewardMap));
         }
-
-        System.out.println(pq);
 
         XGraph xg = new XGraph(g);
 
-        while(!pq.isEmpty()){
+        while (!pq.isEmpty()) {
             RewardPathPair pair = pq.poll();
-            System.out.println(pair);
 
-            BFS bfs = new BFS(xg,xg.getVertex(pair.lastVertex));
+            BFS bfs = new BFS(xg, xg.getVertex(pair.lastVertex));
 
-            for(Vertex v: pair.path){
+            for (Vertex v : pair.path) {
                 xg.getVertex(v).disable();
             }
 
@@ -151,11 +146,19 @@ public class LP4 {
 
             bfs.bfs();
 
-            if(bfs.seen(s)){
+            if (bfs.seen(s)) {
+                LinkedList<Vertex> returnPath = new LinkedList<>();
+
+                for (Vertex v = s; v.getName() != pair.lastVertex.getName(); v = bfs.getParent(v))
+                    returnPath.addFirst(v);
+
+                tour.addAll(pair.path);
+                tour.addAll(returnPath);
+
                 return pair.reward;
             }
 
-            for(Vertex v: pair.path){
+            for (Vertex v : pair.path) {
                 xg.getVertex(v).disabled = false;
             }
         }
