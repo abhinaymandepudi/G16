@@ -5,5 +5,5 @@ cd ..
 mkdir -p cs6301/g16
 cp -R ./src/cs6301/g16/*.java ./cs6301/g16/
 cp ./README.md ./cs6301/g16/
-zip -r -X g16-lp5.zip ./cs6301
+zip -r -X g16-lp4.zip ./cs6301
 rm -rf ./cs6301
