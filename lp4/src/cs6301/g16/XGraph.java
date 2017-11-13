@@ -17,7 +17,6 @@ package cs6301.g16;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
-import cs6301.g00.ArrayIterator;
 
 
 public class XGraph extends Graph {
