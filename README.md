@@ -14,7 +14,7 @@ Long Project
 
 3.  [Optimal branchings (directed MST) in directed graphs](./lp3)
 
-4.  Counting and enumeration problems in graphs
+4.  [Counting and enumeration problems in graphs](./lp4)
 
 5.  [SkipList](./lp5)
 
