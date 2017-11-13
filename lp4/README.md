@@ -17,7 +17,7 @@ Deliverable structure is as follow:
     └── g16
         ├── ArrayIterator.java          # Copy from g00.
         ├── BFS.java                    # BFS to determine reachability.
-        ├── BellmanFord.java            # Shortest path implementation of b/c/d/e/f.
+        ├── BellmanFord.java            # Shortest path implementation of c/d/e/f.
         ├── Graph.java                  # Graph class with minor modification.
         ├── GraphAlgorithm.java         # Graph Algorithm class.
         ├── LP4.java                    # Implementation of LP4 driver.
