@@ -133,7 +133,9 @@ public class SkipList<T extends Comparable<? super T>> {
     // Does list contain x?
     public boolean contains(T x) {
         Entry<T>[] prev = find(x);
-        return prev[0].next[0].element == x;
+        if (prev[0].next[0].element != null)
+            return prev[0].next[0].element.compareTo(x) == 0;
+        return true;
     }
 
     // Return first element of list
@@ -154,7 +156,7 @@ public class SkipList<T extends Comparable<? super T>> {
     // Return element at index n of list.  First element is at index 0.
     public T get(int n) {
         if (n >= size || n < 0)
-            throw new IndexOutOfBoundsException();
+            return null;
 
         int currSpan = 0;
         Entry<T> node = head;
@@ -283,7 +285,9 @@ public class SkipList<T extends Comparable<? super T>> {
     public T remove(T x) {
         Entry<T>[] prev = find(x);
         Entry<T> n = prev[0].next[0];
-        if (n.element != x)   // no such element in skiplist
+        if(n.element==null)
+            return null;
+        if (n.element.compareTo(x) != 0)   // no such element in skiplist
             return null;
         else {
 
@@ -296,7 +300,7 @@ public class SkipList<T extends Comparable<? super T>> {
                 }
 
             }
-            for (int i = n.level + 1; i < prev.length; i++) {
+            for (int i = n.level; i < prev.length; i++) {
                 prev[i].span[i]--;
             }
         }
@@ -329,7 +333,7 @@ public class SkipList<T extends Comparable<? super T>> {
 
     public void printSpan() {
         System.out.println("----------SPAN----------");
-        System.out.print("H: ");
+        System.out.print("H:   ");
         for (int i = 0; i < head.level; i++)
             System.out.print(head.span[i] + " ");
         Entry node = head.next[0];
@@ -390,33 +394,6 @@ public class SkipList<T extends Comparable<? super T>> {
                 System.out.print(", ");
         }
         System.out.println();
-
-//        System.out.println("\n\nTest Large data set ==================\n\n");
-//        for(int i = (int)Math.pow(2,25); i>=0; i--){
-//            sk2.add(i);
-//        }
-//        System.out.println("size:"+sk2.size());
-//        System.out.println("first:"+sk2.first());
-//        System.out.println("last:"+sk2.last());
-//        for (int i = 0; i < sk2.size; i++) {
-//            int value = sk2.get(i);
-//            if(value!=i) {
-//                System.out.println("Error for get");
-//                return;
-//            }
-//        }
-//        System.out.println("rebuild");
-//        sk2.rebuild();
-//        System.out.println("rebuild done");
-//        System.out.println("test get");
-//        for (int i = 0; i < sk2.size; i++) {
-//            int value = sk2.get(i);
-//            if(value!=i) {
-//                System.out.println("Error for get");
-//                return;
-//            }
-//        }
-//        System.out.println("test get done");
     }
 }
 
