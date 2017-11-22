@@ -40,11 +40,6 @@ public class ResidualGraph extends Graph {
             flowadj = new LinkedList<>();
         }
 
-        public ResidualVertex(Vertex u, List<ResidualEdge> flowadj) {
-            super(u);
-            this.flowadj = flowadj;
-        }
-
         @Override
         public Iterator<Edge> iterator() {
             return new ResidualVertexIterator(this);
@@ -107,30 +102,39 @@ public class ResidualGraph extends Graph {
     }
 
     ResidualVertex[] fv;
+    ResidualEdge[] fe;
+    boolean weighted;
 
-    public ResidualGraph(Graph g, HashMap<Edge, Integer> capacity) {
+    public ResidualGraph(Graph g, HashMap<Edge, Integer> capacity, boolean weighted) {
         super(g);
-        fv = new ResidualVertex[g.size()];
+        this.fv = new ResidualVertex[g.size()];
+        this.fe = new ResidualEdge[g.edgeSize() * 2];
+        this.weighted = weighted;
         for (Vertex u : g) {
             fv[u.getName()] = new ResidualVertex(u);
         }
 
-        // Make copy of edges
+        // Make copy of edges.
+        // Each edge would generate two edges between two node, each with different direction.
+        // Initial flow is 0 for original direction, and full capacity for reverse direction.
         for (Vertex u : g) {
             u.adj.forEach(e -> {
-                Vertex v = e.otherEnd(u);
-                ResidualVertex x1 = getVertex(u);
-                ResidualVertex x2 = getVertex(v);
-                x1.flowadj.add(new ResidualEdge(x1, x2, e.weight, g.edgeSize(), capacity.get(e), 0));
+//                Vertex v = e.otherEnd(u);
+//                ResidualVertex x1 = getVertex(u);
+//                ResidualVertex x2 = getVertex(v);
+//                addResidualEdge(x1, x2, e.weight, e.name, capacity.get(e));
+                addResidualEdge(getVertex(u), getVertex(e.otherEnd(u)), e.weight, e.name, capacity.get(e));
             });
+        }
+    }
 
-            u.revAdj.forEach(e -> {
-                Vertex v = e.otherEnd(u);
-                ResidualVertex x1 = getVertex(u);
-                ResidualVertex x2 = getVertex(v);
-                x1.flowadj.add(new ResidualEdge(x1, x2, e.weight, e.getName() + g.edgeSize(), capacity.get(e), capacity.get(e)));
-            });
-
+    private void addResidualEdge(ResidualVertex from, ResidualVertex to, int weight, int name, int capacity) {
+        if (weighted) {
+            from.flowadj.add(new ResidualEdge(from, to, weight, name, capacity, 0));
+            to.flowadj.add(new ResidualEdge(to, from, weight, name + this.m, capacity, capacity));
+        } else {
+            from.flowadj.add(new ResidualEdge(from, to, 1, name, capacity, 0));
+            to.flowadj.add(new ResidualEdge(to, from, 1, name + this.m, capacity, capacity));
         }
     }
 
