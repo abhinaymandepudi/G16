@@ -4,15 +4,43 @@ package cs6301.g16;
 import cs6301.g16.Graph.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class Flow {
+
+    Graph g;
+    ResidualGraph gf;
+    Vertex s, t;
+
     public Flow(Graph g, Vertex s, Vertex t, HashMap<Edge, Integer> capacity) {
+        this.g = g;
+        this.gf = new ResidualGraph(g, capacity, false);
+        this.s = s;
+        this.t = t;
     }
 
     // Return max flow found by Dinitz's algorithm
     public int dinitzMaxFlow() {
-        return 0;
+
+        List<List<Edge>> paths = new LinkedList<>();
+
+        while (true) {
+            BellmanFord bf = new BellmanFord(gf);
+            boolean result = bf.computeShortestPaths(gf.getVertex(s), gf.getVertex(t), paths);
+            if (!result) // t not reachable from s in residual graph.
+                break;
+            BellmanFord.printAllShortestPath(paths);
+            paths.forEach(gf::augment);
+        }
+
+        int maxFlow = 0;
+        for (Edge e : s.adj) {
+            maxFlow += gf.getEdge(e).getFlow();
+        }
+
+        return maxFlow;
     }
 
     // Return max flow found by relabelToFront algorithm

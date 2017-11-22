@@ -60,11 +60,11 @@ public class ResidualGraph extends Graph {
                     return false;
                 }
                 cur = it.next();
-                while (!cur.isZeroResidualCapacity() && it.hasNext()) {
+                while (cur.isZeroResidualCapacity() && it.hasNext()) {
                     cur = it.next();
                 }
                 ready = true;
-                return cur.isZeroResidualCapacity();
+                return !cur.isZeroResidualCapacity();
             }
 
             public Edge next() {
@@ -101,8 +101,17 @@ public class ResidualGraph extends Graph {
             return capacity - flow;
         }
 
+        public int getFlow() {
+            return flow;
+        }
+
         public void augment(int f) {
             flow += f;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + from + "," + to + ": " + flow + "/" + capacity + ")";
         }
     }
 
@@ -142,16 +151,47 @@ public class ResidualGraph extends Graph {
         final int revEdgeIndex = name + m - 1;
 
         if (weighted) {
-            fe[oriEdgeIndex] = new ResidualEdge(from, to, weight, oriEdgeIndex, capacity, 0);
-            fe[revEdgeIndex] = new ResidualEdge(to, from, weight, revEdgeIndex, capacity, capacity);
+            fe[oriEdgeIndex] = new ResidualEdge(from, to, weight, oriEdgeIndex + 1, capacity, 0);
+            fe[revEdgeIndex] = new ResidualEdge(to, from, weight, revEdgeIndex + 1, capacity, capacity);
             from.flowadj.add(fe[oriEdgeIndex]);
             to.flowadj.add(fe[revEdgeIndex]);
         } else {
-            fe[oriEdgeIndex] = new ResidualEdge(from, to, 1, oriEdgeIndex, capacity, 0);
-            fe[revEdgeIndex] = new ResidualEdge(to, from, 1, revEdgeIndex, capacity, capacity);
+            fe[oriEdgeIndex] = new ResidualEdge(from, to, 1, oriEdgeIndex + 1, capacity, 0);
+            fe[revEdgeIndex] = new ResidualEdge(to, from, 1, revEdgeIndex + 1, capacity, capacity);
             from.flowadj.add(fe[oriEdgeIndex]);
             to.flowadj.add(fe[revEdgeIndex]);
         }
+    }
+
+    @Override
+    public Iterator<Vertex> iterator() {
+        return new ResidualGraphIterator(this);
+    }
+
+    class ResidualGraphIterator implements Iterator<Vertex> {
+        Iterator<ResidualVertex> it;
+        ResidualVertex xcur;
+
+        ResidualGraphIterator(ResidualGraph rg) {
+            this.it = new ArrayIterator<>(rg.fv, 0, rg.size() - 1);  // Iterate over existing elements only
+        }
+
+
+        public boolean hasNext() {
+            if (!it.hasNext()) {
+                return false;
+            }
+            xcur = it.next();
+            return true;
+        }
+
+        public Vertex next() {
+            return xcur;
+        }
+
+        public void remove() {
+        }
+
     }
 
     public void augment(List<Edge> path) {
@@ -163,8 +203,12 @@ public class ResidualGraph extends Graph {
                 minCapacity = remainCapacity;
         }
 
-        for (Edge e : path)
-            getEdge(e).augment(minCapacity);
+        if (minCapacity > 0) {
+            System.out.println("Augmenting path: " + path);
+            for (Edge e : path)
+                getEdge(e).augment(minCapacity);
+        } else
+            System.out.println("Augmenting path: " + path + " failed.");
     }
 
     @Override

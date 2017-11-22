@@ -1,8 +1,7 @@
 
 package cs6301.g16;
 
-import cs6301.g16.Graph.Vertex;
-import cs6301.g16.Graph.Edge;
+import cs6301.g16.Graph.*;
 
 public class LP7 {
     static int VERBOSE = 0;
@@ -23,8 +22,10 @@ public class LP7 {
             }
         }
         Flow f = new Flow(g, g.getVertex(s), g.getVertex(t), capacity);
+        int dinitz = f.dinitzMaxFlow();
         int value = f.relabelToFront();
 
+        System.out.println(dinitz);
         System.out.println(value);
 
         if (VERBOSE > 0) {
