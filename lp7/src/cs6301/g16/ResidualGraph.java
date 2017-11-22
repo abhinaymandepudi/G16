@@ -132,13 +132,7 @@ public class ResidualGraph extends Graph {
         // Each edge would generate two edges between two node, each with different direction.
         // Initial flow is 0 for original direction, and full capacity for reverse direction.
         for (Vertex u : g) {
-            u.adj.forEach(e -> {
-//                Vertex v = e.otherEnd(u);
-//                ResidualVertex x1 = getVertex(u);
-//                ResidualVertex x2 = getVertex(v);
-//                addResidualEdge(x1, x2, e.weight, e.name, capacity.get(e));
-                addResidualEdge(getVertex(u), getVertex(e.otherEnd(u)), e.weight, e.name, capacity.get(e));
-            });
+            u.adj.forEach(e -> addResidualEdge(getVertex(u), getVertex(e.otherEnd(u)), e.weight, e.name, capacity.get(e)));
         }
     }
 
