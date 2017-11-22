@@ -26,10 +26,7 @@
 
 package cs6301.g16;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ResidualGraph extends Graph {
     public static class ResidualVertex extends Graph.Vertex {
@@ -99,6 +96,14 @@ public class ResidualGraph extends Graph {
         public boolean isZeroResidualCapacity() {
             return capacity == flow;
         }
+
+        public int getRemainCapacity() {
+            return capacity - flow;
+        }
+
+        public void augment(int f) {
+            flow += f;
+        }
     }
 
     ResidualVertex[] fv;
@@ -129,13 +134,37 @@ public class ResidualGraph extends Graph {
     }
 
     private void addResidualEdge(ResidualVertex from, ResidualVertex to, int weight, int name, int capacity) {
+
+        // Let index of original edge be the name.
+        final int oriEdgeIndex = name - 1;
+
+        // Let index of reversed edge be the name + number of edges.
+        final int revEdgeIndex = name + m - 1;
+
         if (weighted) {
-            from.flowadj.add(new ResidualEdge(from, to, weight, name, capacity, 0));
-            to.flowadj.add(new ResidualEdge(to, from, weight, name + this.m, capacity, capacity));
+            fe[oriEdgeIndex] = new ResidualEdge(from, to, weight, oriEdgeIndex, capacity, 0);
+            fe[revEdgeIndex] = new ResidualEdge(to, from, weight, revEdgeIndex, capacity, capacity);
+            from.flowadj.add(fe[oriEdgeIndex]);
+            to.flowadj.add(fe[revEdgeIndex]);
         } else {
-            from.flowadj.add(new ResidualEdge(from, to, 1, name, capacity, 0));
-            to.flowadj.add(new ResidualEdge(to, from, 1, name + this.m, capacity, capacity));
+            fe[oriEdgeIndex] = new ResidualEdge(from, to, 1, oriEdgeIndex, capacity, 0);
+            fe[revEdgeIndex] = new ResidualEdge(to, from, 1, revEdgeIndex, capacity, capacity);
+            from.flowadj.add(fe[oriEdgeIndex]);
+            to.flowadj.add(fe[revEdgeIndex]);
         }
+    }
+
+    public void augment(List<Edge> path) {
+        int minCapacity = Integer.MAX_VALUE;
+
+        for (Edge e : path) {
+            final int remainCapacity = getEdge(e).getRemainCapacity();
+            if (remainCapacity < minCapacity)
+                minCapacity = remainCapacity;
+        }
+
+        for (Edge e : path)
+            getEdge(e).augment(minCapacity);
     }
 
     @Override
@@ -145,5 +174,9 @@ public class ResidualGraph extends Graph {
 
     ResidualVertex getVertex(Vertex u) {
         return Vertex.getVertex(fv, u);
+    }
+
+    ResidualEdge getEdge(Edge e) {
+        return fe[e.getName() - 1];
     }
 }
