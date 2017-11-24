@@ -253,4 +253,5 @@
 
 Output:
 Max-flow: 35
+Max-flow is verified
 Min-cost max-flow: -191038

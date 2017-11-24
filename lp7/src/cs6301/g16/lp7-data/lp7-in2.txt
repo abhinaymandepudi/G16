@@ -7003,4 +7003,5 @@
 
 Output:
 Max-flow:		 994
+Max-flow is verified
 Min-cost max-flow:	-7002573

@@ -15,17 +15,35 @@ public class LP7 {
         Timer timer = new Timer();
         int s = in.nextInt();
         int t = in.nextInt();
-        java.util.HashMap<Graph.Edge, Integer> capacity = new java.util.HashMap<>();
+        java.util.HashMap<Edge, Integer> capacity = new java.util.HashMap<>();
+        int[] arr = new int[1 + g.edgeSize()];
+        for (int i = 1; i <= g.edgeSize(); i++) {
+            arr[i] = 1;   // default capacity
+        }
+        while (in.hasNextInt()) {
+            int i = in.nextInt();
+            int cap = in.nextInt();
+            arr[i] = cap;
+        }
         for (Vertex u : g) {
             for (Edge e : u) {
-                capacity.put(e, 1);
+                capacity.put(e, arr[e.getName()]);
             }
         }
+
         Flow f = new Flow(g, g.getVertex(s), g.getVertex(t), capacity);
-        int dinitz = f.dinitzMaxFlow();
+        //f.setVerbose(VERBOSE);
+        System.out.println(f.dinitzMaxFlow());
         int value = f.relabelToFront();
 
-        System.out.println(dinitz);
+	/* Uncomment this if you have implemented verify()
+    if(f.verify()) {
+	    System.out.println("Max flow is verified");
+	} else {
+	    System.out.println("Algorithm is wrong. Verification failed.");
+	}
+	*/
+
         System.out.println(value);
 
         if (VERBOSE > 0) {
@@ -36,6 +54,8 @@ public class LP7 {
                 }
                 System.out.println();
             }
+            System.out.println("Min cut: S = " + f.minCutS());
+            System.out.println("Min cut: T = " + f.minCutT());
         }
 
         System.out.println(timer.end());
