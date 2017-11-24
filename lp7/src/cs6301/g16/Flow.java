@@ -31,7 +31,6 @@ public class Flow {
             boolean result = bf.computeShortestPaths(gf.getVertex(s), gf.getVertex(t), paths);
             if (!result) // t not reachable from s in residual graph.
                 break;
-            BellmanFord.printAllShortestPath(paths);
             paths.forEach(gf::augment);
         }
 
