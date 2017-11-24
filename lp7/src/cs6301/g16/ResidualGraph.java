@@ -28,13 +28,16 @@ package cs6301.g16;
 
 import java.util.*;
 
+/**
+ * A residual graph class extending {@code Graph} using parallel array.
+ */
 public class ResidualGraph extends Graph {
     public static class ResidualVertex extends Graph.Vertex {
-        List<ResidualEdge> flowadj;
+        List<ResidualEdge> residualAdj;
 
         public ResidualVertex(Vertex u) {
             super(u);
-            flowadj = new LinkedList<>();
+            residualAdj = new LinkedList<>();
         }
 
         @Override
@@ -48,7 +51,7 @@ public class ResidualGraph extends Graph {
             boolean ready;
 
             ResidualVertexIterator(ResidualVertex u) {
-                this.it = u.flowadj.iterator();
+                this.it = u.residualAdj.iterator();
                 ready = false;
             }
 
@@ -84,8 +87,8 @@ public class ResidualGraph extends Graph {
     }
 
     public static class ResidualEdge extends Graph.Edge {
-        final int capacity;
-        int flow;
+        private final int capacity;
+        private int flow;
 
         public ResidualEdge(Vertex u, Vertex v, int w, int n, int capacity, int flow) {
             super(u, v, w, n);
@@ -97,7 +100,7 @@ public class ResidualGraph extends Graph {
             return capacity == flow;
         }
 
-        public int getRemainCapacity() {
+        private int getRemainCapacity() {
             return capacity - flow;
         }
 
@@ -105,8 +108,24 @@ public class ResidualGraph extends Graph {
             return flow;
         }
 
-        public void augment(int f) {
+        /**
+         * Private interface to increase the flow by specific size, used only by {@code augment}
+         * method in {@code ResidualGraph} class.
+         *
+         * @param f Flow size to increase.
+         */
+        private void increase(int f) {
             flow += f;
+        }
+
+        /**
+         * Private interface to decrease the flow by specific size, used only by {@code augment}
+         * method in {@code ResidualGraph} class.
+         *
+         * @param f Flow size to decrease.
+         */
+        private void decrease(int f) {
+            flow -= f;
         }
 
         @Override
@@ -115,28 +134,42 @@ public class ResidualGraph extends Graph {
         }
     }
 
-    ResidualVertex[] fv;
-    ResidualEdge[] fe;
-    boolean weighted;
+    /**
+     * Parallel array of vertices.
+     */
+    private ResidualVertex[] fv;
+
+    /**
+     * Parallel array of edges with index [0, m-1] as the {@code ResidualEdge} instance of the
+     * original edges, and [m, 2m-1] as the {@code ResidualEdge} instance of the edges with opposite
+     * direction.
+     */
+    private ResidualEdge[] fe;
+
+    /**
+     * Determine whether the residual graph is weighted. If not, all edges have weight of 1.
+     */
+    private boolean weighted;
 
     public ResidualGraph(Graph g, HashMap<Edge, Integer> capacity, boolean weighted) {
         super(g);
         this.fv = new ResidualVertex[g.size()];
         this.fe = new ResidualEdge[g.edgeSize() * 2];
         this.weighted = weighted;
-        for (Vertex u : g) {
-            fv[u.getName()] = new ResidualVertex(u);
-        }
+
+        // Create parallel array for vertices.
+        g.forEach(u -> this.fv[u.getName()] = new ResidualVertex(u));
 
         // Make copy of edges.
         // Each edge would generate two edges between two node, each with different direction.
         // Initial flow is 0 for original direction, and full capacity for reverse direction.
-        for (Vertex u : g) {
-            u.adj.forEach(e -> addResidualEdge(getVertex(u), getVertex(e.otherEnd(u)), e.weight, e.name, capacity.get(e)));
-        }
+        g.forEach(u -> u.forEach(e -> addResidualEdge(u, e.otherEnd(u), e.weight, e.name, capacity.get(e))));
     }
 
-    private void addResidualEdge(ResidualVertex from, ResidualVertex to, int weight, int name, int capacity) {
+    private void addResidualEdge(Vertex fromVertex, Vertex toVertex, int weight, int name, int capacity) {
+
+        ResidualVertex from = getVertex(fromVertex);
+        ResidualVertex to = getVertex(toVertex);
 
         // Let index of original edge be the name.
         final int oriEdgeIndex = name - 1;
@@ -147,13 +180,13 @@ public class ResidualGraph extends Graph {
         if (weighted) {
             fe[oriEdgeIndex] = new ResidualEdge(from, to, weight, oriEdgeIndex + 1, capacity, 0);
             fe[revEdgeIndex] = new ResidualEdge(to, from, weight, revEdgeIndex + 1, capacity, capacity);
-            from.flowadj.add(fe[oriEdgeIndex]);
-            to.flowadj.add(fe[revEdgeIndex]);
+            from.residualAdj.add(fe[oriEdgeIndex]);
+            to.residualAdj.add(fe[revEdgeIndex]);
         } else {
             fe[oriEdgeIndex] = new ResidualEdge(from, to, 1, oriEdgeIndex + 1, capacity, 0);
             fe[revEdgeIndex] = new ResidualEdge(to, from, 1, revEdgeIndex + 1, capacity, capacity);
-            from.flowadj.add(fe[oriEdgeIndex]);
-            to.flowadj.add(fe[revEdgeIndex]);
+            from.residualAdj.add(fe[oriEdgeIndex]);
+            to.residualAdj.add(fe[revEdgeIndex]);
         }
     }
 
@@ -197,12 +230,15 @@ public class ResidualGraph extends Graph {
                 minCapacity = remainCapacity;
         }
 
-        if (minCapacity > 0) {
-            System.out.println("Augmenting path: " + path);
-            for (Edge e : path)
-                getEdge(e).augment(minCapacity);
-        } else
-            System.out.println("Augmenting path: " + path + " failed.");
+        final int flow = minCapacity;
+
+        if (flow > 0)
+            path.forEach(e -> augment(e, flow));
+    }
+
+    private void augment(Edge e, int flow) {
+        getEdge(e).increase(flow);
+        getOtherEdge(e).decrease(flow);
     }
 
     @Override
@@ -214,7 +250,27 @@ public class ResidualGraph extends Graph {
         return Vertex.getVertex(fv, u);
     }
 
-    ResidualEdge getEdge(Edge e) {
+    /**
+     * Get the {@code ResidualEdge} instance from the original {@code Edge} instance.
+     *
+     * @param e {@code Edge} instance.
+     *
+     * @return Corresponding {@code ResidualEdge} instance.
+     */
+    public ResidualEdge getEdge(Edge e) {
         return fe[e.getName() - 1];
+    }
+
+    /**
+     * Get the {@code ResidualEdge} instance of edge which has reversed direction of the original
+     * {@code Edge} instance.
+     *
+     * @param e {@code Edge} instance.
+     *
+     * @return Corresponding {@code ResidualEdge} instance.
+     */
+    public ResidualEdge getOtherEdge(Edge e) {
+        final int name = e.getName();
+        return fe[name <= m ? name + m - 1 : name - m - 1];
     }
 }
