@@ -3,14 +3,21 @@ package cs6301.g16;
 
 import cs6301.g16.Graph.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class LP7 {
     static int VERBOSE = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         if (args.length > 0) {
             VERBOSE = Integer.parseInt(args[0]);
         }
         java.util.Scanner in = new java.util.Scanner(System.in);
+        if (args.length > 1) {
+            in = new java.util.Scanner(new FileInputStream(new File(args[1])));
+        }
         Graph g = Graph.readDirectedGraph(in);
         Timer timer = new Timer();
         int s = in.nextInt();
