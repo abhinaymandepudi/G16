@@ -34,10 +34,16 @@ import java.util.*;
 public class ResidualGraph extends Graph {
     public static class ResidualVertex extends Graph.Vertex {
         List<ResidualEdge> residualAdj;
+        List<ResidualEdge> residualRevAdj;
+        int height;
+        int excess;
 
         public ResidualVertex(Vertex u) {
             super(u);
             residualAdj = new LinkedList<>();
+            residualRevAdj = new LinkedList<>();
+            height = 0;
+            excess = 0;
         }
 
         @Override
@@ -84,6 +90,27 @@ public class ResidualGraph extends Graph {
                 throw new java.lang.UnsupportedOperationException();
             }
         }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        public int getExcess() {
+            return excess;
+        }
+
+        public void changeExcess(int difference) {
+            this.excess += difference;
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " " + this.excess;
+        }
     }
 
     public static class ResidualEdge extends Graph.Edge {
@@ -108,6 +135,10 @@ public class ResidualGraph extends Graph {
             return flow;
         }
 
+        public int getCapacity() {
+            return capacity;
+        }
+
         /**
          * Private interface to increase the flow by specific size, used only by {@code augment}
          * method in {@code ResidualGraph} class.
@@ -126,6 +157,10 @@ public class ResidualGraph extends Graph {
          */
         private void decrease(int f) {
             flow -= f;
+        }
+
+        public void setFlow(int flow) {
+            this.flow = flow;
         }
 
         @Override
@@ -181,12 +216,16 @@ public class ResidualGraph extends Graph {
             fe[oriEdgeIndex] = new ResidualEdge(from, to, weight, oriEdgeIndex + 1, capacity, 0);
             fe[revEdgeIndex] = new ResidualEdge(to, from, weight, revEdgeIndex + 1, capacity, capacity);
             from.residualAdj.add(fe[oriEdgeIndex]);
+            from.residualRevAdj.add(fe[revEdgeIndex]);
             to.residualAdj.add(fe[revEdgeIndex]);
+            to.residualRevAdj.add(fe[oriEdgeIndex]);
         } else {
             fe[oriEdgeIndex] = new ResidualEdge(from, to, 1, oriEdgeIndex + 1, capacity, 0);
             fe[revEdgeIndex] = new ResidualEdge(to, from, 1, revEdgeIndex + 1, capacity, capacity);
             from.residualAdj.add(fe[oriEdgeIndex]);
+            from.residualRevAdj.add(fe[revEdgeIndex]);
             to.residualAdj.add(fe[revEdgeIndex]);
+            to.residualRevAdj.add(fe[oriEdgeIndex]);
         }
     }
 
@@ -234,6 +273,56 @@ public class ResidualGraph extends Graph {
 
         if (flow > 0)
             path.forEach(e -> augment(e, flow));
+    }
+
+    public void push(Edge edge, int flow) {
+        getEdge(edge).setFlow(flow);
+        getVertex(edge.fromVertex()).changeExcess(-flow);
+        getVertex(edge.toVertex()).changeExcess(flow);
+    }
+
+    private void push(ResidualVertex u, ResidualVertex v, ResidualEdge e) {
+        int delta = Math.min(u.getExcess(), e.getCapacity());
+        if (e.fromVertex().getName() == u.getName())
+            e.increase(delta);
+        else
+            e.decrease(delta);
+        u.changeExcess(-delta);
+        v.changeExcess(delta);
+    }
+
+    public void discharge(ResidualVertex ru) {
+        while (ru.getExcess() > 0) {
+
+            LinkedList<ResidualEdge> incident = new LinkedList<>(ru.residualAdj);
+            incident.addAll(ru.residualRevAdj);
+            for (ResidualEdge re : incident) {
+                Vertex v = re.otherEnd(ru);
+                ResidualVertex rv = getVertex(v);
+                if (inGf(ru, re) && ru.getHeight() == 1 + rv.getHeight()) {
+                    push(ru, rv, re);
+                    if (ru.getExcess() == 0)
+                        return;
+                }
+            }
+            relabel(ru);
+        }
+    }
+
+    boolean inGf(ResidualVertex u, ResidualEdge e) {
+        return e.fromVertex().getName() == u.getName() ? e.getFlow() < e.getCapacity() : e.getFlow() > 0;
+    }
+
+    void relabel(ResidualVertex u) {
+        int min = Integer.MAX_VALUE;
+        LinkedList<ResidualEdge> incident = new LinkedList<>(u.residualAdj);
+//        incident.addAll(u.residualRevAdj);
+        for (Edge e : incident) {
+            ResidualVertex v = getVertex(e.otherEnd(u));
+            if (v.height < min)
+                min = v.height;
+        }
+        u.setHeight(1 + min);
     }
 
     private void augment(Edge e, int flow) {
