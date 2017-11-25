@@ -41,36 +41,43 @@ relabelToFront algorithm.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in1.txt
     35
+    Max flow is verified
     Time: 69 msec.
     Memory: 8 MB / 245 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in2.txt
     994
+    Max flow is verified
     Time: 183 msec.
     Memory: 32 MB / 245 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in3.txt
     9924
+    Max flow is verified
     Time: 686 msec.
     Memory: 82 MB / 245 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in4.txt
     14
+    Max flow is verified
     Time: 69 msec.
     Memory: 7 MB / 245 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in5.txt
     23
+    Max flow is verified
     Time: 99 msec.
     Memory: 7 MB / 245 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in6.txt
     521
+    Max flow is verified
     Time: 144 msec.
     Memory: 26 MB / 245 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in7.txt
     1344
+    Max flow is verified
     Time: 338 msec.
     Memory: 109 MB / 309 MB.
 
