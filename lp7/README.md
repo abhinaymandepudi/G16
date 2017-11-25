@@ -1,0 +1,97 @@
+Long Project 7
+==============
+
+Group Members
+-------------
+
+- Binhan Wang (bxw161330@utdallas.edu)
+- Hanlin He (hxh160630@utdallas.edu)
+- Zheng Gao (zxg170430@utdallas.edu)
+
+Project Structure
+-----------------
+
+Deliverable structure is as follow:
+
+    cs6301
+    └── g16
+        ├── ArrayIterator.java
+        ├── BellmanFord.java
+        ├── Flow.java
+        ├── Graph.java
+        ├── GraphAlgorithm.java
+        ├── LP7.java
+        ├── ResidualGraph.java
+        └── Timer.java
+
+Compile
+-------
+
+To compile, run the following commands:
+
+    javac cs6301/g16/LP7.java
+
+Test Running
+------------
+
+Driver code is modified to execute only the Dinitz's algorithm and
+relabelToFront algorithm.
+
+### Dinitz's Algorithm performance
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in1.txt
+    35
+    Time: 69 msec.
+    Memory: 8 MB / 245 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in2.txt
+    994
+    Time: 183 msec.
+    Memory: 32 MB / 245 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in3.txt
+    9924
+    Time: 686 msec.
+    Memory: 82 MB / 245 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in4.txt
+    14
+    Time: 69 msec.
+    Memory: 7 MB / 245 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in5.txt
+    23
+    Time: 99 msec.
+    Memory: 7 MB / 245 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in6.txt
+    521
+    Time: 144 msec.
+    Memory: 26 MB / 245 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in7.txt
+    1344
+    Time: 338 msec.
+    Memory: 109 MB / 309 MB.
+
+### RelabelToFront algorithm performance
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in1.txt
+    35
+    Time: 85 msec.
+    Memory: 4 MB / 31 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in2.txt
+    994
+    Time: 51440 msec.
+    Memory: 46 MB / 97 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in4.txt
+    14
+    Time: 134 msec.
+    Memory: 2 MB / 31 MB.
+
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in5.txt
+    23
+    Time: 136 msec.
+    Memory: 2 MB / 31 MB.
