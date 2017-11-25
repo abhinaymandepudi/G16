@@ -31,11 +31,25 @@ To compile, run the following commands:
 
     javac cs6301/g16/LP7.java
 
+__Java 8 is required to compile.__
+
 Test Running
 ------------
 
 Driver code is modified to execute only the Dinitz's algorithm and
 relabelToFront algorithm.
+
+The following test commands were run on following Java version.
+
+    java -version
+    java 9.0.1
+    Java(TM) SE Runtime Environment (build 9.0.1+11)
+    Java HotSpot(TM) 64-Bit Server VM (build 9.0.1+11, mixed mode)
+
+    java -version
+    java version "1.8.0_131"
+    Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+    Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 
 ### Dinitz's Algorithm performance
 
