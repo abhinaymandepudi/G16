@@ -36,16 +36,19 @@ public class Flow {
     Graph g;
     ResidualGraph gf;
     Vertex s, t;
+    HashMap<Edge, Integer> capacity;
 
     public Flow(Graph g, Vertex s, Vertex t, HashMap<Edge, Integer> capacity) {
         this.g = g;
-        this.gf = new ResidualGraph(g, capacity, false);
+        this.gf = null;
         this.s = s;
         this.t = t;
+        this.capacity = capacity;
     }
 
     // Return max flow found by Dinitz's algorithm
     public int dinitzMaxFlow() {
+        this.gf = new ResidualGraph(g, capacity, false);
 
         List<List<Edge>> paths = new LinkedList<>();
 
@@ -67,6 +70,8 @@ public class Flow {
 
     // Return max flow found by relabelToFront algorithm
     public int relabelToFront() {
+        this.gf = new ResidualGraph(g, capacity, false);
+
         // initialize
         gf.getVertex(s).setHeight(g.size());
         s.forEach(edge -> gf.push(edge, capacity(edge)));
@@ -117,13 +122,31 @@ public class Flow {
        get the "S"-side of the min-cut found by the algorithm
     */
     public Set<Vertex> minCutS() {
-        return null;
+        BFS bfs = new BFS(gf, s);
+
+        Set<Vertex> ret = new HashSet<>();
+
+        for (Vertex v : g) {
+            if (bfs.seen(v))
+                ret.add(v);
+        }
+        return ret;
     }
 
     /* After maxflow has been computed, this method can be called to
        get the "T"-side of the min-cut found by the algorithm
     */
     public Set<Vertex> minCutT() {
-        return null;
+
+        Set<Vertex> ret = new HashSet<>();
+        Set<Vertex> minCutS = minCutS();
+        for (Vertex v : g)
+            if (!minCutS.contains(v))
+                ret.add(v);
+        return ret;
+    }
+
+    public boolean verify() {
+        return !minCutS().contains(t);
     }
 }

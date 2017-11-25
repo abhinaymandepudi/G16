@@ -1,7 +1,8 @@
 
 package cs6301.g16;
 
-import cs6301.g16.Graph.*;
+import cs6301.g16.Graph.Edge;
+import cs6301.g16.Graph.Vertex;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,17 +40,15 @@ public class LP7 {
         }
 
         Flow f = new Flow(g, g.getVertex(s), g.getVertex(t), capacity);
-        //f.setVerbose(VERBOSE);
+//        f.setVerbose(VERBOSE);
 //        System.out.println(f.dinitzMaxFlow());
         int value = f.relabelToFront();
 
-	/* Uncomment this if you have implemented verify()
-    if(f.verify()) {
-	    System.out.println("Max flow is verified");
-	} else {
-	    System.out.println("Algorithm is wrong. Verification failed.");
-	}
-	*/
+        if (f.verify()) {
+            System.out.println("Max flow is verified");
+        } else {
+            System.out.println("Algorithm is wrong. Verification failed.");
+        }
 
         System.out.println(value);
 
