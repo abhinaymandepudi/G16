@@ -109,7 +109,7 @@ public class ResidualGraph extends Graph {
 
         @Override
         public String toString() {
-            return super.toString() + " " + this.excess;
+            return super.toString() + " " + this.excess + " " + this.height;
         }
     }
 
@@ -147,6 +147,7 @@ public class ResidualGraph extends Graph {
          */
         private void increase(int f) {
             flow += f;
+//            System.out.println(flow);
         }
 
         /**
@@ -165,7 +166,7 @@ public class ResidualGraph extends Graph {
 
         @Override
         public String toString() {
-            return "(" + from + "," + to + ": " + flow + "/" + capacity + ")";
+            return "(" + from + ", " + to + ": " + flow + "/" + capacity + ")";
         }
     }
 
@@ -276,17 +277,19 @@ public class ResidualGraph extends Graph {
     }
 
     public void push(Edge edge, int flow) {
-        getEdge(edge).setFlow(flow);
+        augment(edge, flow);
         getVertex(edge.fromVertex()).changeExcess(-flow);
         getVertex(edge.toVertex()).changeExcess(flow);
     }
 
     private void push(ResidualVertex u, ResidualVertex v, ResidualEdge e) {
-        int delta = Math.min(u.getExcess(), e.getCapacity());
-        if (e.fromVertex().getName() == u.getName())
-            e.increase(delta);
-        else
-            e.decrease(delta);
+//        System.out.println(u.getExcess() + " " + e.getCapacity());
+        int delta = Integer.min(u.getExcess(), e.getCapacity());
+        if (e.fromVertex().getName() == u.getName()) {
+            augment(e, delta);
+        } else {
+            augment(getOtherEdge(e), delta);
+        }
         u.changeExcess(-delta);
         v.changeExcess(delta);
     }
@@ -315,9 +318,9 @@ public class ResidualGraph extends Graph {
 
     void relabel(ResidualVertex u) {
         int min = Integer.MAX_VALUE;
-        LinkedList<ResidualEdge> incident = new LinkedList<>(u.residualAdj);
+//        LinkedList<ResidualEdge> incident = new LinkedList<>(u.residualAdj);
 //        incident.addAll(u.residualRevAdj);
-        for (Edge e : incident) {
+        for (Edge e : u) {
             ResidualVertex v = getVertex(e.otherEnd(u));
             if (v.height < min)
                 min = v.height;

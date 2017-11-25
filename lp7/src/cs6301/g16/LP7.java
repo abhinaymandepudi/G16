@@ -40,7 +40,7 @@ public class LP7 {
 
         Flow f = new Flow(g, g.getVertex(s), g.getVertex(t), capacity);
         //f.setVerbose(VERBOSE);
-        System.out.println(f.dinitzMaxFlow());
+//        System.out.println(f.dinitzMaxFlow());
         int value = f.relabelToFront();
 
 	/* Uncomment this if you have implemented verify()

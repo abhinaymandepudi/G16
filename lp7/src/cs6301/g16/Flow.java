@@ -47,9 +47,11 @@ public class Flow {
             if (v.getName() != s.getName() && v.getName() != t.getName())
                 L.add(v);
         });
-        System.out.println(L);
+//        System.out.println(L);
         boolean done = false;
         while (!done) {
+//            gf.forEach(vertex -> gf.getVertex(vertex).residualAdj.forEach(System.out::println));
+
             Iterator<Vertex> it = L.iterator();
             done = true;
             Vertex u = null;
@@ -60,7 +62,6 @@ public class Flow {
                     continue;
                 int oldHeight = ru.getHeight();
                 gf.discharge(ru);
-                System.out.println(2);
                 if (ru.getHeight() != oldHeight) {
                     done = false;
                     break;
@@ -70,13 +71,12 @@ public class Flow {
                 it.remove();
                 L.addFirst(u);
             }
-            System.out.println(1);
+//            System.out.println(1);
         }
 
-        gf.forEach(vertex -> vertex.forEach(System.out::println));
         int maxFlow = 0;
         for (Edge e : s.adj) {
-            maxFlow += gf.getEdge(e).getFlow();
+            maxFlow += flow(e);
         }
 
         return maxFlow;
