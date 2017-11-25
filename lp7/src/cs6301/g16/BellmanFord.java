@@ -2,8 +2,8 @@
  * Copyright (c) 2017.
  *
  * @author Hanlin He (hxh160630@utdallas.edu) ,
- *         Binhan Wang (bxw161330@utdallas.edu),
- *         Zheng Gao (zxg170430@utdallas.edu)
+ * @author Binhan Wang (bxw161330@utdallas.edu),
+ * @author Zheng Gao (zxg170430@utdallas.edu)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
