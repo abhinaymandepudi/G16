@@ -15,14 +15,15 @@ Deliverable structure is as follow:
 
     cs6301
     └── g16
-        ├── ArrayIterator.java
-        ├── BellmanFord.java
-        ├── Flow.java
-        ├── Graph.java
-        ├── GraphAlgorithm.java
-        ├── LP7.java
-        ├── ResidualGraph.java
-        └── Timer.java
+        ├── ArrayIterator.java      # Supporting class.
+        ├── BFS.java                # Supporting class to generate min cut.
+        ├── BellmanFord.java        # Supporting class to compute all shortest path.
+        ├── Flow.java               # Flow class implemented.
+        ├── Graph.java              # Graph class.
+        ├── GraphAlgorithm.java     # Supporint class.
+        ├── LP7.java                # Driver class.
+        ├── ResidualGraph.java      # Residual graph implementation.
+        └── Timer.java              # Supporting class.
 
 Compile
 -------
