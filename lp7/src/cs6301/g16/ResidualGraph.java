@@ -147,7 +147,6 @@ public class ResidualGraph extends Graph {
          */
         private void increase(int f) {
             flow += f;
-//            System.out.println(flow);
         }
 
         /**
@@ -283,7 +282,6 @@ public class ResidualGraph extends Graph {
     }
 
     private void push(ResidualVertex u, ResidualVertex v, ResidualEdge e) {
-//        System.out.println(u.getExcess() + " " + e.getCapacity());
         int delta = Integer.min(u.getExcess(), e.getCapacity());
         if (e.fromVertex().getName() == u.getName()) {
             augment(e, delta);
@@ -318,8 +316,6 @@ public class ResidualGraph extends Graph {
 
     void relabel(ResidualVertex u) {
         int min = Integer.MAX_VALUE;
-//        LinkedList<ResidualEdge> incident = new LinkedList<>(u.residualAdj);
-//        incident.addAll(u.residualRevAdj);
         for (Edge e : u) {
             ResidualVertex v = getVertex(e.otherEnd(u));
             if (v.height < min)

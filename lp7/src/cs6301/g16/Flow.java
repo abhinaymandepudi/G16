@@ -41,17 +41,17 @@ public class Flow {
 
     // Return max flow found by relabelToFront algorithm
     public int relabelToFront() {
-        initialize();
+        // initialize
+        gf.getVertex(s).setHeight(g.size());
+        s.forEach(edge -> gf.push(edge, capacity(edge)));
+
         LinkedList<Vertex> L = new LinkedList<>();
         g.forEach(v -> {
             if (v.getName() != s.getName() && v.getName() != t.getName())
                 L.add(v);
         });
-//        System.out.println(L);
         boolean done = false;
         while (!done) {
-//            gf.forEach(vertex -> gf.getVertex(vertex).residualAdj.forEach(System.out::println));
-
             Iterator<Vertex> it = L.iterator();
             done = true;
             Vertex u = null;
@@ -71,32 +71,10 @@ public class Flow {
                 it.remove();
                 L.addFirst(u);
             }
-//            System.out.println(1);
         }
 
-        int maxFlow = 0;
-        for (Edge e : s.adj) {
-            maxFlow += flow(e);
-        }
-
-        return maxFlow;
+        return gf.getVertex(t).getExcess();
     }
-
-
-    private void initialize() {
-//        for u ∈ V do
-//            u.height ← 0; u.excess ← 0
-//        for all edges e of G do
-//            f( e ) ← 0
-//        s.height ← |V|
-//        for edge e = ( s, u ) out of s do
-//            f( e ) ← c( e )
-//            s.excess ← s.excess − c( e )
-//            u.excess ← u.excess + c( e )
-        gf.getVertex(s).setHeight(g.size());
-        s.forEach(edge -> gf.push(edge, capacity(edge)));
-    }
-
 
     // flow going through edge e
     public int flow(Edge e) {
