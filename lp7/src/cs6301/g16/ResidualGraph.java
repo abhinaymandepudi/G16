@@ -162,10 +162,6 @@ public class ResidualGraph extends Graph {
             flow -= f;
         }
 
-        public void setFlow(int flow) {
-            this.flow = flow;
-        }
-
         @Override
         public String toString() {
             return "(" + from + ", " + to + ": " + flow + "/" + capacity + ")";
