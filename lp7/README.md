@@ -52,6 +52,12 @@ The following test commands were run on following Java version.
     Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
     Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 
+To execute large input, an optional second input parameter was added to read graph from a file.
+
+    java cs6301.g16.LP7 [VERBOSE] [Path-to-graph-file]
+
+If `Path-to-graph-file` was not provided, driver program would read from standard input by default.
+
 ### Dinitz's Algorithm performance
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in1.txt
@@ -107,6 +113,11 @@ The following test commands were run on following Java version.
     994
     Time: 51440 msec.
     Memory: 46 MB / 97 MB.
+    
+    java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in3.txt
+    9924
+    Time: 42834754 msec.
+    Memory: 56 MB / 80 MB.
 
     java cs6301.g16.LP7 0 cs6301/g16/lp7-data/lp7-in4.txt
     14
@@ -117,3 +128,8 @@ The following test commands were run on following Java version.
     23
     Time: 136 msec.
     Memory: 2 MB / 31 MB.
+    
+Note that, the `RelabelToFront` algorithm for `lp7-in3.txt` took approximately
+12 hours to converge. The running times for `lp7-in6.txt` and `lp7-in7.txt`
+were not computed due to exponential time complexity. All these three results
+can be viewed as infinity.
