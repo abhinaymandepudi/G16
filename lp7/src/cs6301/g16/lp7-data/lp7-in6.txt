@@ -9357,5 +9357,5 @@
 5047 25
 
 Output:
-521
-Max flow is verified
+Max flow:	   521 (verified)
+Min-cost max flow: 5456 (verified)

@@ -19,5 +19,5 @@
 8 10
 
 Output:
-14
-Max-flow is verified
+Max flow: 	   14 (verified)
+Min-cost max flow: 48 (verified)

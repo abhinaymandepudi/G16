@@ -185729,5 +185729,5 @@
 99649 34
 
 Output:
-1344
-Max flow is verified
+Max flow:	   1344 (verified)
+Min-cost max flow: 17880 (verified)

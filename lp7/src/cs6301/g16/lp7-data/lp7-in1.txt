@@ -252,6 +252,5 @@
 201 202
 
 Output:
-Max-flow: 35
-Max-flow is verified
-Min-cost max-flow: -191038
+Max flow:	   35 (verified)
+Min-cost max flow: -191038 (verified)

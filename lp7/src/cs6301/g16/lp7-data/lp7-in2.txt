@@ -7002,6 +7002,5 @@
 2001 2002
 
 Output:
-Max-flow:		 994
-Max-flow is verified
-Min-cost max-flow:	-7002573
+Max flow:		 994 (verified)
+Min-cost max flow:	-6734806 (verified)
