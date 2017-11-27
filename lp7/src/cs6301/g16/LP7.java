@@ -41,8 +41,8 @@ public class LP7 {
 
         Flow f = new Flow(g, g.getVertex(s), g.getVertex(t), capacity);
 //        f.setVerbose(VERBOSE);
-//        System.out.println(f.dinitzMaxFlow());
-        int value = f.relabelToFront();
+        System.out.println(f.dinitzMaxFlow());
+//        int value = f.relabelToFront();
 
         if (f.verify()) {
             System.out.println("Max flow is verified");
@@ -50,7 +50,7 @@ public class LP7 {
             System.out.println("Algorithm is wrong. Verification failed.");
         }
 
-        System.out.println(value);
+//        System.out.println(value);
 
         if (VERBOSE > 0) {
             for (Vertex u : g) {

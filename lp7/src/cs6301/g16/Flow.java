@@ -123,6 +123,7 @@ public class Flow {
     */
     public Set<Vertex> minCutS() {
         BFS bfs = new BFS(gf, s);
+        bfs.bfs();
 
         Set<Vertex> ret = new HashSet<>();
 
