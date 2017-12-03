@@ -1,7 +1,6 @@
 package cs6301.g16;// Starter code for LP8
 
-import cs6301.g00.Graph;
-import cs6301.g00.Graph.*;
+import cs6301.g16.Graph.*;
 import java.util.HashMap;
 
 public class MinCostFlow {
