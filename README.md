@@ -1,9 +1,13 @@
 Group 16
 ========
 
-Course Number: CS6301.502
+Class Section: CS6301.502.17F
 
 Course Title: Implementation of advanced data structures and algorithms (Fall 2017)
+
+Instructor: Balaji Raghavachari 
+
+[Course Syllabus](./syl-CS6301-502-2017f.pdf)
 
 Long Project
 ------------
