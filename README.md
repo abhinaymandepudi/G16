@@ -34,3 +34,5 @@ Short Project
 | 6 |  [Priority queues and their applications](./sp6) | 50/50 |
 | 7 |  [Binary search trees](./sp7) | 100/100 |
 | 8 |  [Shortest paths, Enumeration](./sp8) | 50/50 |
+| 9 |  Hashing | NA |
+| 10 | String algorithms | NA |
