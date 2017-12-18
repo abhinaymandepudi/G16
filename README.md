@@ -20,7 +20,7 @@ Long Project
 | 4 |  [Counting and enumeration problems in graphs](./lp4) | 200/200 | 8/10 |
 | 5 |  [SkipList](./lp5) | 100/100 | 0/2 |
 | 6 |  Multi-dimensional search | NA | NA |
-| 7 |  [Maximum flow problem](./lp7) | 100/100 | 3/10 |
+| 7 |  [Maximum flow problem](./lp7) | 85/100 | 3/10 |
 | 8 |  Min-cost flow problem | NA | NA |
 | 9 |  Postman tours | NA | NA |
 | 10 | Suffix trees | NA | NA |
