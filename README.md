@@ -21,18 +21,13 @@ Long Project
 Short Project
 -------------
 
-1.  [Sorting algorithms](./sp1)
-
-2.  [Lists, Stacks and Queues](./sp2)
-
-3.  [Depth-first search (DFS)](./sp3)
-
-4.  [Recursion](./sp4)
-
-5.  [Quick Sort](./sp5)
-
-6.  [Priority queues and their applications](./sp6)
-
-7.  [Binary search trees](./sp7)
-
-8.  [Shortest paths, Enumeration](./sp8)
+| No. | Title | Score |
+| --- | --- | --- |
+| 1 |  [Sorting algorithms](./sp1) | 45/50 |
+| 2 |  [Lists, Stacks and Queues](./sp2) | 50/50 |
+| 3 |  [Depth-first search (DFS)](./sp3) | 50/50 |
+| 4 |  [Recursion](./sp4) | 50/50 |
+| 5 |  [Quick Sort](./sp5) | 50/50 |
+| 6 |  [Priority queues and their applications](./sp6) | 50/50 |
+| 7 |  [Binary search trees](./sp7) | 100/100 |
+| 8 |  [Shortest paths, Enumeration](./sp8) | 50/50 |
