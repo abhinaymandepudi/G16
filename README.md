@@ -8,15 +8,18 @@ Course Title: Implementation of advanced data structures and algorithms (Fall 20
 Long Project
 ------------
 
-1.  [Integer arithmetic with arbitrarily large numbers](./lp1)
-
-2.  [Euler tours in directed graphs](./lp2)
-
-3.  [Optimal branchings (directed MST) in directed graphs](./lp3)
-
-4.  [Counting and enumeration problems in graphs](./lp4)
-
-5.  [SkipList](./lp5)
+| No. | Title | Score | EC |
+| --- | --- | --- | --- |
+| 1 |  [Integer arithmetic with arbitrarily large numbers](./lp1) | 100/100 | 6/10 |
+| 2 |  [Euler tours in directed graphs](./lp2) | 100/100 | 0/5 |
+| 3 |  [Optimal branchings (directed MST) in directed graphs](./lp3) | 100/100 | 10/10 |
+| 4 |  [Counting and enumeration problems in graphs](./lp4) | 200/200 | 8/10 |
+| 5 |  [SkipList](./lp5) | 100/100 | 0/2 |
+| 6 |  Multi-dimensional search | NA | NA |
+| 7 |  [Maximum flow problem](./lp7) | 100/100 | 3/10 |
+| 8 |  Min-cost flow problem | NA | NA |
+| 9 |  Postman tours | NA | NA |
+| 10 | Suffix trees | NA | NA |
 
 Short Project
 -------------
